@@ -1,0 +1,28 @@
+.collection-top.data-v-2e8e8d44 {
+  width: 100%;
+  height: 88rpx;
+  border-bottom: 1px solid #ccc;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.collection-top > view.data-v-2e8e8d44 {
+  width: 50%;
+  height: 100%;
+  line-height: 88rpx;
+  text-align: center;
+}
+.collection-top > view > text.data-v-2e8e8d44 {
+  display: inline-block;
+  height: 100%;
+  color: #999;
+  font-size: 32rpx;
+}
+.collection-top > view > text.active.data-v-2e8e8d44 {
+  border-bottom: 4rpx solid #2764DD;
+  color: #2764DD;
+}
+

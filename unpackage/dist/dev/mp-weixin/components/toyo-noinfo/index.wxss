@@ -1,0 +1,15 @@
+.no-info.data-v-037928ba {
+  width: 100%;
+  height: 100%;
+  margin-top: 298rpx;
+  text-align: center;
+}
+.no-info > image.data-v-037928ba {
+  width: 160rpx;
+  height: 160rpx;
+}
+.no-info .no-txt.data-v-037928ba {
+  font-size: 30rpx;
+  color: #999;
+}
+

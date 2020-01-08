@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "面试题",
+  "usingComponents": {
+    "wuc-tab": "/components/wuc-tab/wuc-tab"
+  }
+}

@@ -1,0 +1,49 @@
+.select-btn.data-v-53247a25 {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 94rpx;
+  border-top: 1rpx solid #e8e8e8;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.select-btn .select-btn-con.data-v-53247a25 {
+  width: 686rpx;
+  height: 72rpx;
+  background-color: #2764dd;
+  color: #fff;
+  border-radius: 6rpx;
+  line-height: 72rpx;
+  font-size: 28rpx;
+  text-align: center;
+}
+.select-num.data-v-53247a25 {
+  font-size: 30rpx;
+  color: #333;
+  margin: 32rpx;
+}
+.select-mincard.data-v-53247a25 {
+  padding: 0 16rpx;
+}
+.select-mincard .select-mincard-con.data-v-53247a25 {
+  height: 64rpx;
+  padding: 12rpx 17rpx;
+  border: 1rpx solid #e8e8e8;
+  border-radius: 6rpx;
+  font-size: 28rpx;
+  color: #666;
+  margin: 16rpx;
+}
+.select-mincard .select-mincard-con.cur.data-v-53247a25 {
+  border: 1rpx solid #e9effc;
+  color: #2764dd;
+  background-color: #e9effc;
+}
+

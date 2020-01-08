@@ -1,0 +1,11 @@
+.toyo-rate.data-v-76bf50d8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.ratex > image.data-v-76bf50d8 {
+  margin-right: 16rpx;
+  width: 28rpx;
+  height: 28rpx;
+}
+

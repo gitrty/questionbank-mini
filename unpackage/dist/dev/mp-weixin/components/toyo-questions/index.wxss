@@ -1,0 +1,68 @@
+.interview.data-v-1a98482f {
+  margin-top: 40rpx;
+  padding: 0 32rpx;
+}
+.inter-con.data-v-1a98482f {
+  height: 177rpx;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.inter-con .inter-img.data-v-1a98482f {
+  width: 327rpx;
+  height: 177rpx;
+  position: relative;
+}
+.inter-con .inter-img > image.data-v-1a98482f {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+.inter-con .inter-img .inter-mask.data-v-1a98482f {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  background-color: #B2B2B2;
+  color: #fff;
+  height: 40rpx;
+  font-size: 26rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.inter-con .inter-img .inter-mask > view.data-v-1a98482f {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  text-align: center;
+  line-height: 40rpx;
+}
+.inter-con .inter-img .inter-mask > view > image.data-v-1a98482f {
+  margin-right: 10rpx;
+}
+.inter-con .inter-img .inter-mask .heat.data-v-1a98482f {
+  width: 24rpx;
+  height: 24rpx;
+}
+.inter-con .inter-img .inter-mask .qnum.data-v-1a98482f {
+  width: 18rpx;
+  height: 20rpx;
+}
+.inter-con .inter-txt.data-v-1a98482f {
+  width: 358rpx;
+}
+.inter-con .inter-txt .inter-txt-title.data-v-1a98482f {
+  margin-top: 8rpx;
+  margin-left: 24rpx;
+  color: #333;
+  font-size: 30rpx;
+}
+.inter-con .inter-txt .inter-rate.data-v-1a98482f {
+  margin-top: 16rpx;
+  margin-left: 24rpx;
+}
+

@@ -1,0 +1,26 @@
+.t-popup.data-v-f733af64 {
+  width: 300rpx;
+  height: 160rpx;
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.t-popup > image.data-v-f733af64 {
+  width: 36rpx;
+  height: 36rpx;
+  margin-bottom: 16rpx;
+}
+

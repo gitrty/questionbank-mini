@@ -1,0 +1,41 @@
+.activeList.data-v-44b07f44 {
+  background-color: #fff;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 16rpx;
+  padding: 32rpx;
+}
+.activeList .active-title.data-v-44b07f44 {
+  font-weight: 900;
+  font-size: 38rpx;
+  margin-bottom: 16rpx;
+}
+.activeList .active-content.data-v-44b07f44 {
+  font-size: 30rpx;
+  color: #666;
+  text-align: justify;
+}
+.activeList .active-footer.data-v-44b07f44 {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #aaa;
+}
+.activeList .active-footer > image.data-v-44b07f44 {
+  width: 28rpx;
+  height: 25rpx;
+  margin-top: 6rpx;
+  margin-right: 8rpx;
+}
+.activeList .active-footer .active-comments.data-v-44b07f44,
+.activeList .active-footer .active-views.data-v-44b07f44 {
+  margin-right: 40rpx;
+}
+.activeList .active-footer .active-username.data-v-44b07f44 {
+  width: 72rpx;
+  height: 40rpx;
+  font-size: 26rpx;
+  border: 1rpx solid #E8E8E8;
+  text-align: center;
+  line-height: 38rpx;
+}
+

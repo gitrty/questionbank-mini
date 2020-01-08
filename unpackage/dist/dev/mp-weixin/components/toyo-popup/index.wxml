@@ -1,0 +1,1 @@
+<view class="data-v-f733af64"><uni-popup vue-id="1" type="center" data-ref="popup" class="data-v-f733af64 vue-ref" bind:__l="__l" vue-slots="{{['default']}}"><view class="t-popup data-v-f733af64"><image src="/static/duigou.png" mode class="data-v-f733af64"></image><text class="data-v-f733af64">{{text}}</text></view></uni-popup></view>

@@ -1,0 +1,121 @@
+.tbottom-hr {
+  border-bottom: 1rpx solid #e8e8e8;
+}
+.comment-ipt {
+  width: 100%;
+  height: 94rpx;
+  border-top: 1rpx solid #e8e8e8;
+  background-color: #fff;
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.comment-ipt .comment-ipt-dz {
+  margin-left: 20rpx;
+  width: 90rpx;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  font-size: 20rpx;
+  color: #333;
+}
+.comment-ipt .comment-ipt-dz > image {
+  width: 36rpx;
+  height: 38rpx;
+}
+.comment-ipt .comment-ipt-r {
+  margin-top: 12rpx;
+  margin-left: 40rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+.comment-ipt .comment-ipt-r > input {
+  width: 534rpx;
+  height: 72rpx;
+  padding: 0 24rpx;
+  background-color: #f4f4f4;
+}
+.user-analysis {
+  background-color: #f4f4f4;
+  height: 100%;
+}
+.u-a-mid {
+  height: 92rpx;
+  padding: 0 32rpx;
+  background-color: #fff;
+  line-height: 92rpx;
+  margin-top: 18rpx;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+.u-a-top {
+  padding: 40rpx 32rpx 32rpx;
+  background-color: #fff;
+}
+.u-a-bottom {
+  padding: 40rpx 32rpx 32rpx;
+  background-color: #fff;
+}
+.analysis-user {
+  height: 72rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.analysis-user > image {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+}
+.analysis-user .user-info {
+  margin-left: 16rpx;
+}
+.analysis-user .user-info .user-name {
+  font-size: 30rpx;
+  color: #333;
+}
+.analysis-user .user-info .user-time {
+  font-size: 26rpx;
+  color: #999;
+}
+.user-answer {
+  line-height: 56rpx;
+  margin-top: 16rpx;
+  font-size: 32rpx;
+  color: #333;
+}
+.user-answer > text {
+  color: #2764dd;
+}
+.no-info {
+  width: 100%;
+  height: 100%;
+  margin-top: 298rpx;
+  text-align: center;
+  padding-bottom: 298rpx;
+}
+.no-info > image {
+  width: 160rpx;
+  height: 160rpx;
+}
+.no-info .no-txt {
+  font-size: 30rpx;
+  color: #999;
+}
+

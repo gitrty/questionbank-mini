@@ -1,0 +1,213 @@
+{
+  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/information/information",
+      "style": {
+        "navigationBarTitleText": "资讯"
+      }
+    },
+    {
+      "path": "pages/itembank/itembank",
+      "style": {
+        "navigationBarTitleText": "题库"
+      }
+    },
+    {
+      "path": "pages/user/user",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationStyle": "custom" // 隐藏顶部navigation
+      }
+    },
+    {
+      "path": "pages/information/article/article",
+      "style": {
+        "navigationBarTitleText": "资讯详情"
+      }
+    }, {
+      "path": "pages/user/login/login",
+      "style": {
+        "navigationBarTitleText": "用户登录"
+      }
+    }, {
+      "path": "pages/itembank/punchcard/punchcard",
+      "style": {
+        "navigationBarTitleText": "打卡记录"
+      }
+    }, {
+      "path": "pages/user/collection/collection",
+      "style": {
+        "navigationBarTitleText": "我的收藏"
+      }
+    }, {
+      "path": "pages/user/share/share",
+      "style": {
+        "navigationBarTitleText": "我的分享"
+      }
+    }, {
+      "path": "pages/user/footprint/footprint",
+      "style": {
+        "navigationBarTitleText": "我的足迹"
+      }
+    }, {
+      "path": "pages/itembank/answer/answer",
+      "style": {
+        "navigationBarTitleText": "答题详情"
+      }
+    }, {
+      "path": "pages/itembank/interview/interview",
+      "style": {
+        "navigationBarTitleText": "面试题"
+      }
+    }, {
+      "path": "pages/itembank/interview/selectedtab",
+      "style": {
+        "navigationBarTitleText": "已选标签"
+      }
+    }, {
+      "path": "pages/itembank/interview/details",
+      "style": {
+        "navigationBarTitleText": "面试题"
+      }
+    }, {
+      "path": "pages/itembank/examination/examination",
+      "style": {
+        "navigationBarTitleText": "考试中"
+      }
+    }, {
+      "path": "pages/itembank/results/results",
+      "style": {
+        "navigationBarTitleText": "考试结果"
+      }
+    }, {
+      "path": "pages/itembank/analysis/analysis",
+      "style": {
+        "navigationBarTitleText": "答案解析"
+      }
+    }, {
+      "path": "pages/itembank/publishAnalysis/publishAnalysis",
+      "style": {
+        "navigationBarTitleText": "发表解析"
+      }
+    }, {
+      "path": "pages/itembank/userAnalysis/userAnalysis",
+      "style": {
+        "navigationBarTitleText": "解析详情"
+      }
+    }, {
+      "path": "pages/itembank/special/special",
+      "style": {
+        "navigationBarTitleText": "专题练习"
+      }
+    }, {
+      "path": "pages/itembank/special/selectTab",
+      "style": {
+        "navigationBarTitleText": "专题练习"
+      }
+    }, {
+      "path": "pages/itembank/special/filtering",
+      "style": {
+        "navigationBarTitleText": "筛选条件"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#2764DD",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [{
+      "pagePath": "pages/information/information",
+      "text": "资讯",
+      "iconPath": "static/tabbar/information.png",
+      "selectedIconPath": "static/tabbar/information_select.png"
+    }, {
+      "pagePath": "pages/itembank/itembank",
+      "text": "题库",
+      "iconPath": "static/tabbar/itembank.png",
+      "selectedIconPath": "static/tabbar/itembank_select.png"
+    }, {
+      "pagePath": "pages/user/user",
+      "text": "我的",
+      "iconPath": "static/tabbar/user.png",
+      "selectedIconPath": "static/tabbar/user_select.png"
+    }]
+  },
+  // 设定开发模式下初始显示的页面
+  "condition": { //模式配置，仅开发期间生效
+    "current": 2, //当前激活的模式（list 的索引项）
+    "list": [{
+      "name": "user", //模式名称
+      "path": "pages/information/article/article", //启动页面，必选
+      "query": "" //启动参数，在页面的onLoad函数里面得到。
+    },{
+      "name": "user", //模式名称
+      "path": "pages/user/user", //启动页面，必选
+      "query": "" //启动参数，在页面的onLoad函数里面得到。
+    }, {
+      "name": "login", //模式名称
+      "path": "pages/user/login/login", //启动页面，必选
+      "query": "" //启动参数，在页面的onLoad函数里面得到。
+    }, {
+      "name": "itembank", //模式名称
+      "path": "pages/itembank/itembank" //启动页面，必选
+    }, {
+      "name": "punchcard", //模式名称
+      "path": "pages/itembank/punchcard/punchcard" //启动页面，必选
+    }, {
+      "name": "collection", //模式名称
+      "path": "pages/user/collection/collection" //启动页面，必选
+    }, {
+      "name": "share", //模式名称
+      "path": "pages/user/share/share" //启动页面，必选
+    }, {
+      "name": "footprint", //模式名称
+      "path": "pages/user/footprint/footprint" //启动页面，必选
+    }, {
+      "name": "answer", //模式名称
+      "path": "pages/itembank/answer/answer" //启动页面，必选
+    }, {
+      "name": "interview", //模式名称
+      "path": "pages/itembank/interview/interview" //启动页面，必选
+    }, {
+      "name": "selectedtab", //模式名称
+      "path": "pages/itembank/interview/selectedtab" //启动页面，必选
+    }, {
+      "name": "details", //模式名称
+      "path": "pages/itembank/interview/details" //启动页面，必选
+    }, {
+      "name": "examination", //模式名称
+      "path": "pages/itembank/examination/examination" //启动页面，必选
+    }, {
+      "name": "results", //模式名称
+      "path": "pages/itembank/results/results" //启动页面，必选
+    }, {
+      "name": "analysis", //模式名称
+      "path": "pages/itembank/analysis/analysis" //启动页面，必选
+    }, {
+      "name": "publishAnalysis", //模式名称
+      "path": "pages/itembank/publishAnalysis/publishAnalysis" //启动页面，必选
+    }, {
+      "name": "userAnalysis", //模式名称
+      "path": "pages/itembank/userAnalysis/userAnalysis" //启动页面，必选
+    }, {
+      "name": "special", //模式名称
+      "path": "pages/itembank/special/special" //启动页面，必选
+    }, {
+      "name": "selectTab", //模式名称
+      "path": "pages/itembank/special/selectTab" //启动页面，必选
+    }, {
+      "name": "filtering", //模式名称
+      "path": "pages/itembank/special/filtering" //启动页面，必选
+    }, {
+      "name": "article", //模式名称
+      "path": "pages/information/article/article" //启动页面，必选
+    }]
+  }
+}

@@ -1,0 +1,24 @@
+.activeList.data-v-25dfb13a {
+  background-color: #fff;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 20rpx;
+  padding: 32rpx;
+}
+.activeList .active-title.data-v-25dfb13a {
+  font-weight: 900;
+  font-size: 38rpx;
+  margin-bottom: 16rpx;
+}
+.activeList .active-content.data-v-25dfb13a {
+  width: 393rpx;
+  font-size: 30rpx;
+  color: #666;
+  text-align: justify;
+  margin-right: 43rpx;
+}
+.activeList > image.data-v-25dfb13a {
+  width: 250rpx;
+  height: 140rpx;
+}
+
