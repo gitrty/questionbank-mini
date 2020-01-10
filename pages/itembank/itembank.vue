@@ -56,35 +56,19 @@
         <text v-show="isPunch">已打卡</text>
       </view>
     </view>
-    <!--  -->
+
     <!-- 遮罩层1 -->
     <view class="mask" v-if="showClock" @tap="showClock = !showClock"></view>
-    <!-- 遮罩层2:打卡成功 -->
-    <view class="mask2" v-if="showPoster">
-      <view class="poster">
-        <view class="clock-success">
-          <image src="../../static/success.png" mode=""></image>
-          <text>打卡成功</text>
-        </view>
-        <image src="../../static/clockyes0.png" mode="" class="bg1"></image>
-        <image src="../../static/clockyes.png" mode="" class="bg2"></image>
-        <view class="down-info">
-          
-        </view>
-        <view class="down-share">
-          <view class="download">
-            <image src="../../static/download.png" mode=""></image>
-            <text>下载海报</text>
-          </view>
-          <view class="sharefriend">
-            <image src="../../static/sharef.png" mode=""></image>
-            <text>分享好友</text>
-          </view>
-          <view class="down-hr"></view>
-        </view>
-      </view>
-      <view class="close-poster" @tap="showPoster = false">╳</view>
-    </view>
+
+    <!-- 打卡成功 -->
+    <toyoPoster v-if="showPoster0" @closePoster="showPoster0 = false" :type="0" @downloadImage="downloadImage"></toyoPoster>
+
+    <!-- 分享面试 -->
+    <toyoPoster v-if="showPoster1" @closePoster="showPoster1 = false" :type="1"  @downloadImage="downloadImage"></toyoPoster>
+
+    <!-- 分享练习 -->
+    <toyoPoster v-if="showPoster2" @closePoster="showPoster2 = false" :type="2"  @downloadImage="downloadImage"></toyoPoster>
+
     <!-- 大厂面试 -->
     <view class="interview">
       <view class="interview-top">
@@ -104,7 +88,7 @@
 
         <toyoCard :type="'面试'"></toyoCard>
         <view class="card-bottom">
-          <view class="share">
+          <view class="share" @tap="shareInterview">
             <image src="../../static/share.png" mode=""></image>
             <text>分享成果</text>
           </view>
@@ -135,7 +119,7 @@
         </view>
         <toyoCard :type="'练习'"></toyoCard>
         <view class="card-bottom">
-          <view class="share">
+          <view class="share" @tap="sharePractice">
             <image src="../../static/share.png" mode=""></image>
             <text>分享成果</text>
           </view>
@@ -148,10 +132,13 @@
         </view>
       </view>
     </view>
+    <!-- 绘制海报 -->
+    <canvas style="width: 750rpx; height: 1334rpx;position: fixed;top: 0;background-color: pink;z-index: -10;" canvas-id="myCanvas"></canvas>
   </view>
 </template>
 
 <script>
+// import html2canvas from 'html2canvas';
 export default {
   components: {
     // toyoCard
@@ -164,7 +151,9 @@ export default {
         day: ''
       },
       showClock: false,
-      showPoster: false, // 打卡成功拟态框状态
+      showPoster0: false, // 打卡成功拟态框状态
+      showPoster1: false, // 分享面试拟态框状态
+      showPoster2: false, // 分享练习拟态框状态
       isPunch: false // 是否打卡
     };
   },
@@ -189,10 +178,122 @@ export default {
       this.today.d = d;
       this.today.day = day;
     },
+
     // 立即打卡
     immediatelyClock() {
       this.showClock = false;
-      this.showPoster = true;
+      this.showPoster0 = true;
+    },
+
+    // 分享大厂面试
+    shareInterview() {
+      this.showPoster1 = true;
+      this.createImage();
+    },
+
+    // 分享专题练习
+    sharePractice() {
+      this.showPoster2 = true;
+    },
+
+    // 生成海报图片
+    createImage() {
+      let context = uni.createCanvasContext('myCanvas');
+      // 1 - 背景图片
+      context.drawImage('/static/clockyes.png', 0, 0, 375, 667);
+
+      // 2 - 用户头像
+      context.save(); // 先保存状态 已便于画完圆再用
+      context.beginPath(); //开始绘制
+      //先画个圆
+      context.arc(187, 99, 47, 0, Math.PI * 2);
+      context.setFillStyle('#ffffff');
+      context.fill(); //保证图片无bug填充
+      context.clip(); //画了圆 再剪切 原始画布中剪切任意形状和尺寸。一旦剪切了某个区域，则所有之后的绘图都会被限制在被剪切的区域内
+      context.drawImage('/static/logo.png', 140, 52, 94, 94); // 推进去图片
+      context.restore();
+
+      // 3 - 打卡总天数
+      context.setFillStyle('#fff');
+      context.setFontSize(20);
+      context.fillText('我已在GPer社区题库打卡', 36, 180);
+      context.fillText('天', 325, 180);
+
+      context.setFillStyle('#FDC223');
+      context.setFontSize(36);
+      context.textAlign = 'center';
+      const dayNum = 99; // 模拟数据：打卡总天数
+      context.fillText(dayNum, 294, 180);
+
+      // 4 - 赶快加入一起刷题学习吧
+      context.textAlign = 'left';
+      context.setFontSize(14);
+      context.fillText('赶快加入一起刷题学习吧', 110, 215);
+      context.fillText('一', 83, 215);
+      context.fillText('一', 275, 215);
+
+      // 5 - 今日答题情况
+      context.setFillStyle('#6F6A5B');
+      context.setFontSize(16);
+      context.fillText('今日答题情况', 141, 325);
+
+      context.setFontSize(13);
+      context.fillText('面试次数', 42, 392);
+      context.fillText('练习次数', 163, 392);
+      context.fillText('学习打卡', 284, 392);
+
+      const mianshiNum = 1;
+      const lianxiNum = 100;
+      const dakaNum = 26;
+      context.setFillStyle('#4C483D');
+      context.setFontSize(20);
+      context.textAlign = 'center';
+      context.fillText(mianshiNum, 68, 370);
+      context.fillText(lianxiNum, 188, 370);
+      context.fillText(dakaNum, 308, 370);
+
+      // 6 - 小程序码
+      context.drawImage('/static/logo.png', 110, 460, 155, 152); // 推进去图片
+
+      // 7 - 扫描小程序码立即刷题学习
+      context.textAlign = 'left';
+      context.setFillStyle('#fff');
+      context.setFontSize(14);
+      context.fillText('扫描小程序码立即刷题学习', 104, 640);
+
+      // 8 - 完成绘制
+      context.draw();
+    },
+
+    // 下载海报
+    downloadImage() {
+      // 将 canvas 绘制的海报生成图片
+      uni.canvasToTempFilePath(
+        {
+          x: 0,
+          y: 0,
+          width: 375,
+          height: 667,
+          // destWidth: 200,
+          // destHeight: 200,
+          canvasId: 'myCanvas',
+          fileType: 'jpg',
+          success: function(res) {
+            // 在H5平台下，tempFilePath 为 base64
+            console.log(res.tempFilePath);
+            uni.previewImage({
+              urls: [res.tempFilePath],
+              success() {
+                console.info('预览成功');
+              }
+            });
+          },
+          fail(e) {
+            console.info(e);
+          }
+        },
+        this
+      );
     }
   }
 };
@@ -211,123 +312,6 @@ export default {
   z-index: 2;
   background-color: rgba(0, 0, 0, 0.32);
   top: 0;
-}
-
-.mask2 {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  z-index: 4;
-  background-color: rgba(0, 0, 0, 0.32);
-  top: 0;
-
-  .poster {
-    position: relative;
-    width: 560rpx;
-    height: 762rpx;
-    border-radius: 32rpx;
-    background-color: #fff;
-    margin: 50px auto 0;
-    padding-top: 32rpx;
-
-    .clock-success {
-      text-align: center;
-
-      image {
-        vertical-align: middle;
-        width: 30rpx;
-        height: 30rpx;
-      }
-
-      text {
-        margin-left: 14rpx;
-        font-weight: 700;
-        font-size: 30rpx;
-        color: #2764dd;
-      }
-    }
-
-    .bg1 {
-      position: absolute;
-      z-index: 2;
-      top: 59rpx;
-      left: 18rpx;
-      width: 525rpx;
-      height: 553rpx;
-      border-radius: 32rpx;
-    }
-
-    .bg2 {
-      position: absolute;
-      z-index: 3;
-      top: 119rpx;
-      left: 139rpx;
-      width: 272rpx;
-      height: 483rpx;
-      border-radius: 16rpx;
-    }
-
-    .down-share {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 110rpx;
-      // background-color: red;
-      border-radius: 0 0 32rpx 32rpx;
-      border-top: 1rpx solid #e8e8e8;
-      display: flex;
-      > view {
-        font-size: 30rpx;
-        color: #333333;
-        font-weight: 700;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        > image {
-          margin-right: 8rpx;
-        }
-      }
-
-      .download {
-        flex: 1;
-
-        image {
-          width: 30rpx;
-          height: 30rpx;
-        }
-      }
-
-      .sharefriend {
-        flex: 1;
-
-        image {
-          width: 30rpx;
-          height: 26rpx;
-        }
-        text {
-          color: #2764dd;
-        }
-      }
-      .down-hr{
-        width: 2rpx;
-        height: 56rpx;
-        background-color: #E8E8E8;
-        position: absolute;
-        left: 50%;
-        margin-left: -1rpx;
-        top: 50%;
-        margin-top: -28rpx;
-      }
-    }
-  }
-
-  .close-poster {
-    text-align: center;
-    font-size: 58rpx;
-    font-weight: 700;
-    color: #fff;
-    margin-top: 26rpx;
-  }
 }
 
 .punch-clock {

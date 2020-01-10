@@ -1,147 +1,137 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "postcss": false
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.9.2",
-  "appid": "wx3c4853d74bb3b5c4",
-  "projectname": "GPer",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": 21,
-      "list": [
-        {
-          "name": "user",
-          "query": "",
-          "id": 0,
-          "pathName": "pages/information/article/article"
-        },
-        {
-          "name": "user",
-          "query": "",
-          "id": 1,
-          "pathName": "pages/user/user"
-        },
-        {
-          "name": "login",
-          "query": "",
-          "id": 2,
-          "pathName": "pages/user/login/login"
-        },
-        {
-          "name": "itembank",
-          "id": 3,
-          "pathName": "pages/itembank/itembank"
-        },
-        {
-          "name": "punchcard",
-          "id": 4,
-          "pathName": "pages/itembank/punchcard/punchcard"
-        },
-        {
-          "name": "collection",
-          "id": 5,
-          "pathName": "pages/user/collection/collection"
-        },
-        {
-          "name": "share",
-          "id": 6,
-          "pathName": "pages/user/share/share"
-        },
-        {
-          "name": "footprint",
-          "id": 7,
-          "pathName": "pages/user/footprint/footprint"
-        },
-        {
-          "name": "answer",
-          "id": 8,
-          "pathName": "pages/itembank/answer/answer"
-        },
-        {
-          "name": "interview",
-          "id": 9,
-          "pathName": "pages/itembank/interview/interview"
-        },
-        {
-          "name": "selectedtab",
-          "id": 10,
-          "pathName": "pages/itembank/interview/selectedtab"
-        },
-        {
-          "name": "details",
-          "id": 11,
-          "pathName": "pages/itembank/interview/details"
-        },
-        {
-          "name": "examination",
-          "id": 12,
-          "pathName": "pages/itembank/examination/examination"
-        },
-        {
-          "name": "results",
-          "id": 13,
-          "pathName": "pages/itembank/results/results"
-        },
-        {
-          "name": "analysis",
-          "id": 14,
-          "pathName": "pages/itembank/analysis/analysis"
-        },
-        {
-          "name": "publishAnalysis",
-          "id": 15,
-          "pathName": "pages/itembank/publishAnalysis/publishAnalysis"
-        },
-        {
-          "name": "userAnalysis",
-          "id": 16,
-          "pathName": "pages/itembank/userAnalysis/userAnalysis"
-        },
-        {
-          "name": "special",
-          "id": 17,
-          "pathName": "pages/itembank/special/special"
-        },
-        {
-          "name": "selectTab",
-          "id": 18,
-          "pathName": "pages/itembank/special/selectTab"
-        },
-        {
-          "name": "filtering",
-          "id": 19,
-          "pathName": "pages/itembank/special/filtering"
-        },
-        {
-          "name": "article",
-          "id": 20,
-          "pathName": "pages/information/article/article"
-        },
-        {
-          "id": 21,
-          "name": "pages/itembank/special/filtering",
-          "pathName": "pages/itembank/special/filtering",
-          "query": ""
-        }
-      ]
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"postcss": false
+	},
+	"compileType": "miniprogram",
+	"libVersion": "2.9.2",
+	"appid": "wx3c4853d74bb3b5c4",
+	"projectname": "GPer",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"name": "user",
+					"query": "",
+					"id": 0,
+					"pathName": "pages/user/user"
+				},
+				{
+					"name": "login",
+					"query": "",
+					"id": 1,
+					"pathName": "pages/user/login/login"
+				},
+				{
+					"name": "itembank",
+					"id": 2,
+					"pathName": "pages/itembank/itembank"
+				},
+				{
+					"name": "punchcard",
+					"id": 3,
+					"pathName": "pages/itembank/punchcard/punchcard"
+				},
+				{
+					"name": "collection",
+					"id": 4,
+					"pathName": "pages/user/collection/collection"
+				},
+				{
+					"name": "share",
+					"id": 5,
+					"pathName": "pages/user/share/share"
+				},
+				{
+					"name": "footprint",
+					"id": 6,
+					"pathName": "pages/user/footprint/footprint"
+				},
+				{
+					"name": "answer",
+					"id": 7,
+					"pathName": "pages/itembank/answer/answer"
+				},
+				{
+					"name": "interview",
+					"id": 8,
+					"pathName": "pages/itembank/interview/interview"
+				},
+				{
+					"name": "selectedtab",
+					"id": 9,
+					"pathName": "pages/itembank/interview/selectedtab"
+				},
+				{
+					"name": "details",
+					"id": 10,
+					"pathName": "pages/itembank/interview/details"
+				},
+				{
+					"name": "examination",
+					"id": 11,
+					"pathName": "pages/itembank/examination/examination"
+				},
+				{
+					"name": "results",
+					"id": 12,
+					"pathName": "pages/itembank/results/results"
+				},
+				{
+					"name": "analysis",
+					"id": 13,
+					"pathName": "pages/itembank/analysis/analysis"
+				},
+				{
+					"name": "publishAnalysis",
+					"id": 14,
+					"pathName": "pages/itembank/publishAnalysis/publishAnalysis"
+				},
+				{
+					"name": "userAnalysis",
+					"id": 15,
+					"pathName": "pages/itembank/userAnalysis/userAnalysis"
+				},
+				{
+					"name": "special",
+					"id": 16,
+					"pathName": "pages/itembank/special/special"
+				},
+				{
+					"name": "selectTab",
+					"id": 17,
+					"pathName": "pages/itembank/special/selectTab"
+				},
+				{
+					"name": "filtering",
+					"id": 18,
+					"pathName": "pages/itembank/special/filtering"
+				},
+				{
+					"name": "article",
+					"id": 19,
+					"pathName": "pages/information/article/article"
+				}
+			]
+		}
+	}
 }

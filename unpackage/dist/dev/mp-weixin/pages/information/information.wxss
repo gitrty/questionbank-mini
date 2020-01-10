@@ -22,8 +22,8 @@
   font-size: 32rpx;
 }
 .information-top > view > text.active.data-v-4f9a8c80 {
-  border-bottom: 4rpx solid #2764DD;
-  color: #2764DD;
+  border-bottom: 4rpx solid #2764dd;
+  color: #2764dd;
 }
 movable-area.data-v-4f9a8c80 {
   height: 70rpx;

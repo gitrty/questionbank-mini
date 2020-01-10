@@ -8508,7 +8508,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/information/information": { "navigationBarTitleText": "资讯", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/itembank": { "navigationBarTitleText": "题库", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/user": { "navigationBarTitleText": "我的", "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/information/article/article": { "navigationBarTitleText": "资讯详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/login/login": { "navigationBarTitleText": "用户登录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/punchcard/punchcard": { "navigationBarTitleText": "打卡记录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/collection/collection": { "navigationBarTitleText": "我的收藏", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/share/share": { "navigationBarTitleText": "我的分享", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/footprint/footprint": { "navigationBarTitleText": "我的足迹", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/answer/answer": { "navigationBarTitleText": "答题详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/interview/interview": { "navigationBarTitleText": "面试题", "usingComponents": { "wuc-tab": "/components/wuc-tab/wuc-tab" }, "usingAutoImportComponents": {} }, "pages/itembank/interview/selectedtab": { "navigationBarTitleText": "已选标签", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/interview/details": { "navigationBarTitleText": "面试题", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/examination/examination": { "navigationBarTitleText": "考试中", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/results/results": { "navigationBarTitleText": "考试结果", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/analysis/analysis": { "navigationBarTitleText": "答案解析", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/publishAnalysis/publishAnalysis": { "navigationBarTitleText": "发表解析", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/userAnalysis/userAnalysis": { "navigationBarTitleText": "解析详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/special": { "navigationBarTitleText": "专题练习", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/selectTab": { "navigationBarTitleText": "专题练习", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/filtering": { "navigationBarTitleText": "筛选条件", "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/information/information": { "navigationBarTitleText": "资讯" }, "pages/itembank/itembank": { "navigationBarTitleText": "题库" }, "pages/user/user": { "navigationBarTitleText": "我的", "navigationStyle": "custom" }, "pages/information/article/article": { "navigationBarTitleText": "资讯详情" }, "pages/user/login/login": { "navigationBarTitleText": "用户登录" }, "pages/itembank/punchcard/punchcard": { "navigationBarTitleText": "打卡记录" }, "pages/user/collection/collection": { "navigationBarTitleText": "我的收藏" }, "pages/user/share/share": { "navigationBarTitleText": "我的分享" }, "pages/user/footprint/footprint": { "navigationBarTitleText": "我的足迹" }, "pages/itembank/answer/answer": { "navigationBarTitleText": "答题详情" }, "pages/itembank/interview/interview": { "navigationBarTitleText": "面试题" }, "pages/itembank/interview/selectedtab": { "navigationBarTitleText": "已选标签" }, "pages/itembank/interview/details": { "navigationBarTitleText": "面试题" }, "pages/itembank/examination/examination": { "navigationBarTitleText": "考试中" }, "pages/itembank/results/results": { "navigationBarTitleText": "考试结果" }, "pages/itembank/analysis/analysis": { "navigationBarTitleText": "答案解析" }, "pages/itembank/publishAnalysis/publishAnalysis": { "navigationBarTitleText": "发表解析" }, "pages/itembank/userAnalysis/userAnalysis": { "navigationBarTitleText": "解析详情" }, "pages/itembank/special/special": { "navigationBarTitleText": "专题练习" }, "pages/itembank/special/selectTab": { "navigationBarTitleText": "专题练习" }, "pages/itembank/special/filtering": { "navigationBarTitleText": "筛选条件" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
@@ -8687,7 +8687,10 @@ var store = new _vuex.default.Store({
     { name: '阿里巴巴', cur: false },
     { name: '腾讯科技', cur: false }],
 
-    selectNum: 0 },
+    selectNum: 0,
+
+    // 2 - 用户登录状态
+    userStatus: false },
 
   mutations: {},
   actions: {} });var _default =
@@ -9664,7 +9667,8 @@ var index_esm = {
       methods: {
         // 跳转页面(保留当前页，跳转到指定页)
         jump: function jump(url) {var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-          var type = 'navigateTo';
+          // const type = 'navigateTo'
+          var type = switchList.includes(url) ? 'switchTab' : 'navigateTo';
           if (data) url += urlLoader(data);
           uni[type]({
             url: url });
@@ -9735,6 +9739,7 @@ var index_esm = {
   } };exports.default = _default;
 
 var urlLoader = function urlLoader(data) {return "?".concat(Object.keys(data).map(function (item) {return "".concat(item, "=").concat(data[item]);}).join('&'));};
+var switchList = ['/pages/information/information', '/pages/itembank/itembank', '/pages/user/user'];
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -10535,39 +10540,130 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.util = exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
-var ajax = (0, _config.wxPromisify)(uni.request);
-var logins = (0, _config.wxPromisify)(uni.login);
-var showModals = (0, _config.wxPromisify)(uni.showModal);
-var authorizes = (0, _config.wxPromisify)(uni.authorize);
-var getImageInfos = (0, _config.wxPromisify)(uni.getImageInfo);
-var getUserInfos = (0, _config.wxPromisify)(uni.getUserInfo);
-var saveImageToPhotosAlbums = (0, _config.wxPromisify)(uni.saveImageToPhotosAlbum);
-var requestPayments = (0, _config.wxPromisify)(uni.requestPayment);
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.util = exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);
+
+
+
+
+
+
+
+
+
+var _util = _interopRequireDefault(__webpack_require__(/*! ./util */ 24));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ajax = (0, _config.wxPromisify)(uni.request);var logins = (0, _config.wxPromisify)(uni.login);var showModals = (0, _config.wxPromisify)(uni.showModal);var authorizes = (0, _config.wxPromisify)(uni.authorize);var getImageInfos = (0, _config.wxPromisify)(uni.getImageInfo);var getUserInfos = (0, _config.wxPromisify)(uni.getUserInfo);var saveImageToPhotosAlbums = (0, _config.wxPromisify)(uni.saveImageToPhotosAlbum);var requestPayments = (0, _config.wxPromisify)(uni.requestPayment);
 
 var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
-var access_token = '';
+// let access_token = ''
 
-var request = /*#__PURE__*/function () {function request() {_classCallCheck(this, request);}_createClass(request, [{ key: "get", value: function () {var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(
-      url) {var params,header,_ref,data,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:params = _args.length > 1 && _args[1] !== undefined ? _args[1] : '';
-                if (params) url += urlLoader(params);
-                header = { accessToken: getApp().globalData.access_token || '' };_context.next = 5;return (
+var request = /*#__PURE__*/function () {function request() {_classCallCheck(this, request);}_createClass(request, [{ key: "get",
+
+    // 1 - get 请求
+    value: function () {var _get = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(url) {var params,appKey,appSecret,timestamp,accessToken,mds,mds2,header,_ref3,data,_args = arguments;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:params = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+                appKey = '';
+                appSecret = '';
+                // 获取时间戳
+                _context.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context.sent;
+
+                // 拼接 appKey 和 appSecret
+                Object.entries(params).forEach(function (_ref, index) {var _ref2 = _slicedToArray(_ref, 2),key = _ref2[0],value = _ref2[1];
+                  appKey += key.toString() + '-';
+                  appSecret += key.toString() + value.toString();
+                });_context.next = 9;return (
+
+                  _util.default._getToken());case 9:accessToken = _context.sent;
+                mds = appKey.slice(0, appKey.length - 1);
+                mds2 = timestamp + appSecret + accessToken;
+
+                params.appKey = mds;
+                params.appSecret = mds2;
+                params.timestamp = timestamp;
+                // console.info(params)
+
+                url += urlLoader(params);_context.next = 18;return (
+
+                  _util.default.getCustomHeader());case 18:header = _context.sent;_context.next = 21;return (
+
                   ajax({
                     method: 'GET',
                     url: "".concat(baseUrl).concat(url),
-                    header: header }));case 5:_ref = _context.sent;data = _ref.data;return _context.abrupt("return",
+                    header: header }));case 21:_ref3 = _context.sent;data = _ref3.data;return _context.abrupt("return",
 
-                data.data);case 8:case "end":return _context.stop();}}}, _callee, this);}));function get(_x) {return _get.apply(this, arguments);}return get;}() }, { key: "post", value: function () {var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(
+                data.data);case 24:case "end":return _context.stop();}}}, _callee, this);}));function get(_x) {return _get.apply(this, arguments);}return get;}()
 
-      url) {var params,header,_ref2,data,_args2 = arguments;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:params = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
-                header = { accessToken: getApp().globalData.access_token || '' };_context2.next = 4;return (
+
+
+    // 2 - post 请求
+  }, { key: "post", value: function () {var _post = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(url) {var params,appKey,appSecret,timestamp,accessToken,mds,mds2,header,_ref6,data,_args2 = arguments;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:params = _args2.length > 1 && _args2[1] !== undefined ? _args2[1] : {};
+                appKey = '';
+                appSecret = '';
+
+                // 获取时间戳
+                _context2.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context2.sent;
+
+                // 拼接 appKey 和 appSecret
+                Object.entries(params).forEach(function (_ref4, index) {var _ref5 = _slicedToArray(_ref4, 2),key = _ref5[0],value = _ref5[1];
+                  appKey += key.toString() + '-';
+                  appSecret += key.toString() + value.toString();
+                });_context2.next = 9;return (
+
+                  _util.default._getToken());case 9:accessToken = _context2.sent;
+                mds = appKey.slice(0, appKey.length - 1);
+                mds2 = timestamp + appSecret + accessToken;
+
+                params.appKey = mds;
+                params.appSecret = mds2;
+                params.timestamp = timestamp;
+                // console.info(params)
+                _context2.next = 17;return (
+                  _util.default.getCustomHeader());case 17:header = _context2.sent;_context2.next = 20;return (
+
                   ajax({
                     method: 'POST',
                     url: "".concat(baseUrl).concat(url),
                     data: params,
-                    header: header }));case 4:_ref2 = _context2.sent;data = _ref2.data;return _context2.abrupt("return",
+                    header: header }));case 20:_ref6 = _context2.sent;data = _ref6.data;return _context2.abrupt("return",
 
-                data.data);case 7:case "end":return _context2.stop();}}}, _callee2, this);}));function post(_x2) {return _post.apply(this, arguments);}return post;}() }]);return request;}();
+                data.data);case 23:case "end":return _context2.stop();}}}, _callee2, this);}));function post(_x2) {return _post.apply(this, arguments);}return post;}()
+
+
+    // 3 - post请求 传参序列化 : 使用application / x-www-form-urlencoded格式
+  }, { key: "postAplt", value: function () {var _postAplt = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(url) {var params,appKey,appSecret,timestamp,accessToken,mds,mds2,header,_ref9,data,_args3 = arguments;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:params = _args3.length > 1 && _args3[1] !== undefined ? _args3[1] : {};
+                appKey = '';
+                appSecret = '';
+
+                // 获取时间戳
+                _context3.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context3.sent;
+
+                // 拼接 appKey 和 appSecret
+                Object.entries(params).forEach(function (_ref7, index) {var _ref8 = _slicedToArray(_ref7, 2),key = _ref8[0],value = _ref8[1];
+                  appKey += key.toString() + '-';
+                  appSecret += key.toString() + value.toString();
+                });_context3.next = 9;return (
+
+                  _util.default._getToken());case 9:accessToken = _context3.sent;
+                mds = appKey.slice(0, appKey.length - 1);
+                mds2 = timestamp + appSecret + accessToken;
+
+                params.appKey = mds;
+                params.appSecret = mds2;
+                params.timestamp = timestamp;
+
+                header = {
+                  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                  'accessToken': accessToken };_context3.next = 18;return (
+
+
+                  ajax({
+                    method: 'POST',
+                    url: "".concat(baseUrl).concat(url),
+                    data: params,
+                    header: header }));case 18:_ref9 = _context3.sent;data = _ref9.data;return _context3.abrupt("return",
+
+                data.data);case 21:case "end":return _context3.stop();}}}, _callee3, this);}));function postAplt(_x3) {return _postAplt.apply(this, arguments);}return postAplt;}() }]);return request;}();
+
+
+
+
 
 
 var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, utils);}_createClass(utils, [{ key: "login", value: function login()
@@ -10593,6 +10689,9 @@ var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, ut
       return requestPayments(data);
     } }]);return utils;}();
 
+
+
+
 var urlLoader = function urlLoader(data) {return "?".concat(Object.keys(data).map(function (item) {return "".concat(item, "=").concat(data[item]);}).join('&'));};
 var http = new request();exports.http = http;
 var util = new utils();exports.util = util;
@@ -10617,13 +10716,101 @@ var wxPromisify = function wxPromisify(fn) {return function () {var obj = argume
       fn(obj);});};};exports.wxPromisify = wxPromisify;
 
 /***/ }),
-/* 24 */,
+/* 24 */
+/*!********************************!*\
+  !*** E:/GPer/GPer/api/util.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+var ajax = (0, _config.wxPromisify)(uni.request);
+
+var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
+
+var util = {
+
+  /**
+              * 获取token
+              */
+  _getToken: function () {var _getToken2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var accessToken, visitorToken, response, _visitorToken;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+              accessToken = uni.getStorageSync('accessToken');
+              visitorToken = uni.getStorageSync('visitorToken');if (!
+
+              accessToken) {_context.next = 4;break;}return _context.abrupt("return",
+              accessToken);case 4:if (!
+
+              visitorToken) {_context.next = 6;break;}return _context.abrupt("return",
+              visitorToken);case 6:_context.next = 8;return (
+
+
+                ajax({
+                  method: 'GET',
+                  url: "".concat(baseUrl, "genera/init") }));case 8:response = _context.sent;if (!
+
+
+              response.data.success) {_context.next = 13;break;}
+              _visitorToken = response.data.data.visitorToken;
+              uni.setStorageSync('visitorToken', _visitorToken);return _context.abrupt("return",
+              _visitorToken);case 13:case "end":return _context.stop();}}}, _callee, this);}));function _getToken() {return _getToken2.apply(this, arguments);}return _getToken;}(),
+
+
+
+  /**
+                                                                                                                                                                                      *  处理head中的token传参格式
+                                                                                                                                                                                      * @returns {string}
+                                                                                                                                                                                      */
+  getCustomHeader: function () {var _getCustomHeader = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var token, header, userId;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+                this._getToken());case 2:token = _context2.sent;
+
+              header = {
+                'Content-Type': 'application/json;charset=UTF-8'
+
+
+                // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
+              };
+              userId = uni.setStorageSync('userId'); // 获取用户登录状态
+
+              userId ? header.accessToken = token || '' : header.visitorToken = token || '';return _context2.abrupt("return",
+
+              header);case 7:case "end":return _context2.stop();}}}, _callee2, this);}));function getCustomHeader() {return _getCustomHeader.apply(this, arguments);}return getCustomHeader;}(),
+
+
+  /**
+                                                                                                                                                                                                  * 获取timestamp
+                                                                                                                                                                                                  */
+  getTimestamp: function () {var _getTimestamp = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var header, response;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
+
+                this.getCustomHeader());case 2:header = _context3.sent;_context3.next = 5;return (
+
+                ajax({
+                  method: 'GET',
+                  url: "".concat(baseUrl, "genera/times"),
+                  header: header }));case 5:response = _context3.sent;if (!
+
+
+              response.data.success) {_context3.next = 10;break;}
+              uni.setStorageSync('timestamp', new Date().getTime());
+              uni.setStorageSync('aptimestamp', response.data.data.timestamp);return _context3.abrupt("return",
+
+              response.data.data.timestamp);case 10:case "end":return _context3.stop();}}}, _callee3, this);}));function getTimestamp() {return _getTimestamp.apply(this, arguments);}return getTimestamp;}() };var _default =
+
+
+
+
+
+util;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
 /* 25 */,
 /* 26 */,
 /* 27 */,
 /* 28 */,
 /* 29 */,
-/* 30 */
+/* 30 */,
+/* 31 */
 /*!*********************************!*\
   !*** E:/GPer/GPer/api/index.js ***!
   \*********************************/
@@ -10631,10 +10818,10 @@ var wxPromisify = function wxPromisify(fn) {return function () {var obj = argume
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "home", { enumerable: true, get: function get() {return _home.default;} });var _home = _interopRequireDefault(__webpack_require__(/*! ./modules/home */ 31));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "home", { enumerable: true, get: function get() {return _home.default;} });var _home = _interopRequireDefault(__webpack_require__(/*! ./modules/home */ 32));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /***/ }),
-/* 31 */
+/* 32 */
 /*!****************************************!*\
   !*** E:/GPer/GPer/api/modules/home.js ***!
   \****************************************/

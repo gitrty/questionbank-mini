@@ -1,3 +1,25 @@
+button.data-v-74ff9006 {
+  box-sizing: border-box;
+  font-size: 30rpx;
+  text-align: center;
+  text-decoration: none;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  background-color: #fff;
+  display: inline;
+}
+button.data-v-74ff9006::after {
+  content: none;
+}
+.qred.data-v-74ff9006 {
+  color: #e14420 !important;
+}
+.qblue.data-v-74ff9006 {
+  color: #2764dd !important;
+}
 .punch-card.data-v-74ff9006 {
   position: fixed;
   top: 0;
@@ -266,5 +288,36 @@
   height: 64rpx;
   background-color: #e8e8e8;
   border-radius: 50%;
+}
+.blue-spot.data-v-74ff9006 {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #2764dd;
+  bottom: 0;
+  left: 50%;
+  margin-left: -4rpx;
+}
+.red-spot.data-v-74ff9006 {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #e14420;
+  bottom: 0;
+  left: 50%;
+  margin-left: -4rpx;
+}
+.now-ddk.data-v-74ff9006 {
+  position: absolute;
+  width: 60rpx;
+  height: 28rpx;
+  bottom: -30rpx;
+  left: 50%;
+  margin-left: -30rpx;
+  text-align: center;
+  color: #2764dd;
+  font-size: 20rpx;
 }
 

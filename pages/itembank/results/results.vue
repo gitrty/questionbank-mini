@@ -1,5 +1,5 @@
 <template>
-  <view class="results">
+  <view class="results" @tap="aaa">
     <!-- 考试结果 -->
     <view :class="['results-card', isInterView ? 'tgold' : 'tred']">
       <image :src="isInterView ? '/static/pf-ks.png' : '/static/pf-lx.png'" mode="" class="resutls-bg"></image>
@@ -24,11 +24,15 @@
         </view>
       </view>
       <view class="res-btns">
-        <view class="">重考一次</view>
-        <view :class="[isInterView ? 'fx-ms' : 'fx-lx']">分享得分</view>
+        <view class="" @tap="aaa">重考一次</view>
+        <view :class="[isInterView ? 'fx-ms' : 'fx-lx']" @tap="showPoster = true">分享得分</view>
         <view :class="[isInterView ? 'jx-ms' : 'jx-lx']" @tap="jump('/pages/itembank/analysis/analysis')">查看解析</view>
       </view>
     </view>
+
+    <!-- 分享得分 0->面试  1->练习  -->
+    <toyoPoster2 v-if="showPoster" @closePoster="showPoster = false" :type="isInterView ? 0 : 1"></toyoPoster2>
+
     <!-- 相关推荐 -->
     <view class="recommend">
       <view class="recommend-title">已为你推荐相关面试题</view>
@@ -56,6 +60,8 @@
         </view>
       </view>
     </view>
+
+    
   </view>
 </template>
 
@@ -63,8 +69,14 @@
 export default {
   data() {
     return {
-      isInterView: true // true:大厂面试  false：专题练习
+      isInterView: false, // true:大厂面试  false：专题练习
+      showPoster: false // 分享得分拟态框状态
     };
+  },
+  onLoad() {
+  },
+  methods: {
+   
   }
 };
 </script>

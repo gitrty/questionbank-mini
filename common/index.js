@@ -8,7 +8,8 @@ export default {
         methods: {
           // 跳转页面(保留当前页，跳转到指定页)
           jump(url, data = '') {
-            const type = 'navigateTo'
+            // const type = 'navigateTo'
+            const type = switchList.includes(url) ? 'switchTab' : 'navigateTo'
             if (data) url += urlLoader(data)
             uni[type]({
               url
@@ -79,3 +80,4 @@ export default {
   }
 }
 const urlLoader = data => `?${Object.keys(data).map(item => `${item}=${data[item]}`).join('&')}`
+const switchList = ['/pages/information/information', '/pages/itembank/itembank', '/pages/user/user']

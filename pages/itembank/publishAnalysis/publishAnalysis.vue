@@ -24,28 +24,22 @@ export default {
   },
   methods: {
     addImage() {
+      // 添加图片
       uni.chooseImage({
         // count: 6, //默认9
         // sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         // sourceType: ['album'], //从相册选择
         success: function({ tempFilePaths, tempFiles }) {
-          // console.info(tempFilePaths);
-          // console.info(tempFiles);
-          
-          // 预览图片
-          uni.previewImage({
-            urls: tempFilePaths,
-            longPressActions: {
-              itemList: ['发送给朋友', '保存图片', '收藏'],
-              success: function(data) {
-                console.info(data)
-                console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
-              },
-              fail: function(err) {
-                console.log(err.errMsg);
-              }
+          console.info(tempFilePaths);
+          console.info(tempFiles);
+          // 获取图片信息
+          uni.getImageInfo({
+            src: tempFilePaths[0],
+            success: function(image) {
+              console.info(image)
             }
           });
+          
         }
       });
     }

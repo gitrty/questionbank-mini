@@ -20,7 +20,10 @@ const store = new Vuex.Store({
       { name: '阿里巴巴', cur: false },
       { name: '腾讯科技', cur: false }
     ],
-    selectNum: 0
+    selectNum: 0,
+    
+    // 2 - 用户登录状态
+    userStatus:false
   },
   mutations: {},
   actions: {}

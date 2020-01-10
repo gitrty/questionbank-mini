@@ -22,8 +22,17 @@
         <view class="days">
           <view v-for="(val, key) in days" :key="key" class="day-txt" @tap="punchInfo(val)">
             <!-- 只显示本月的日期 -->
-            <text v-if="!((key < 6 && val.day.getDate() > 20) || (key > 27 && val.day.getDate() < 10))">{{ val.day.getDate() }}</text>
-            <!-- 标注当前天 -->
+            <!-- 
+            .qred 红色数字  
+            .qblue 蓝色数字
+            -->
+            <text v-if="!((key < 6 && val.day.getDate() > 20) || (key > 27 && val.day.getDate() < 10))" class="">{{ val.day.getDate() }}</text>
+            <!-- 蓝色小圆点 -->
+            <!-- <view class="blue-spot"></view> -->
+            <!-- 红色小圆点 -->
+            <!-- <view class="red-spot"></view> -->
+
+            <!-- 标注当前天：灰色背景 -->
             <view
               class="now-day"
               v-if="
@@ -32,7 +41,10 @@
                   val.day.getFullYear() === nowDay.y &&
                   !((key < 6 && val.day.getDate() > 20) || (key > 27 && val.day.getDate() < 10))
               "
-            ></view>
+            >
+              <!-- 当前天：'待打卡' 文字 -->
+              <view class="now-ddk">待打卡</view>
+            </view>
           </view>
         </view>
       </view>
@@ -70,7 +82,8 @@
           </view>
           <view class="punch-share">
             <image src="../../../static/sharef.png" mode=""></image>
-            <text>分享至好友</text>
+            <!-- <text>分享至好友</text> -->
+            <button data-name="shareBtn" open-type="share">分享至好友</button>
           </view>
         </view>
         <!-- 状态2 - 立即打卡 -->
@@ -179,7 +192,12 @@ export default {
       this.clickDate.week = date.getDay();
       // 显示打卡信息
       this.punchInfoCard = true;
-    }
+    },
+    
+    
+    
+    
+    
   }
 };
 </script>
@@ -187,6 +205,28 @@ export default {
 <style lang="less" scoped>
 page {
   // height: 100%;
+}
+button {
+  box-sizing: border-box;
+  font-size: 30rpx;
+  text-align: center;
+  text-decoration: none;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  background-color: #fff;
+  display: inline;
+}
+button::after{
+  content: none;
+}
+.qred {
+  color: #e14420 !important;
+}
+.qblue {
+  color: #2764dd !important;
 }
 
 .punch-card {
@@ -463,5 +503,36 @@ page {
   height: 64rpx;
   background-color: #e8e8e8;
   border-radius: 50%;
+}
+.blue-spot {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #2764dd;
+  bottom: 0;
+  left: 50%;
+  margin-left: -4rpx;
+}
+.red-spot {
+  position: absolute;
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background-color: #e14420;
+  bottom: 0;
+  left: 50%;
+  margin-left: -4rpx;
+}
+.now-ddk {
+  position: absolute;
+  width: 60rpx;
+  height: 28rpx;
+  bottom: -30rpx;
+  left: 50%;
+  margin-left: -30rpx;
+  text-align: center;
+  color: #2764dd;
+  font-size: 20rpx;
 }
 </style>
