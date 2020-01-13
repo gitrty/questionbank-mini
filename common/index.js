@@ -63,6 +63,7 @@ export default {
         if (val === 4) return '四'
         if (val === 5) return '五'
         if (val === 6) return '六'
+        return val
       }),
       // 数字转化为选择题选项
       Vue.filter('numToLetter', val => {

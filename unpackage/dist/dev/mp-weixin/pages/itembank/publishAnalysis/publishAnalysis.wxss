@@ -1,3 +1,22 @@
+.bottom-image.data-v-4a3eafe0 {
+  width: 200rpx;
+  height: 200rpx;
+  margin-left: 32rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #ddd;
+  position: relative;
+}
+.bottom-image .min-image.data-v-4a3eafe0 {
+  width: 100%;
+  height: 100%;
+}
+.bottom-image .close-min-image.data-v-4a3eafe0 {
+  width: 40rpx;
+  height: 40rpx;
+  position: absolute;
+  top: -20rpx;
+  right: -20rpx;
+}
 .publish-top.data-v-4a3eafe0 {
   height: 96rpx;
   font-size: 32rpx;

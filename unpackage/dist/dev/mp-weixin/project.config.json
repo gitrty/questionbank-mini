@@ -27,7 +27,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 20,
 			"list": [
 				{
 					"name": "user",
@@ -130,6 +130,12 @@
 					"name": "article",
 					"id": 19,
 					"pathName": "pages/information/article/article"
+				},
+				{
+					"id": 20,
+					"name": "pages/itembank/itembank",
+					"pathName": "pages/itembank/itembank",
+					"query": ""
 				}
 			]
 		}

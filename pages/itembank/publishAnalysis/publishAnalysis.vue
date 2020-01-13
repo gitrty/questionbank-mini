@@ -2,7 +2,7 @@
   <view class="publish-analysis">
     <view class="publish-top">
       <text @tap="navigateBack()">取消</text>
-      <view class="publish-btn tblue">发表</view>
+      <view class="publish-btn tblue" @tap="publish">发表</view>
     </view>
     <view class="publish-title">{{ title }}</view>
     <!-- 输入框 -->
@@ -12,6 +12,11 @@
       <image src="../../../static/addphoto.png" mode=""></image>
       <text @tap="addImage">添加图片</text>
     </view>
+    <!-- 添加后预览图片 -->
+    <view class="bottom-image fl" v-for="(item, index) in photoList" :key="index">
+      <image :src="item" mode="aspectFit" class="min-image"></image>
+      <image src="../../../static/close.png" mode="" class="close-min-image" @tap="delImage(index)"></image>
+    </view>
   </view>
 </template>
 
@@ -19,35 +24,67 @@
 export default {
   data() {
     return {
-      title: '题目：如果一个头条的客户端程序，冷启动时间为冷启动时间为冷启动时间为'
+      title: '题目：如果一个头条的客户端程序，冷启动时间为冷启动时间为冷启动时间为',
+      photoList: [] // 添加的所有图片地址
     };
   },
   methods: {
+    // 添加图片
     addImage() {
+      let _this = this;
       // 添加图片
       uni.chooseImage({
         // count: 6, //默认9
         // sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         // sourceType: ['album'], //从相册选择
         success: function({ tempFilePaths, tempFiles }) {
-          console.info(tempFilePaths);
-          console.info(tempFiles);
-          // 获取图片信息
-          uni.getImageInfo({
-            src: tempFilePaths[0],
-            success: function(image) {
-              console.info(image)
-            }
-          });
-          
+          console.info(tempFilePaths); // 可同时选择多张图片
+          // 将选中的所有图片添加到预览区
+          tempFilePaths.forEach(item =>
+            // 获取图片信息
+            uni.getImageInfo({
+              src: item,
+              success: function(image) {
+                console.info(image);
+                _this.photoList.push(image.path);
+              }
+            })
+          );
         }
       });
-    }
+    },
+
+    // 删除图片
+    delImage(index) {
+      this.photoList.splice(index, 1);
+    },
+
+    // 发表
+    publish() {}
   }
 };
 </script>
 
 <style lang="less" scoped>
+.bottom-image {
+  width: 200rpx;
+  height: 200rpx;
+  margin-left: 32rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid #ddd;
+  position: relative;
+  .min-image {
+    width: 100%;
+    height: 100%;
+  }
+  .close-min-image {
+    width: 40rpx;
+    height: 40rpx;
+    position: absolute;
+    top: -20rpx;
+    right: -20rpx;
+  }
+}
 .publish-top {
   height: 96rpx;
   font-size: 32rpx;

@@ -5,7 +5,7 @@
       <view class="answer-top">
         <view class="answer-top-left">
           <text class="answer-title">今日答题</text>
-          <text class="answer-date">{{ today.m }}月{{ today.d }}日 周{{ today.day }}</text>
+          <text class="answer-date">{{ today.m }}月{{ today.d }}日 周{{ today.day | numToWeek }}</text>
         </view>
         <view class="right" @tap="jump('./punchcard/punchcard')">
           <image src="../../static/right.png" class="fr"></image>
@@ -64,10 +64,10 @@
     <toyoPoster v-if="showPoster0" @closePoster="showPoster0 = false" :type="0" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 分享面试 -->
-    <toyoPoster v-if="showPoster1" @closePoster="showPoster1 = false" :type="1"  @downloadImage="downloadImage"></toyoPoster>
+    <toyoPoster v-if="showPoster1" @closePoster="showPoster1 = false" :type="1" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 分享练习 -->
-    <toyoPoster v-if="showPoster2" @closePoster="showPoster2 = false" :type="2"  @downloadImage="downloadImage"></toyoPoster>
+    <toyoPoster v-if="showPoster2" @closePoster="showPoster2 = false" :type="2" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 大厂面试 -->
     <view class="interview">
@@ -133,16 +133,13 @@
       </view>
     </view>
     <!-- 绘制海报 -->
-    <canvas style="width: 750rpx; height: 1334rpx;position: fixed;top: 0;background-color: pink;z-index: -10;" canvas-id="myCanvas"></canvas>
+    <canvas style="width: 750rpx; height: 1334rpx;position:fixed ; left:100%;background-color: red;" canvas-id="myCanvas"></canvas>
   </view>
 </template>
 
 <script>
 // import html2canvas from 'html2canvas';
 export default {
-  components: {
-    // toyoCard
-  },
   data() {
     return {
       today: {
@@ -167,13 +164,6 @@ export default {
       let m = date.getMonth() + 1; //获取当前月份(0-11,0代表1月)
       let d = date.getDate();
       let day = date.getDay();
-      if (day === 0) day = '天';
-      if (day === 1) day = '一';
-      if (day === 2) day = '二';
-      if (day === 3) day = '三';
-      if (day === 4) day = '四';
-      if (day === 5) day = '五';
-      if (day === 6) day = '六';
       this.today.m = m;
       this.today.d = d;
       this.today.day = day;
@@ -183,6 +173,7 @@ export default {
     immediatelyClock() {
       this.showClock = false;
       this.showPoster0 = true;
+      this.createImage();
     },
 
     // 分享大厂面试
@@ -194,6 +185,7 @@ export default {
     // 分享专题练习
     sharePractice() {
       this.showPoster2 = true;
+      this.createImage();
     },
 
     // 生成海报图片
@@ -287,9 +279,6 @@ export default {
                 console.info('预览成功');
               }
             });
-          },
-          fail(e) {
-            console.info(e);
           }
         },
         this
@@ -303,6 +292,7 @@ export default {
 .itembank {
   background-color: #f4f4f4;
   position: relative;
+  z-index: 999;
 }
 
 .mask {

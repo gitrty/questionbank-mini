@@ -150,34 +150,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      title: '题目：如果一个头条的客户端程序，冷启动时间为冷启动时间为冷启动时间为' };
-
+      title: '题目：如果一个头条的客户端程序，冷启动时间为冷启动时间为冷启动时间为',
+      photoList: [] // 添加的所有图片地址
+    };
   },
   methods: {
+    // 添加图片
     addImage: function addImage() {
+      var _this = this;
       // 添加图片
       uni.chooseImage({
         // count: 6, //默认9
         // sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         // sourceType: ['album'], //从相册选择
         success: function success(_ref) {var tempFilePaths = _ref.tempFilePaths,tempFiles = _ref.tempFiles;
-          console.info(tempFilePaths);
-          console.info(tempFiles);
-          // 获取图片信息
-          uni.getImageInfo({
-            src: tempFilePaths[0],
-            success: function success(image) {
-              console.info(image);
-            } });
+          console.info(tempFilePaths); // 可同时选择多张图片
+          // 将选中的所有图片添加到预览区
+          tempFilePaths.forEach(function (item) {return (
+              // 获取图片信息
+              uni.getImageInfo({
+                src: item,
+                success: function success(image) {
+                  console.info(image);
+                  _this.photoList.push(image.path);
+                } }));});
 
 
         } });
 
-    } } };exports.default = _default;
+    },
+
+    // 删除图片
+    delImage: function delImage(index) {
+      this.photoList.splice(index, 1);
+    },
+
+    // 发表
+    publish: function publish() {} } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

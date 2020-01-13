@@ -8,7 +8,7 @@ const getUserInfos = wxPromisify(uni.getUserInfo)
 const saveImageToPhotosAlbums = wxPromisify(uni.saveImageToPhotosAlbum)
 const requestPayments = wxPromisify(uni.requestPayment)
 
-import Util from './util'
+import { Util } from './util'
 
 const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 // let access_token = ''
@@ -40,7 +40,7 @@ const request = class {
     url += urlLoader(params)
 
     const header = await Util.getCustomHeader()
-    
+
     const { data } = await ajax({
       method: 'GET',
       url: `${baseUrl}${url}`,

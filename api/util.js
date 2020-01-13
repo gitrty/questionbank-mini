@@ -3,7 +3,7 @@ const ajax = wxPromisify(uni.request)
 
 const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 
-const util = {
+const utils =  class {
   
   /**
    * 获取token
@@ -29,7 +29,7 @@ const util = {
       uni.setStorageSync('visitorToken', visitorToken)
       return visitorToken
     }
-  },
+  }
   
   /**
    *  处理head中的token传参格式
@@ -49,7 +49,7 @@ const util = {
     userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
 
     return header
-  },
+  }
 
   /**
    * 获取timestamp
@@ -74,4 +74,4 @@ const util = {
 
 }
 
-export default util
+export const Util = new utils()

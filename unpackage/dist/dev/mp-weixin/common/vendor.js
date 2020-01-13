@@ -9722,6 +9722,7 @@ var index_esm = {
       if (val === 4) return '四';
       if (val === 5) return '五';
       if (val === 6) return '六';
+      return val;
     }),
     // 数字转化为选择题选项
     Vue.filter('numToLetter', function (val) {
@@ -10550,7 +10551,7 @@ if (hadRuntime) {
 
 
 
-var _util = _interopRequireDefault(__webpack_require__(/*! ./util */ 24));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ajax = (0, _config.wxPromisify)(uni.request);var logins = (0, _config.wxPromisify)(uni.login);var showModals = (0, _config.wxPromisify)(uni.showModal);var authorizes = (0, _config.wxPromisify)(uni.authorize);var getImageInfos = (0, _config.wxPromisify)(uni.getImageInfo);var getUserInfos = (0, _config.wxPromisify)(uni.getUserInfo);var saveImageToPhotosAlbums = (0, _config.wxPromisify)(uni.saveImageToPhotosAlbum);var requestPayments = (0, _config.wxPromisify)(uni.requestPayment);
+var _util = __webpack_require__(/*! ./util */ 24);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ajax = (0, _config.wxPromisify)(uni.request);var logins = (0, _config.wxPromisify)(uni.login);var showModals = (0, _config.wxPromisify)(uni.showModal);var authorizes = (0, _config.wxPromisify)(uni.authorize);var getImageInfos = (0, _config.wxPromisify)(uni.getImageInfo);var getUserInfos = (0, _config.wxPromisify)(uni.getUserInfo);var saveImageToPhotosAlbums = (0, _config.wxPromisify)(uni.saveImageToPhotosAlbum);var requestPayments = (0, _config.wxPromisify)(uni.requestPayment);
 
 var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
 // let access_token = ''
@@ -10562,7 +10563,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 appKey = '';
                 appSecret = '';
                 // 获取时间戳
-                _context.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context.sent;
+                _context.next = 5;return _util.Util.getTimestamp();case 5:timestamp = _context.sent;
 
                 // 拼接 appKey 和 appSecret
                 Object.entries(params).forEach(function (_ref, index) {var _ref2 = _slicedToArray(_ref, 2),key = _ref2[0],value = _ref2[1];
@@ -10570,7 +10571,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                   appSecret += key.toString() + value.toString();
                 });_context.next = 9;return (
 
-                  _util.default._getToken());case 9:accessToken = _context.sent;
+                  _util.Util._getToken());case 9:accessToken = _context.sent;
                 mds = appKey.slice(0, appKey.length - 1);
                 mds2 = timestamp + appSecret + accessToken;
 
@@ -10581,7 +10582,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
 
                 url += urlLoader(params);_context.next = 18;return (
 
-                  _util.default.getCustomHeader());case 18:header = _context.sent;_context.next = 21;return (
+                  _util.Util.getCustomHeader());case 18:header = _context.sent;_context.next = 21;return (
 
                   ajax({
                     method: 'GET',
@@ -10598,7 +10599,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 appSecret = '';
 
                 // 获取时间戳
-                _context2.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context2.sent;
+                _context2.next = 5;return _util.Util.getTimestamp();case 5:timestamp = _context2.sent;
 
                 // 拼接 appKey 和 appSecret
                 Object.entries(params).forEach(function (_ref4, index) {var _ref5 = _slicedToArray(_ref4, 2),key = _ref5[0],value = _ref5[1];
@@ -10606,7 +10607,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                   appSecret += key.toString() + value.toString();
                 });_context2.next = 9;return (
 
-                  _util.default._getToken());case 9:accessToken = _context2.sent;
+                  _util.Util._getToken());case 9:accessToken = _context2.sent;
                 mds = appKey.slice(0, appKey.length - 1);
                 mds2 = timestamp + appSecret + accessToken;
 
@@ -10615,7 +10616,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 params.timestamp = timestamp;
                 // console.info(params)
                 _context2.next = 17;return (
-                  _util.default.getCustomHeader());case 17:header = _context2.sent;_context2.next = 20;return (
+                  _util.Util.getCustomHeader());case 17:header = _context2.sent;_context2.next = 20;return (
 
                   ajax({
                     method: 'POST',
@@ -10632,7 +10633,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 appSecret = '';
 
                 // 获取时间戳
-                _context3.next = 5;return _util.default.getTimestamp();case 5:timestamp = _context3.sent;
+                _context3.next = 5;return _util.Util.getTimestamp();case 5:timestamp = _context3.sent;
 
                 // 拼接 appKey 和 appSecret
                 Object.entries(params).forEach(function (_ref7, index) {var _ref8 = _slicedToArray(_ref7, 2),key = _ref8[0],value = _ref8[1];
@@ -10640,7 +10641,7 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                   appSecret += key.toString() + value.toString();
                 });_context3.next = 9;return (
 
-                  _util.default._getToken());case 9:accessToken = _context3.sent;
+                  _util.Util._getToken());case 9:accessToken = _context3.sent;
                 mds = appKey.slice(0, appKey.length - 1);
                 mds2 = timestamp + appSecret + accessToken;
 
@@ -10724,83 +10725,83 @@ var wxPromisify = function wxPromisify(fn) {return function () {var obj = argume
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.Util = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
 var ajax = (0, _config.wxPromisify)(uni.request);
 
 var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
 
-var util = {
+var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, utils);}_createClass(utils, [{ key: "_getToken",
 
-  /**
-              * 获取token
-              */
-  _getToken: function () {var _getToken2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var accessToken, visitorToken, response, _visitorToken;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
-              accessToken = uni.getStorageSync('accessToken');
-              visitorToken = uni.getStorageSync('visitorToken');if (!
+    /**
+                                                                                                                                * 获取token
+                                                                                                                                */value: function () {var _getToken2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var accessToken, visitorToken, response, _visitorToken;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
 
-              accessToken) {_context.next = 4;break;}return _context.abrupt("return",
-              accessToken);case 4:if (!
+                accessToken = uni.getStorageSync('accessToken');
+                visitorToken = uni.getStorageSync('visitorToken');if (!
 
-              visitorToken) {_context.next = 6;break;}return _context.abrupt("return",
-              visitorToken);case 6:_context.next = 8;return (
+                accessToken) {_context.next = 4;break;}return _context.abrupt("return",
+                accessToken);case 4:if (!
 
-
-                ajax({
-                  method: 'GET',
-                  url: "".concat(baseUrl, "genera/init") }));case 8:response = _context.sent;if (!
+                visitorToken) {_context.next = 6;break;}return _context.abrupt("return",
+                visitorToken);case 6:_context.next = 8;return (
 
 
-              response.data.success) {_context.next = 13;break;}
-              _visitorToken = response.data.data.visitorToken;
-              uni.setStorageSync('visitorToken', _visitorToken);return _context.abrupt("return",
-              _visitorToken);case 13:case "end":return _context.stop();}}}, _callee, this);}));function _getToken() {return _getToken2.apply(this, arguments);}return _getToken;}(),
+                  ajax({
+                    method: 'GET',
+                    url: "".concat(baseUrl, "genera/init") }));case 8:response = _context.sent;if (!
 
 
-
-  /**
-                                                                                                                                                                                      *  处理head中的token传参格式
-                                                                                                                                                                                      * @returns {string}
-                                                                                                                                                                                      */
-  getCustomHeader: function () {var _getCustomHeader = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var token, header, userId;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
-                this._getToken());case 2:token = _context2.sent;
-
-              header = {
-                'Content-Type': 'application/json;charset=UTF-8'
-
-
-                // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
-              };
-              userId = uni.setStorageSync('userId'); // 获取用户登录状态
-
-              userId ? header.accessToken = token || '' : header.visitorToken = token || '';return _context2.abrupt("return",
-
-              header);case 7:case "end":return _context2.stop();}}}, _callee2, this);}));function getCustomHeader() {return _getCustomHeader.apply(this, arguments);}return getCustomHeader;}(),
-
-
-  /**
-                                                                                                                                                                                                  * 获取timestamp
-                                                                                                                                                                                                  */
-  getTimestamp: function () {var _getTimestamp = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var header, response;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
-
-                this.getCustomHeader());case 2:header = _context3.sent;_context3.next = 5;return (
-
-                ajax({
-                  method: 'GET',
-                  url: "".concat(baseUrl, "genera/times"),
-                  header: header }));case 5:response = _context3.sent;if (!
-
-
-              response.data.success) {_context3.next = 10;break;}
-              uni.setStorageSync('timestamp', new Date().getTime());
-              uni.setStorageSync('aptimestamp', response.data.data.timestamp);return _context3.abrupt("return",
-
-              response.data.data.timestamp);case 10:case "end":return _context3.stop();}}}, _callee3, this);}));function getTimestamp() {return _getTimestamp.apply(this, arguments);}return getTimestamp;}() };var _default =
+                response.data.success) {_context.next = 13;break;}
+                _visitorToken = response.data.data.visitorToken;
+                uni.setStorageSync('visitorToken', _visitorToken);return _context.abrupt("return",
+                _visitorToken);case 13:case "end":return _context.stop();}}}, _callee, this);}));function _getToken() {return _getToken2.apply(this, arguments);}return _getToken;}()
 
 
 
+    /**
+                                                                                                                                                                                       *  处理head中的token传参格式
+                                                                                                                                                                                       * @returns {string}
+                                                                                                                                                                                       */ }, { key: "getCustomHeader", value: function () {var _getCustomHeader = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var token, header, userId;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:_context2.next = 2;return (
+
+                  this._getToken());case 2:token = _context2.sent;
+
+                header = {
+                  'Content-Type': 'application/json;charset=UTF-8'
 
 
-util;exports.default = _default;
+                  // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
+                };
+                userId = uni.setStorageSync('userId'); // 获取用户登录状态
+
+                userId ? header.accessToken = token || '' : header.visitorToken = token || '';return _context2.abrupt("return",
+
+                header);case 7:case "end":return _context2.stop();}}}, _callee2, this);}));function getCustomHeader() {return _getCustomHeader.apply(this, arguments);}return getCustomHeader;}()
+
+
+    /**
+                                                                                                                                                                                                   * 获取timestamp
+                                                                                                                                                                                                   */ }, { key: "getTimestamp", value: function () {var _getTimestamp = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3() {var header, response;return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:_context3.next = 2;return (
+
+
+                  this.getCustomHeader());case 2:header = _context3.sent;_context3.next = 5;return (
+
+                  ajax({
+                    method: 'GET',
+                    url: "".concat(baseUrl, "genera/times"),
+                    header: header }));case 5:response = _context3.sent;if (!
+
+
+                response.data.success) {_context3.next = 10;break;}
+                uni.setStorageSync('timestamp', new Date().getTime());
+                uni.setStorageSync('aptimestamp', response.data.data.timestamp);return _context3.abrupt("return",
+
+                response.data.data.timestamp);case 10:case "end":return _context3.stop();}}}, _callee3, this);}));function getTimestamp() {return _getTimestamp.apply(this, arguments);}return getTimestamp;}() }]);return utils;}();
+
+
+
+
+
+var Util = new utils();exports.Util = Util;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

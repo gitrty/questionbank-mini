@@ -1,6 +1,7 @@
 .itembank.data-v-2a74cf46 {
   background-color: #f4f4f4;
   position: relative;
+  z-index: 999;
 }
 .mask.data-v-2a74cf46 {
   position: fixed;

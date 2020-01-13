@@ -100,6 +100,8 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var f0 = _vm._f("numToWeek")(_vm.today.day)
+
   if (!_vm._isMounted) {
     _vm.e0 = function($event) {
       _vm.showClock = !_vm.showClock
@@ -121,6 +123,15 @@ var render = function() {
       _vm.showPoster2 = false
     }
   }
+
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        f0: f0
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -296,9 +307,6 @@ __webpack_require__.r(__webpack_exports__);
 
 // import html2canvas from 'html2canvas';
 var _default = {
-  components: {
-    // toyoCard
-  },
   data: function data() {
     return {
       today: {
@@ -323,13 +331,6 @@ var _default = {
       var m = date.getMonth() + 1; //获取当前月份(0-11,0代表1月)
       var d = date.getDate();
       var day = date.getDay();
-      if (day === 0) day = '天';
-      if (day === 1) day = '一';
-      if (day === 2) day = '二';
-      if (day === 3) day = '三';
-      if (day === 4) day = '四';
-      if (day === 5) day = '五';
-      if (day === 6) day = '六';
       this.today.m = m;
       this.today.d = d;
       this.today.day = day;
@@ -339,6 +340,7 @@ var _default = {
     immediatelyClock: function immediatelyClock() {
       this.showClock = false;
       this.showPoster0 = true;
+      this.createImage();
     },
 
     // 分享大厂面试
@@ -350,6 +352,7 @@ var _default = {
     // 分享专题练习
     sharePractice: function sharePractice() {
       this.showPoster2 = true;
+      this.createImage();
     },
 
     // 生成海报图片
@@ -443,9 +446,6 @@ var _default = {
               console.info('预览成功');
             } });
 
-        },
-        fail: function fail(e) {
-          console.info(e);
         } },
 
       this);
