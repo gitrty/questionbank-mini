@@ -1,15 +1,20 @@
 <template>
   <view class="details">
-    <view class="details-logo"><image src="/static/timg.png" mode=""></image></view>
+    <view class="details-logo"><image :src="interInfo.cover" mode=""></image></view>
     <view class="details-subject">
-      <view class="details-title">咕泡第一节答题大赛</view>
-      <view class="details-con">简介内容简介内容简介内容简介内容简介内容简 介内容简介内容简介内容简介内容</view>
+      <view class="details-title">{{ interInfo.title }}</view>
+      <view class="details-con">{{ interInfo.abstract }}</view>
       <view class="details-introduce">
         <view class="details-introduce-col">
           <!-- 小圆点 -->
           <view class="details-introduce-col-li"></view>
           <view class="details-introduce-col-l">题型</view>
-          <view class="details-introduce-col-r">单选10道</view>
+          <view class="details-introduce-col-r">
+            <text v-if="interInfo.radioCount">单选{{ interInfo.radioCount }}道</text>
+            <text v-if="interInfo.multipleCount">多选{{ interInfo.multipleCount }}道</text>
+            <text v-if="interInfo.judgeCount">判断{{ interInfo.judgeCount }}道</text>
+            <text v-if="interInfo.shortAnswerCount">简答{{ interInfo.shortAnswerCount }}道</text>
+          </view>
         </view>
         <view class="details-introduce-col">
           <!-- 小圆点 -->
@@ -21,19 +26,19 @@
           <!-- 小圆点 -->
           <view class="details-introduce-col-li"></view>
           <view class="details-introduce-col-l">难度</view>
-          <view class="details-introduce-col-r"><toyoRate :value="'4'" :checkValue="'4'"></toyoRate></view>
+          <view class="details-introduce-col-r"><toyoRate :value="'4'" :checkValue="interInfo.difficulty"></toyoRate></view>
         </view>
         <view class="details-introduce-col">
           <!-- 小圆点 -->
           <view class="details-introduce-col-li"></view>
           <view class="details-introduce-col-l">热度</view>
-          <view class="details-introduce-col-r">387</view>
+          <view class="details-introduce-col-r">{{ interInfo.hot }}</view>
         </view>
         <view class="details-introduce-col">
           <!-- 小圆点 -->
           <view class="details-introduce-col-li"></view>
           <view class="details-introduce-col-l">分值</view>
-          <view class="details-introduce-col-r">100分</view>
+          <view class="details-introduce-col-r">{{ interInfo.score ||''}}分</view>
         </view>
       </view>
     </view>
@@ -45,7 +50,7 @@
         </view>
         <view class="details-bottom-tip">答前须知</view>
       </view>
-      <view class="details-bottom-con">相关内容相关内容相关内容相关内容相关内容相关内容相关内容相关内容相关内容相关内容相关内容相关内容</view>
+      <view class="details-bottom-con"></view>
     </view>
     <view class="details-fixed">
       <view class="details-fixed-fx">
@@ -56,19 +61,27 @@
         <image src="../../../static/sc.png" mode=""></image>
         <view class="">收藏</view>
       </view>
-      <view class="details-start" @tap="redirectTo('/pages/itembank/examination/examination')">
-        开始考试
-      </view>
+      <view class="details-start" @tap="redirectTo('/pages/itembank/examination/examination',{id:interInfo.id})">开始考试</view>
     </view>
   </view>
 </template>
 
 <script>
+import { itembank } from '@api';
+const { viewSuitById } = itembank;
 export default {
   data() {
-    return {};
+    return {
+      interInfo: {}
+    };
   },
-  methods: {}
+  methods: {},
+  async onLoad(e) {
+    const data = await viewSuitById({ id: e.id});
+    this.interInfo = data;
+    this.$store.state.viewTitle = data.title
+    console.info(data);
+  }
 };
 </script>
 
@@ -126,6 +139,9 @@ export default {
         }
         .details-introduce-col-r {
           color: #333;
+          > text {
+            margin-right: 10rpx;
+          }
         }
       }
     }
@@ -193,10 +209,10 @@ export default {
         color: #333;
       }
     }
-    .details-start{
+    .details-start {
       width: 386rpx;
       height: 72rpx;
-      background-color: #2764DD;
+      background-color: #2764dd;
       font-size: 28rpx;
       line-height: 72rpx;
       text-align: center;

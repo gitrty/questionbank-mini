@@ -1,6 +1,6 @@
 <template>
   <view class="punch-card">
-    <view class="punch-top">共打卡 XXX 天</view>
+    <view class="punch-top">共打卡 {{ daysCount }} 天</view>
     <view>
       <view class="calendar">
         <!-- 标题 -->
@@ -43,7 +43,7 @@
               "
             >
               <!-- 当前天：'待打卡' 文字 -->
-              <view class="now-ddk">待打卡</view>
+              <view class="now-ddk" v-if="!isPunch">待打卡</view>
             </view>
           </view>
         </view>
@@ -76,10 +76,10 @@
         <!-- 功能按钮 -->
         <!-- 状态1 - 已打卡 -->
         <view class="punch-fun" v-if="!punchStatus">
-          <view class="punch-download">
+          <!-- <view class="punch-download">
             <image src="../../../static/download.png" mode=""></image>
             <text>下载海报</text>
-          </view>
+          </view> -->
           <view class="punch-share">
             <image src="../../../static/sharef.png" mode=""></image>
             <!-- <text>分享至好友</text> -->
@@ -104,6 +104,8 @@
 </template>
 
 <script>
+import { itembank } from '@api';
+const { getDaysCount, getAnswerSituation, todayIsCard } = itembank;
 export default {
   data() {
     return {
@@ -124,7 +126,9 @@ export default {
         mouth: 12,
         day: 1,
         week: 1
-      }
+      },
+      daysCount: '', // 打卡总天数,
+      isPunch: 0 // 是否打卡
     };
   },
   created() {
@@ -133,6 +137,14 @@ export default {
     this.nowDay.y = d.getFullYear();
     this.nowDay.m = d.getMonth();
     this.nowDay.d = d.getDate();
+  },
+  async onLoad() {
+    // 获取打卡总天数
+    const { daysCount } = await getDaysCount({ userId: this.$store.state.userId });
+    this.daysCount = daysCount;
+
+    const isPunch = await todayIsCard({ userId: this.$store.state.userId });
+    this.isPunch = isPunch
   },
   methods: {
     init(data) {
@@ -164,6 +176,7 @@ export default {
         });
       }
     },
+
     //切换月份
     changeMonth(a) {
       let _this = this;
@@ -176,12 +189,14 @@ export default {
 
       this.init(_this.formDate(d.getFullYear(), d.getMonth() + 1, 1));
     },
+
     //返回字符串个格式的日期
     formDate(year, month, day) {
       return year + '/' + month + '/' + day;
     },
+
     // 查看指定日期的打卡信息
-    punchInfo({ day }) {
+    async punchInfo({ day }) {
       // 获取当前时间
       let nowDate = new Date();
       // 获取点击日的时间
@@ -192,12 +207,44 @@ export default {
       this.clickDate.week = date.getDay();
       // 显示打卡信息
       this.punchInfoCard = true;
+      // 获取点击日的数据详情
+      let oDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+      console.info(oDate);
+      const data = await getAnswerSituation({ userId: this.$store.state.userId, date: oDate });
+      console.info(data);
     },
-    
-    
-    
-    
-    
+
+    onShareAppMessage: function(options) {
+      var that = this; // 设置菜单中的转发按钮触发转发事件时的转发内容
+      var shareObj = {
+        title: 'GPer', // 默认是小程序的名称(可以写slogan等)
+        // 　　　　path: '/pages/share/share',        // 默认是当前页面，必须是以‘/’开头的完整路径
+        // 　　　　imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+        success: function(res) {
+          // 转发成功之后的回调
+          if (res.errMsg == 'shareAppMessage:ok') {
+          }
+        },
+        fail: function() {
+          // 转发失败之后的回调
+          if (res.errMsg == 'shareAppMessage:fail cancel') {
+            // 用户取消转发
+          } else if (res.errMsg == 'shareAppMessage:fail') {
+            // 转发失败，其中 detail message 为详细失败信息
+          }
+        },
+        complete: function() {
+          // 转发结束之后的回调（转发成不成功都会执行）
+        }
+      }; // 来自页面内的按钮的转发
+      if (options.from == 'button') {
+        var eData = options.target.dataset;
+        console.log(eData.name); // shareBtn // 此处可以修改 shareObj 中的内容
+        shareObj.path = '/pages/information/information';
+        // 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+      } // 返回shareObj
+      return shareObj;
+    }
   }
 };
 </script>
@@ -219,7 +266,7 @@ button {
   background-color: #fff;
   display: inline;
 }
-button::after{
+button::after {
   content: none;
 }
 .qred {

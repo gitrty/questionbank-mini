@@ -26,7 +26,7 @@
         <view class="clock-card">
           <image src="../../static/1.png" mode="" class="clock-bg"></image>
           <view class="clock-con">
-            <text>11</text>
+            <text>{{ todayCount.interviewCount }}</text>
             <text>次</text>
           </view>
           <view class="clock-txt">大厂面试</view>
@@ -34,7 +34,7 @@
         <view class="clock-card">
           <image src="../../static/2.png" mode="" class="clock-bg"></image>
           <view class="clock-con">
-            <text>11</text>
+            <text>{{ todayCount.exerciseCount }}</text>
             <text>次</text>
           </view>
           <view class="clock-txt">专题练习</view>
@@ -42,7 +42,7 @@
         <view class="clock-card">
           <image src="../../static/3.png" mode="" class="clock-bg"></image>
           <view class="clock-con">
-            <text>11</text>
+            <text>{{ todayCount.daysCount }}</text>
             <text>天</text>
           </view>
           <view class="clock-txt">学习打卡</view>
@@ -51,6 +51,7 @@
       <!-- 打卡按钮 -->
       <view class="clock-bottom">
         <image src="../../static/noclock.png" mode=""></image>
+        <!--  -->
         <text @tap="immediatelyClock" v-show="!isPunch">立即打卡</text>
         <image src="../../static/yelllow-success.png" mode="" v-show="isPunch"></image>
         <text v-show="isPunch">已打卡</text>
@@ -61,13 +62,13 @@
     <view class="mask" v-if="showClock" @tap="showClock = !showClock"></view>
 
     <!-- 打卡成功 -->
-    <toyoPoster v-if="showPoster0" @closePoster="showPoster0 = false" :type="0" @downloadImage="downloadImage"></toyoPoster>
+    <toyoPoster v-if="showPoster0" :todayCount="todayCount" @closePoster="showPoster0 = false" :type="0" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 分享面试 -->
-    <toyoPoster v-if="showPoster1" @closePoster="showPoster1 = false" :type="1" @downloadImage="downloadImage"></toyoPoster>
+    <toyoPoster v-if="showPoster1" :interviewSituation="interviewSituation" @closePoster="showPoster1 = false" :type="1" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 分享练习 -->
-    <toyoPoster v-if="showPoster2" @closePoster="showPoster2 = false" :type="2" @downloadImage="downloadImage"></toyoPoster>
+    <toyoPoster v-if="showPoster2" :exerciseSituation="exerciseSituation" @closePoster="showPoster2 = false" :type="2" @downloadImage="downloadImage"></toyoPoster>
 
     <!-- 大厂面试 -->
     <view class="interview">
@@ -86,7 +87,7 @@
           <view><image src="../../static/m3.png" mode=""></image></view>
         </view>
 
-        <toyoCard :type="'面试'"></toyoCard>
+        <toyoCard :type="'面试'" :situation="interviewSituation"></toyoCard>
         <view class="card-bottom">
           <view class="share" @tap="shareInterview">
             <image src="../../static/share.png" mode=""></image>
@@ -117,7 +118,7 @@
           <view><image src="../../static/l2.png" mode=""></image></view>
           <view><image src="../../static/l3.png" mode=""></image></view>
         </view>
-        <toyoCard :type="'练习'"></toyoCard>
+        <toyoCard :type="'练习'" :situation="exerciseSituation"></toyoCard>
         <view class="card-bottom">
           <view class="share" @tap="sharePractice">
             <image src="../../static/share.png" mode=""></image>
@@ -138,7 +139,11 @@
 </template>
 
 <script>
-// import html2canvas from 'html2canvas';
+import { util } from '@api/http';
+
+import { itembank, user } from '@api';
+const { wxLogin } = user;
+const { getTodayByUserId, todayIsCard, immediatelyPunchUserId, getDaysCount, getInterviewSituation, getExerciseSituation } = itembank;
 export default {
   data() {
     return {
@@ -151,11 +156,68 @@ export default {
       showPoster0: false, // 打卡成功拟态框状态
       showPoster1: false, // 分享面试拟态框状态
       showPoster2: false, // 分享练习拟态框状态
-      isPunch: false // 是否打卡
+      isPunch: 0, // 是否打卡，
+      // 今日答题情况
+      todayCount: {
+        exerciseCount: 0,
+        interviewCount: 0,
+        daysCount: 0
+      },
+      // 大厂面试数据
+      interviewSituation: {
+        interviewCount: 0,
+        interviewQuestionCount: 0,
+        interviewCorrectCount: 0,
+        interviewCorrectScore: 0
+      },
+      // 专题练习数据
+      exerciseSituation: {
+        exerciseCount: 0,
+        exerciseQuestionCount: 0,
+        exerciseCorrectCount: 0,
+        exerciseCorrectScore: 0
+      }
     };
   },
-  onLoad() {
+  async onShow() {
+    // uni.showLoading({ title: '正在加载中', mask: true });
+    if (!this.$store.state.userId) {
+      const { code } = await util.login();
+      const userInfo = await wxLogin({ code: code });
+      // 用户未登录跳转登录页面
+      if (!userInfo.userId) {
+        uni.hideLoading();
+        this.jump('/pages/user/user');
+        return;
+      }
+      uni.setStorageSync('userId',this.$store.state.userId )
+      this.$store.state.userInfo = userInfo;
+      this.$store.state.userId = userInfo.userId;
+    }
+
     this.getDate();
+    // 获取今日答题情况
+    // console.info(this.$store.state.userId);
+    const { exerciseCount, interviewCount } = await getTodayByUserId({ userId: this.$store.state.userId });
+    this.todayCount.exerciseCount = exerciseCount;
+    this.todayCount.interviewCount = interviewCount;
+
+    // 获取连续打卡的天数
+    const { daysCount } = await getDaysCount({ userId: this.$store.state.userId });
+    this.todayCount.daysCount = daysCount;
+
+    // 获取打卡状态
+    const isCardStatus = await todayIsCard({ userId: this.$store.state.userId });
+    this.isPunch = isCardStatus;
+
+    // 获取大厂面试数据
+    const interviewSituation = await getInterviewSituation({ userId: this.$store.state.userId });
+    this.interviewSituation = interviewSituation;
+
+    // 获取专题练习数据
+    const exerciseSituation = await getExerciseSituation({ userId: this.$store.state.userId });
+    this.exerciseSituation = exerciseSituation;
+    // uni.hideLoading();
   },
   methods: {
     // 获取今日日期
@@ -170,29 +232,39 @@ export default {
     },
 
     // 立即打卡
-    immediatelyClock() {
+    async immediatelyClock() {
       this.showClock = false;
       this.showPoster0 = true;
-      this.createImage();
+      this.createImage(0);
+
+      const data = await immediatelyPunchUserId({ userId: this.$store.state.userId });
+      this.isPunch = true;
+      // console.info(data);
     },
 
     // 分享大厂面试
     shareInterview() {
       this.showPoster1 = true;
-      this.createImage();
+      this.createImage(1);
     },
 
     // 分享专题练习
     sharePractice() {
       this.showPoster2 = true;
-      this.createImage();
+      this.createImage(2);
     },
 
     // 生成海报图片
-    createImage() {
+    // index:
+    // 0 立即打卡
+    // 1 分享大厂面试
+    // 2 分享专题练习
+    createImage(index) {
       let context = uni.createCanvasContext('myCanvas');
       // 1 - 背景图片
-      context.drawImage('/static/clockyes.png', 0, 0, 375, 667);
+      if (index === 0) context.drawImage('/static/clockyes.png', 0, 0, 375, 667);
+      if (index === 1) context.drawImage('/static/clockyes1.png', 0, 0, 375, 667);
+      if (index === 2) context.drawImage('/static/clockyes2.png', 0, 0, 375, 667);
 
       // 2 - 用户头像
       context.save(); // 先保存状态 已便于画完圆再用
@@ -208,16 +280,22 @@ export default {
       // 3 - 打卡总天数
       context.setFillStyle('#fff');
       context.setFontSize(20);
-      context.fillText('我已在GPer社区题库打卡', 36, 180);
-      context.fillText('天', 325, 180);
+      if (index === 0) {
+        context.fillText('我已在GPer社区题库打卡', 36, 180);
+        context.fillText('天', 325, 180);
 
-      context.setFillStyle('#FDC223');
-      context.setFontSize(36);
-      context.textAlign = 'center';
-      const dayNum = 99; // 模拟数据：打卡总天数
-      context.fillText(dayNum, 294, 180);
+        context.setFillStyle('#FDC223');
+        context.setFontSize(36);
+        context.textAlign = 'center';
+        context.fillText(this.todayCount.daysCount, 294, 180);
+      }
+      if (index === 1) context.fillText('每日面试 离大厂只有一步之遥', 55, 180);
+      if (index === 2) context.fillText('每日练习 离大厂只有一步之遥', 55, 180);
 
       // 4 - 赶快加入一起刷题学习吧
+      if (index === 0 || index === 2) context.setFillStyle('#FDC223');
+      if (index === 1) context.setFillStyle('#288DEE');
+
       context.textAlign = 'left';
       context.setFontSize(14);
       context.fillText('赶快加入一起刷题学习吧', 110, 215);
@@ -227,22 +305,45 @@ export default {
       // 5 - 今日答题情况
       context.setFillStyle('#6F6A5B');
       context.setFontSize(16);
-      context.fillText('今日答题情况', 141, 325);
+      if (index === 0) context.fillText('今日答题情况', 141, 325);
+      if (index === 1) context.fillText('我的面试情况', 141, 325);
+      if (index === 2) context.fillText('我的练习情况', 141, 325);
 
       context.setFontSize(13);
-      context.fillText('面试次数', 42, 392);
-      context.fillText('练习次数', 163, 392);
-      context.fillText('学习打卡', 284, 392);
+      if (index === 0) {
+        context.fillText('面试次数', 42, 392);
+        context.fillText('练习次数', 163, 392);
+        context.fillText('学习打卡', 284, 392);
+      }
+      if (index === 1) {
+        context.fillText('面试次数', 42, 392);
+        context.fillText('正确题数', 163, 392);
+        context.fillText('综合得分', 284, 392);
+      }
+      if (index === 2) {
+        context.fillText('练习次数', 42, 392);
+        context.fillText('正确题数', 163, 392);
+        context.fillText('综合得分', 284, 392);
+      }
 
-      const mianshiNum = 1;
-      const lianxiNum = 100;
-      const dakaNum = 26;
       context.setFillStyle('#4C483D');
       context.setFontSize(20);
       context.textAlign = 'center';
-      context.fillText(mianshiNum, 68, 370);
-      context.fillText(lianxiNum, 188, 370);
-      context.fillText(dakaNum, 308, 370);
+      if (index === 0) {
+        context.fillText(this.todayCount.interviewCount, 68, 370);
+        context.fillText(this.todayCount.exerciseCount, 188, 370);
+        context.fillText(this.todayCount.daysCount, 308, 370);
+      }
+      if (index === 1) {
+        context.fillText(this.interviewSituation.interviewCount, 68, 370);
+        context.fillText(`${this.interviewSituation.interviewCorrectCount}/${this.interviewSituation.interviewQuestionCount}`, 188, 370);
+        context.fillText(this.interviewSituation.interviewCorrectScore, 308, 370);
+      }
+      if (index === 2) {
+        context.fillText(this.exerciseSituation.exerciseCount, 68, 370);
+        context.fillText(`${this.exerciseSituation.exerciseCorrectCount}/${this.exerciseSituation.exerciseQuestionCount}`, 188, 370);
+        context.fillText(this.exerciseSituation.exerciseCorrectScore, 308, 370);
+      }
 
       // 6 - 小程序码
       context.drawImage('/static/logo.png', 110, 460, 155, 152); // 推进去图片
@@ -259,6 +360,7 @@ export default {
 
     // 下载海报
     downloadImage() {
+      let _this = this;
       // 将 canvas 绘制的海报生成图片
       uni.canvasToTempFilePath(
         {
@@ -273,12 +375,19 @@ export default {
           success: function(res) {
             // 在H5平台下，tempFilePath 为 base64
             console.log(res.tempFilePath);
-            uni.previewImage({
-              urls: [res.tempFilePath],
-              success() {
-                console.info('预览成功');
+            uni.saveImageToPhotosAlbum({
+              filePath: res.tempFilePath,
+              success: function() {
+                _this.showToast('保存成功');
               }
             });
+
+            // uni.previewImage({
+            //   urls: [res.tempFilePath],
+            //   success() {
+            //     console.info('预览成功');
+            //   }
+            // });
           }
         },
         this

@@ -21,7 +21,13 @@ import { util } from '@api/http';
 
 export default {
   data() {
-    return {};
+    return {
+      email: ''
+    };
+  },
+  onLoad(e) {
+    // console.info(e);
+    this.email = e.email;
   },
   methods: {
     // 获取用户授权
@@ -29,15 +35,14 @@ export default {
       try {
         uni.showLoading({ title: '正在授权中', mask: true });
         const { code } = await util.login();
-        console.info(code);
+        // console.info(code);
         const { rawData, iv, signature, encryptedData } = await util.getUserInfo();
-        console.info(rawData);
         // 后台获取到token
-        const token = `token值`;
-        uni.setStorageSync('access_token', token);
-        getApp().globalData.access_token = token;
+        // uni.setStorageSync('access_token', '');
         uni.hideLoading();
-        // uni.navigateBack();
+        this.$store.state.code = code;
+        this.$store.state.email = this.email;
+        uni.navigateBack()
       } catch (e) {
         console.info(e);
         uni.hideLoading();

@@ -54,6 +54,9 @@
 .details .details-subject .details-introduce .details-introduce-col .details-introduce-col-r.data-v-7ab546cd {
   color: #333;
 }
+.details .details-subject .details-introduce .details-introduce-col .details-introduce-col-r > text.data-v-7ab546cd {
+  margin-right: 10rpx;
+}
 .details .details-bottom.data-v-7ab546cd {
   padding: 208rpx 40rpx 100rpx;
   background-color: #f4f4f4;
@@ -134,7 +137,7 @@
 .details .details-fixed .details-start.data-v-7ab546cd {
   width: 386rpx;
   height: 72rpx;
-  background-color: #2764DD;
+  background-color: #2764dd;
   font-size: 28rpx;
   line-height: 72rpx;
   text-align: center;

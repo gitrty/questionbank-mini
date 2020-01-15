@@ -16,7 +16,7 @@
         <view class="down-info-head"><image src="../../static/logo.png" mode=""></image></view>
         <view class="down-info-daynum" v-if="type === 0">
           我已在GPer社区题库打卡
-          <text>26</text>
+          <text>{{ todayCount.daysCount }}</text>
           天
         </view>
         <view class="down-info-daynum" v-if="type === 1">每日面试 离大厂只有一步之遥</view>
@@ -32,15 +32,21 @@
           <view class="d-i-answer-title" v-if="type === 2">今日练习情况</view>
           <view class="d-i-answer-con">
             <view>
-              <text>2</text>
+              <text v-if="type === 0">{{ todayCount.interviewCount }}</text>
+              <text v-if="type === 1">{{ interviewSituation.interviewCount }}</text>
+              <text v-if="type === 2">{{ exerciseSituation.exerciseCount }}</text>
               <text>{{ type === 2 ? '练习' : '面试' }}次数</text>
             </view>
             <view>
-              <text>12</text>
+              <text v-if="type === 0">{{ todayCount.exerciseCount }}</text>
+              <text v-if="type === 1">{{ interviewSituation.interviewCorrectCount }}/{{ interviewSituation.interviewQuestionCount }}</text>
+              <text v-if="type === 2">{{ exerciseSituation.exerciseCorrectCount }}/{{ exerciseSituation.exerciseQuestionCount }}</text>
               <text>{{ type === 0 ? '练习次数' : '正确题数' }}</text>
             </view>
             <view>
-              <text>2</text>
+              <text v-if="type === 0">{{ todayCount.daysCount }}</text>
+              <text v-if="type === 1">{{ interviewSituation.interviewCorrectScore }}</text>
+              <text v-if="type === 2">{{ exerciseSituation.exerciseCorrectScore }}</text>
               <text>{{ type === 0 ? '学习打卡' : '综合得分' }}</text>
             </view>
           </view>
@@ -62,8 +68,7 @@
       </view>
       <view class="close-poster" @tap="hiddenPoster">╳</view>
     </view>
-
-    </view>
+  </view>
 </template>
 
 <script>
@@ -75,6 +80,37 @@ export default {
     type: {
       type: Number,
       default: 0
+    },
+
+    todayCount: {
+      type: Object,
+      default() {
+        return {
+          exerciseCount: 0,
+          interviewCount: 0,
+          daysCount: 0
+        };
+      }
+    },
+    interviewSituation: {
+      default() {
+        return {
+          interviewCount: 0,
+          interviewQuestionCount: 0,
+          interviewCorrectCount: 0,
+          interviewCorrectScore: 0
+        };
+      }
+    },
+    exerciseSituation: {
+      default() {
+        return {
+          exerciseCount: 0,
+          exerciseQuestionCount: 0,
+          exerciseCorrectCount: 0,
+          exerciseCorrectScore: 0
+        };
+      }
     }
   },
   data() {
@@ -87,15 +123,14 @@ export default {
 
     // 下载海报
     downloadImage() {
-      this.$emit('downloadImage',this.type)
-      
+      this.$emit('downloadImage', this.type);
     },
 
     // 分享好友
     onShareAppMessage: function(options) {
       var that = this; // 设置菜单中的转发按钮触发转发事件时的转发内容
       var shareObj = {
-        title: 'asdasdasdasd', // 默认是小程序的名称(可以写slogan等)
+        title: 'GPer', // 默认是小程序的名称(可以写slogan等)
         // 　　　　path: '/pages/share/share',        // 默认是当前页面，必须是以‘/’开头的完整路径
         // 　　　　imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
         success: function(res) {
@@ -118,6 +153,7 @@ export default {
       if (options.from == 'button') {
         var eData = options.target.dataset;
         console.log(eData.name); // shareBtn // 此处可以修改 shareObj 中的内容
+        shareObj.path = '/pages/information/information';
         // 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
       } // 返回shareObj
       return shareObj;

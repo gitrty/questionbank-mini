@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { itembank } from '@api';
+const { viewSuitList } = itembank;
 export default {
   data() {
     return {
@@ -38,12 +40,23 @@ export default {
       this.companyList.forEach(item => (item.cur ? count++ : ''));
       this.selectNum = this.$store.state.selectNum = count;
     },
+
     // 返回上一级
-    backToInter() {
+    async backToInter() {
       let pages = getCurrentPages(); // 获取当前存在的所有页面
       let currPage = pages[pages.length - 1]; // 当前页面
       let prevPage = pages[pages.length - 2]; // 上一个页面
       if (this.selectNum == this.companyList.length - 1) this.selectNum = this.$store.state.selectNum = '···';
+      // 获取选中公司的面试题
+      let ids = '';
+      this.$store.state.companyList.forEach((item, index) => {
+        if (index === 0) return;
+        if (item.cur) ids = ids + item.id + '-';
+      });
+      ids = ids.slice(0, ids.length - 1);
+      // 获取选中公司的面试题列表
+      const data = await viewSuitList({ companyId: ids });
+      this.$store.state.viewSuitList = data;
       uni.navigateBack();
     }
   },

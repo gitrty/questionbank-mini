@@ -1,44 +1,79 @@
 <template>
   <view class="analysis" @touchstart="start" @touchend="end">
     <view class="ex-ans">
-      <view class="ex-ans-type fl">单选题</view>
-      <view class="ex-ans-fraction fl">10分</view>
+      <view class="ex-ans-type fl">{{ paper[nowAnswerNum - 1].tiXin || '' }}</view>
+      <view class="ex-ans-fraction fl">{{ paper[nowAnswerNum - 1].score || '' }}分</view>
     </view>
     <!-- 1 - 选项/简答区域 -->
     <view class="an-container">
       <!-- 题目 -->
-      <view class="an-container-title">{{ nowAnswerNum }}.下面关于目前嵌入式最小硬件系统的叙 述中,错误的是?</view>
+      <view class="an-container-title">{{ nowAnswerNum }}.{{ paper[nowAnswerNum - 1].biaoTi || '' }}</view>
 
       <!-- 选择题 -->
-      <view class="" v-if="false">
+      <view class="" v-if="paper[nowAnswerNum - 1].tiXin == '单选题' || paper[nowAnswerNum - 1].tiXin == '多选题'">
         <view class="an-success">
           <image src="../../../static/success-an.png" mode=""></image>
-          <text class="tgreen">正确答案 {{ paper[nowAnswerNum - 1].successAnswer }}</text>
-          <text class="you-an">你的答案 {{ userAnswer[nowAnswerNum - 1] }}</text>
+          <text class="tgreen">正确答案 {{ paper[nowAnswerNum - 1].daAn }}</text>
+          <text class="you-an">你的答案 {{ paper[nowAnswerNum - 1].content }}</text>
         </view>
         <!-- 选项 -->
-        <view class="an-option" v-for="(item, index) in paper[nowAnswerNum - 1].answer" :key="index">
-          <text :class="{ tred2: userAnswer[nowAnswerNum - 1].includes(item.sNum) && !item.isSuccess, tgreen: item.isSuccess }">{{ item.sNum }}.{{ item.content }}</text>
-          <image src="/static/error.png" mode="" v-if="userAnswer[nowAnswerNum - 1].includes(item.sNum) && !item.isSuccess"></image>
-          <image src="/static/success-an.png" mode="" v-if="item.isSuccess"></image>
+        <!-- A -->
+        <view class="an-option">
+          <text
+            :class="{ tred2: paper[nowAnswerNum - 1].content.includes('A') && !paper[nowAnswerNum - 1].daAn.includes('A'), tgreen: paper[nowAnswerNum - 1].daAn.includes('A') }"
+          >
+            A.{{ decodeURIComponent(paper[nowAnswerNum - 1].optionA) }}
+          </text>
+          <image src="/static/error.png" mode="" v-if="paper[nowAnswerNum - 1].content.includes('A') && !paper[nowAnswerNum - 1].daAn.includes('A')"></image>
+          <image src="/static/success-an.png" mode="" v-if="paper[nowAnswerNum - 1].daAn.includes('A')"></image>
+        </view>
+        <!-- B -->
+        <view class="an-option">
+          <text
+            :class="{ tred2: paper[nowAnswerNum - 1].content.includes('B') && !paper[nowAnswerNum - 1].daAn.includes('B'), tgreen: paper[nowAnswerNum - 1].daAn.includes('B') }"
+          >
+            B.{{ decodeURIComponent(paper[nowAnswerNum - 1].optionB) }}
+          </text>
+          <image src="/static/error.png" mode="" v-if="paper[nowAnswerNum - 1].content.includes('B') && !paper[nowAnswerNum - 1].daAn.includes('B')"></image>
+          <image src="/static/success-an.png" mode="" v-if="paper[nowAnswerNum - 1].daAn.includes('B')"></image>
+        </view>
+        <!-- C -->
+        <view class="an-option">
+          <text
+            :class="{ tred2: paper[nowAnswerNum - 1].content.includes('C') && !paper[nowAnswerNum - 1].daAn.includes('C'), tgreen: paper[nowAnswerNum - 1].daAn.includes('C') }"
+          >
+            C.{{ decodeURIComponent(paper[nowAnswerNum - 1].optionC) }}
+          </text>
+          <image src="/static/error.png" mode="" v-if="paper[nowAnswerNum - 1].content.includes('C') && !paper[nowAnswerNum - 1].daAn.includes('C')"></image>
+          <image src="/static/success-an.png" mode="" v-if="paper[nowAnswerNum - 1].daAn.includes('C')"></image>
+        </view>
+        <!-- D -->
+        <view class="an-option">
+          <text
+            :class="{ tred2: paper[nowAnswerNum - 1].content.includes('D') && !paper[nowAnswerNum - 1].daAn.includes('D'), tgreen: paper[nowAnswerNum - 1].daAn.includes('D') }"
+          >
+            D.{{ decodeURIComponent(paper[nowAnswerNum - 1].optionD) }}
+          </text>
+          <image src="/static/error.png" mode="" v-if="paper[nowAnswerNum - 1].content.includes('D') && !paper[nowAnswerNum - 1].daAn.includes('D')"></image>
+          <image src="/static/success-an.png" mode="" v-if="paper[nowAnswerNum - 1].daAn.includes('D')"></image>
         </view>
       </view>
 
       <!-- 简答题 -->
-      <view class="" v-if="true">
+      <view class="" v-if="paper[nowAnswerNum - 1].tiXin == '简答题'">
         <view class="an-reference">
           <view class="an-reference-top">
             <image src="../../../static/danan-success.png" mode=""></image>
             <text>参考答案</text>
           </view>
-          <view class="an-reference-con">答案内容答案内容答案内容答案内容答案内容答案 内容答案内容答案内容答案内容答案内容答案内容 答案内容答案内容答案内容答案内容</view>
+          <view class="an-reference-con">{{ paper[nowAnswerNum - 1].neiRong || '' }}</view>
         </view>
         <view class="you-reference">
           <view class="an-reference-top">
             <image src="../../../static/danan-you.png" mode=""></image>
             <text>你的答案</text>
           </view>
-          <view class="an-reference-con">答案内容答案内容答案内容答案内容答案内容答案 内容答案内容答案内容答案内容答案内容答案内容 答案内容答案内容答案内容答案内容</view>
+          <view class="an-reference-con">{{ paper[nowAnswerNum - 1].content }}</view>
         </view>
       </view>
     </view>
@@ -163,56 +198,45 @@
 </template>
 
 <script>
+import { itembank } from '@api';
+const { getAnswerList, getAnswerById } = itembank;
 export default {
   data() {
     return {
       isAnCard: false, // 答题卡显示状态
       isMore: false, // 更多显示状态
-      nowAnswerNum: 2, // 当前题号,
+      nowAnswerNum: 1, // 当前题号,
       isNew: false, // 默认/最新解析
-      isInfo:true, // 有无解析
+      isInfo: true, // 有无解析
       // 所有题
-      paper: [
-        {
-          id: 1,
-          answer: [
-            { sNum: 'A', content: '嵌入式最小硬件系统包括嵌入式处理器1', checked: false, isSuccess: false },
-            { sNum: 'B', content: '嵌入式最小硬件系统包括嵌入式处理器2', checked: false, isSuccess: true },
-            { sNum: 'C', content: '嵌入式最小硬件系统包括嵌入式处理器3', checked: false, isSuccess: false },
-            { sNum: 'D', content: '嵌入式最小硬件系统包括嵌入式处理器4', checked: false, isSuccess: false }
-          ],
-          successAnswer: 'B', // 正确答案
-          isSign: false, // 标记
-          isCollection: false, // 收藏
-          isInterView: false // 是否面过
-        },
-        {
-          id: 2,
-          answer: [
-            { sNum: 'A', content: '嵌入式最小硬件系统包括嵌入式处理器111', checked: false, isSuccess: false },
-            { sNum: 'B', content: '嵌入式最小硬件系统包括嵌入式处理器2222', checked: false, isSuccess: false },
-            { sNum: 'C', content: '嵌入式最小硬件系统包括嵌入式处理器3333', checked: false, isSuccess: true },
-            { sNum: 'D', content: '嵌入式最小硬件系统包括嵌入式处理器44444', checked: false, isSuccess: true }
-          ],
-          successAnswer: 'CD',
-          isSign: true,
-          isCollection: false,
-          isInterView: false
-        }
-      ],
-      // 用户答案
-      userAnswer: ['A', 'AC'],
+      paper: [],
       // 滑动距离
       startData: { clientX: 0 },
-      // 模拟解析内容
-      analysisContent:
-        '由于clone是object类的一个protected方法，代 码不能直接调用它子类只能受保护的clone方法 克隆他自己，为此必须重由于clone是object类的一个protected方法，代 码不能直接调用它子类只能受保护的clone方法 克隆他自己，为此必须重'
+      analysisContent: 'HGHHH'
     };
   },
-  onLoad() {
+  async onLoad(e) {
+    // 获取当前试卷所有题的id
+    uni.showLoading({ title: '正在加载解析...', mask: true });
+    const everyList = await getAnswerList({ signboard: e.signboard });
+    console.info(everyList);
+
+    this.paper = [];
+    everyList.forEach(async (item, index) => {
+      const data2 = await getAnswerById({ id: item.id });
+      data2.isSign = false;
+      data2.isCollection = false;
+      data2.isInterView = false;
+      data2.biaoTi = decodeURIComponent(data2.biaoTi);
+      data2.neiRong = decodeURIComponent(data2.neiRong);
+      data2.content = decodeURIComponent(data2.content);
+      this.paper.push(data2);
+      if (index == everyList.length - 1) uni.hideLoading();
+    });
+    console.info(this.paper);
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({
-      title: `${this.nowAnswerNum}/${this.paper.length}`
+      title: `${this.nowAnswerNum}/${everyList.length}`
     });
   },
   methods: {

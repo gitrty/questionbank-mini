@@ -12,23 +12,23 @@
     <!-- 面试题 -->
     <view class="interv-con">
       <!-- 数据区域 -->
-      <view class="interv-con-card fl" v-for="index of 7" :key="index" @tap="jump('/pages/itembank/interview/details')">
+      <view class="interv-con-card fl" v-for="(item, index) in viewSuitList" :key="index" @tap="jump('/pages/itembank/interview/details',{id:item.id})">
         <view class="inter-img">
-          <image src="/static/timg.png" mode=""></image>
+          <image :src="item.cover" mode=""></image>
           <view class="inter-mask">
             <view class="inter-mask-hot">
               <image src="/static/hot.png" mode="" class="heat"></image>
-              <text>123热度</text>
+              <text>{{ item.jobInterviewCount }}热度</text>
             </view>
             <view class="inter-mask-qnum">
               <image src="/static/pnum.png" mode="" class="qnum"></image>
-              <text>共456题</text>
+              <text>共{{ item.radioCount + item.multipleCount + item.judgeCount + item.shortAnswerCount }}题</text>
             </view>
           </view>
         </view>
         <view class="inter-txt">
-          <view class="inter-txt-title">咕泡第一节答题大赛咕泡第一节答题大赛</view>
-          <view class="inter-rate"><toyoRate :value="'5'" :checkValue="'1'"></toyoRate></view>
+          <view class="inter-txt-title">{{ item.title }}</view>
+          <view class="inter-rate"><toyoRate :value="'4'" :checkValue="item.difficulty"></toyoRate></view>
         </view>
       </view>
     </view>
@@ -37,24 +37,38 @@
 
 <script>
 import WucTab from '@/components/wuc-tab/wuc-tab.vue';
+
+import { itembank } from '@api';
+const { getCompanyList, viewSuitList } = itembank;
 export default {
   components: {
     WucTab
   },
   data() {
     return {
-      companyList: [],
-      selectNum: 99
+      companyList: [], // 公司列表
+      selectNum: 99, // 选中公司数量
+      viewSuitList: [] // 面试题列表
     };
   },
   methods: {
     watchStore() {
       this.companyList = this.$store.state.companyList;
       this.selectNum = this.$store.state.selectNum;
+      this.viewSuitList = this.$store.state.viewSuitList;
     }
   },
   onShow() {
     this.watchStore();
+  },
+  async onLoad() {
+    // 获得大厂公司列表
+    const data = await getCompanyList();
+    data.forEach(item => this.$store.state.companyList.push({ name: item.name, cur: false, id: item.id }));
+
+    // 获得所有面试套题列表
+    const data2 = await viewSuitList();
+    this.viewSuitList = this.$store.state.viewSuitList = data2;
   }
 };
 </script>

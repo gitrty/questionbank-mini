@@ -10,7 +10,7 @@
             <image src="../../static/logo.png" mode=""></image>
           </view>
           <!-- 用户名 -->
-          <view class="user-name">登录/注册</view>
+          <view class="user-name">{{ userInfo.name }}</view>
         </view>
       </view>
       <!-- 收藏、分享、足迹 -->
@@ -50,42 +50,42 @@
       <view class="myhr"></view>
     </view>
     <!-- 退出账号 -->
-    <view class="esc-login" v-show="userStatus"><text @tap="escLogin">退出登录</text></view>
+    <!-- <view class="esc-login" v-show="userStatus"><text @tap="escLogin">退出登录</text></view> -->
 
     <!-- 登录注册 - start -->
     <view class="user-popup-mask" v-if="modelStatus"></view>
     <view :class="['user-popup-box', modelStatus ? 'user-popup-box-show' : '']">
-      <!-- 登录 -->
+      <!-- 登录：绑定邮箱 -->
       <view class="user-login" v-show="isLogin">
         <view class="close-popup"><image src="../../static/guanbi.png" class="fr" mode="" @tap="closeModel"></image></view>
         <view class="user-login-title">登录GPer</view>
-        <view class="user-login-txt">进入专业的IT技术问答社区</view>
+        <view class="user-login-txt">请绑定邮箱</view>
         <view class="user-login-form">
           <view :class="{ uName: true, 'uName-active': loginAnimate.uNameActive }">账号</view>
-          <view :class="{ uPwd: true, 'uPwd-active': loginAnimate.uPwdActive }">密码</view>
+          <!-- <view :class="{ uPwd: true, 'uPwd-active': loginAnimate.uPwdActive }">密码</view> -->
           <input
             type="text"
-            placeholder="请输入邮箱或手机号码"
+            placeholder="请输入邮箱"
             v-model="loginForm.uName"
             placeholder-style="color:#e2e4ea;"
             @focus="loginAnimate.uNameActive = true"
             @blur="loginAnimate.uNameActive = loginForm.uName == '' ? false : true"
           />
-          <input
+          <!--   <input
             type="password"
             placeholder="请输入密码"
             v-model="loginForm.uPwd"
             placeholder-style="color:#e2e4ea;"
             @focus="loginAnimate.uPwdActive = true"
             @blur="loginAnimate.uPwdActive = loginForm.uPwd == '' ? false : true"
-          />
-          <view class="login-btn" @tap="login">立即登录</view>
+          /> -->
+          <view class="login-btn" @tap="wxLogin">确认绑定</view>
           <view class="user-go-reg fr">
             没有账号？
             <text @tap="isLogin = false">去注册</text>
           </view>
         </view>
-        <view class="wx-login">
+        <view class="wx-login" v-show="false">
           <text>其他登录方式</text>
           <view><image src="../../static/weixin.png" mode="" @tap="wxLogin"></image></view>
         </view>
@@ -108,7 +108,7 @@
             @blur="regAnimate.uNameActive = regForm.uName == '' ? false : true"
           />
           <input
-            type="password"
+            type="text"
             placeholder="请输入邮箱"
             v-model="regForm.uEmail"
             placeholder-style="color:#e2e4ea;"
@@ -134,7 +134,7 @@
           <view class="login-btn" @tap="register">注册并登录</view>
           <view class="user-go-login fr">
             已有账号？
-            <text @tap="isLogin = true">去登录</text>
+            <text @tap="isLogin = true">去绑定</text>
           </view>
         </view>
       </view>
@@ -144,12 +144,16 @@
 </template>
 
 <script>
+import { util } from '@api/http';
+import { user } from '@api';
+const { wxLogin, wxBinding, register } = user;
 export default {
   data() {
     return {
       modelStatus: false, // 登录注册页面出现状态
       userStatus: false, // 用户登录状态
       isLogin: true, // 登录/注册 切换
+      isEmail: false, // 是否绑定了邮箱
       // 登录输入框动画
       loginAnimate: {
         uNameActive: false,
@@ -173,17 +177,40 @@ export default {
         uEmail: '',
         uPwd: '',
         uRepeat: ''
-      }
+      },
+      userInfo: null
     };
   },
   onTabItemTap() {
-    if (!this.userStatus) {
-      uni.hideTabBar({ animation: true });
-    }
-    this.userStatus = this.$store.state.userStatus;
-    this.modelStatus = !this.$store.state.userStatus;
+    // this.userStatus = this.$store.state.userStatus;
+    // this.modelStatus = !this.$store.state.userStatus;
+    // if (!this.userStatus) {
+    //   uni.hideTabBar({ animation: true });
+    // }
   },
-  onShow() {},
+  async onShow() {
+    if (this.$store.state.userId == '') {
+      const { code } = await util.login();
+      const userInfo = await wxLogin({ code: code });
+      this.userInfo = userInfo;
+      this.$store.state.userInfo = userInfo
+      // 用户没有绑定邮箱
+      if (!userInfo.userId) {
+        // 测试使用
+        this.userStatus = this.$store.state.userId;
+        this.modelStatus = !this.$store.state.userId;
+        if (!this.userStatus) {
+          uni.hideTabBar({ animation: true });
+        }
+        return
+      }
+      uni.setStorageSync('userId',this.$store.state.userId )
+      this.$store.state.userId = userInfo.userId;
+    } else {
+      this.userInfo = this.$store.state.userInfo;
+      uni.setStorageSync('userId',this.$store.state.userId )
+    }
+  },
   methods: {
     // 登录
     login() {
@@ -194,11 +221,56 @@ export default {
       this.successLogin();
     },
 
-    // 注册并登录
-    register() {
-      // 正则验证...
-      this.showToast('请输入正确的邮箱');
+    // 绑定邮箱并登录
+    async wxLogin() {
+      // 验证邮箱格式
+      if (/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.loginForm.uName)) {
+        const data = await wxBinding({ email: this.loginForm.uName, openId: this.userInfo.openId });
+        console.info(data);
+        // 邮箱不存在
+        if (!data.userId) {
+          this.showToast('邮箱不存在，请先注册');
+        } else {
+          // 绑定成功
+          this.$store.state.userId = data.userId;
+          uni.setStorageSync('userId',this.$store.state.userId )
+          this.userInfo = data;
+          this.successLogin();
+        }
+      } else {
+        this.showToast('请输入正确的邮箱');
+      }
+    },
 
+    // 注册并登录
+    async register() {
+      // 正则验证...
+      if (this.regForm.uName == '' || this.regForm.uEmail == '' || this.regForm.uPwd == '' || this.regForm.uRepeat == '') {
+        this.showToast('请输入完整信息');
+        return;
+      }
+      if (!/^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test(this.regForm.uEmail)) {
+        this.showToast('请输入正确的邮箱');
+        return;
+      }
+      if (this.regForm.uPwd.length < 6) {
+        this.showToast('密码不能小于6位');
+        return;
+      }
+      if (this.regForm.uPwd !== this.regForm.uRepeat) {
+        this.showToast('两次密码不一致');
+        return;
+      }
+      const data = await register({ email: this.regForm.uEmail, name: this.regForm.uName, password: this.regForm.uPwd });
+      if (data === null) {
+        this.showToast('邮箱已存在');
+        return;
+      }
+      // 注册成功后自动绑定邮箱
+      const data2 = await wxBinding({ email: this.regForm.uEmail, openId: this.userInfo.openId });
+      uni.setStorageSync('userId',this.$store.state.userId )
+      this.$store.state.userId = data2.userId;
+      this.userInfo = data2;
       // 注册并登录成功
       this.successLogin();
     },
@@ -215,32 +287,26 @@ export default {
       // 登录成功够关闭 登录/注册 框
       this.modelStatus = false;
       // 登录成功 -> 更新用户登录状态
-      this.userStatus = this.$store.state.userStatus = true;
+      this.userStatus = this.$store.state.userId;
       uni.showTabBar({ animation: true });
     },
 
     // 退出登录
     escLogin() {
-      let _this = this
+      let _this = this;
       uni.showModal({
-          title: '温馨提示',
-          content: '确认退出登录吗？',
-          success: function (res) {
-              if (res.confirm) {
-                  // console.log('用户点击确定');
-                  _this.userStatus = _this.$store.state.userStatus = false;
-                  _this.jump('/pages/information/information');
-              } else if (res.cancel) {
-                  // console.log('用户点击取消');
-              }
+        title: '温馨提示',
+        content: '确认退出登录吗？',
+        success: function(res) {
+          if (res.confirm) {
+            // console.log('用户点击确定');
+            _this.userStatus = _this.$store.state.userId = '';
+            _this.jump('/pages/information/information');
+          } else if (res.cancel) {
+            // console.log('用户点击取消');
           }
+        }
       });
-      
-    },
-
-    // 去微信登录
-    wxLogin() {
-      this.jump('/pages/user/login/login')
     }
   }
 };

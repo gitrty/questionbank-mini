@@ -10,7 +10,10 @@ const requestPayments = wxPromisify(uni.requestPayment)
 
 import { Util } from './util'
 
-const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
+// 测试环境
+const baseUrl = 'http://192.168.8.122:19001/'
+
+// const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 // let access_token = ''
 
 const request = class {
@@ -24,20 +27,22 @@ const request = class {
 
     // 拼接 appKey 和 appSecret
     Object.entries(params).forEach(([key, value], index) => {
-      appKey += key.toString() + '-'
-      appSecret += key.toString() + value.toString()
+      appKey += key + '-'
+      appSecret += key + value
     });
 
     const accessToken = await Util._getToken()
-    const mds = appKey.slice(0, appKey.length - 1)
-    const mds2 = timestamp + appSecret + accessToken
+    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
+    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
 
     params.appKey = mds
     params.appSecret = mds2
     params.timestamp = timestamp
+    params.rand = Util.uuid()
     // console.info(params)
 
     url += urlLoader(params)
+    // console.info(url)
 
     const header = await Util.getCustomHeader()
 
@@ -65,12 +70,13 @@ const request = class {
     });
 
     const accessToken = await Util._getToken()
-    const mds = appKey.slice(0, appKey.length - 1)
-    const mds2 = timestamp + appSecret + accessToken
+    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
+    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
 
     params.appKey = mds
     params.appSecret = mds2
     params.timestamp = timestamp
+    params.rand = Util.uuid()
     // console.info(params)
 
     const header = await Util.getCustomHeader()
@@ -99,16 +105,25 @@ const request = class {
     });
 
     const accessToken = await Util._getToken()
-    const mds = appKey.slice(0, appKey.length - 1)
-    const mds2 = timestamp + appSecret + accessToken
+    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
+    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
 
     params.appKey = mds
     params.appSecret = mds2
     params.timestamp = timestamp
+    params.rand = Util.uuid()
 
-    const header = {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'accessToken': accessToken
+    let header = null
+    if (uni.getStorageSync('accessToken')) {
+      header = {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'accessToken': accessToken
+      }
+    } else {
+      header = {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'visitorToken': accessToken
+      }
     }
 
     const { data } = await ajax({

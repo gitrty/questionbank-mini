@@ -176,16 +176,19 @@
       "path": "pages/itembank/interview/selectedtab" //启动页面，必选
     }, {
       "name": "details", //模式名称
-      "path": "pages/itembank/interview/details" //启动页面，必选
+      "path": "pages/itembank/interview/details", //启动页面，必选
+      "query": "id=27282" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "examination", //模式名称
-      "path": "pages/itembank/examination/examination" //启动页面，必选
+      "path": "pages/itembank/examination/examination", //启动页面，必选
+      "query": "id=27282" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "results", //模式名称
       "path": "pages/itembank/results/results" //启动页面，必选
     }, {
       "name": "analysis", //模式名称
-      "path": "pages/itembank/analysis/analysis" //启动页面，必选
+      "path": "pages/itembank/analysis/analysis", //启动页面，必选
+      "query": "signboard=610bed10-e912-4f81-a55c-659095cdbba4" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "publishAnalysis", //模式名称
       "path": "pages/itembank/publishAnalysis/publishAnalysis" //启动页面，必选
@@ -197,10 +200,12 @@
       "path": "pages/itembank/special/special" //启动页面，必选
     }, {
       "name": "selectTab", //模式名称
-      "path": "pages/itembank/special/selectTab" //启动页面，必选
+      "path": "pages/itembank/special/selectTab", //启动页面，必选
+      "query": "classifyId=27247" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "filtering", //模式名称
-      "path": "pages/itembank/special/filtering" //启动页面，必选
+      "path": "pages/itembank/special/filtering", //启动页面，必选
+      "query": "labelId=27309&labelName=阿里巴巴" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "article", //模式名称
       "path": "pages/information/article/article" //启动页面，必选

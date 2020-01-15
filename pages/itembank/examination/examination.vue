@@ -10,41 +10,67 @@
     <!-- 答题区域 -->
     <view class="">
       <view class="ex-ans">
-        <view class="ex-ans-type fl">单选题</view>
-        <view class="ex-ans-fraction fl">10分</view>
+        <view class="ex-ans-type fl">{{ nowAnswer[nowAnswerNum - 1].tiXin }}</view>
+        <view class="ex-ans-fraction fl">{{ nowAnswer[nowAnswerNum - 1].score || '' }}分</view>
         <view class="ex-ans-time fr">
           <view>
-            <text>01</text>
-            :
-            <text>02</text>
-            :
-            <text>58</text>
+            <text>{{ timer | formatDuring }}</text>
           </view>
-          <image src="../../../static/stop.png" mode=""></image>
+          <!-- <image src="../../../static/stop.png" mode=""></image> -->
         </view>
       </view>
       <!-- 选项/简答区域 -->
       <view class="ex-container">
-        <view class="ex-container-title">{{ nowAnswerNum }}.下面关于目前嵌入式最小硬件系统的叙 述中,错误的是?</view>
+        <view class="ex-container-title">{{ nowAnswerNum }}.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].biaoTi) || '' }}</view>
         <!-- 单选题 -->
-        <view class="ex-container-choice" v-for="(item, index) in danList" :key="index" @tap="danSelect(index)" v-if="false">
-          <image :src="item.checked ? danYesCheck : danNoCheck" mode=""></image>
-          <text :class="{ tblue: item.checked }">{{ index | numToLetter }}.{{ item.content }}</text>
+        <view class="" v-if="nowAnswer[nowAnswerNum - 1].tiXin == '单选题'">
+          <view class="ex-container-choice" @tap="danSelectA">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong == 'A' ? danYesCheck : danNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong == 'A' }">A.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionA) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="danSelectB">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong == 'B' ? danYesCheck : danNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong == 'B' }">B.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionB) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="danSelectC">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong == 'C' ? danYesCheck : danNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong == 'C' }">C.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionC) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="danSelectD">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong == 'D' ? danYesCheck : danNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong == 'D' }">D.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionD) }}</text>
+          </view>
         </view>
+
         <!-- 多选题 -->
-        <view class="ex-container-choice" v-for="(item, index) in duoList" :key="index" @tap="duoSelect(index)" v-if="true">
-          <image :src="item.checked ? duoYesCheck : duoNoCheck" mode=""></image>
-          <text :class="{ tblue: item.checked }">{{ index | numToLetter }}.{{ item.content }}</text>
+        <view class="" v-if="nowAnswer[nowAnswerNum - 1].tiXin == '多选题'">
+          <view class="ex-container-choice" @tap="duoSelectA">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong.includes('A') ? duoYesCheck : duoNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong.includes('A') }">A.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionA) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="duoSelectB">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong.includes('B') ? duoYesCheck : duoNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong.includes('B') }">B.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionB) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="duoSelectC">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong.includes('C') ? duoYesCheck : duoNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong.includes('C') }">C.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionC) }}</text>
+          </view>
+          <view class="ex-container-choice" @tap="duoSelectD">
+            <image :src="nowAnswer[nowAnswerNum - 1].neiRong.includes('D') ? duoYesCheck : duoNoCheck" mode=""></image>
+            <text :class="{ tblue: nowAnswer[nowAnswerNum - 1].neiRong.includes('D') }">D.{{ decodeURIComponent(nowAnswer[nowAnswerNum - 1].optionD) }}</text>
+          </view>
         </view>
+
         <!-- 简答题 -->
-        <view class="ex-container-short" v-show="false">
+        <view class="ex-container-short" v-show="nowAnswer[nowAnswerNum - 1].tiXin == '简答题'">
           <view class="ex-container-short-hr"></view>
-          <textarea value="" maxlength="-1" placeholder="请输入你的答案" />
+          <textarea v-model="nowAnswer[nowAnswerNum - 1].neiRong" maxlength="-1" placeholder="请输入你的答案" @input="textInput" />
           <!-- 提示：简答题无法系统判断 -->
           <view class="shrot-tip" v-if="isShortTip">
             <image src="../../../static/tip.png" mode=""></image>
             <text>简答题暂不支持系统判断，可交卷后查看答案或解析</text>
-            <view class="close-shrot-tip" @tap="isShortTip = false">不再提示</view>
+            <view class="close-shrot-tip" @tap="noTip">不再提示</view>
           </view>
         </view>
       </view>
@@ -69,7 +95,7 @@
         <view class="ex-nav-txt" v-show="isAnCard">关闭</view>
       </view>
       <view class="ex-nav-con" @tap="tabSign">
-        <image :src="paper[nowAnswerNum - 1].isSign ? '/static/sign-1.png' : '/static/ex-4.png'" mode=""></image>
+        <image :src="nowAnswer[nowAnswerNum - 1].isSign ? '/static/sign-1.png' : '/static/ex-4.png'" mode=""></image>
         <view class="ex-nav-txt">标记</view>
       </view>
       <view class="ex-nav-con" @tap="handInHand">
@@ -83,27 +109,27 @@
       <view v-for="index of answerNum" :class="['serial-number', index + 1 === nowAnswerNum ? 'active' : '']" :key="index" @tap="tabExamination(index)">
         <text>{{ index + 1 }}</text>
         <!-- 标记题目 -->
-        <image src="../../../static/sign-1.png" mode="" class="ex-sign" v-show="paper[index].isSign"></image>
+        <image src="../../../static/sign-1.png" mode="" class="ex-sign" v-show="nowAnswer[index].isSign"></image>
         <!-- 收藏题目 -->
-        <image src="../../../static/collection.png" mode="" class="ex-collection" v-show="paper[index].isCollection"></image>
+        <image src="../../../static/collection.png" mode="" class="ex-collection" v-show="nowAnswer[index].isCollection"></image>
       </view>
     </view>
 
     <!-- 更多 -->
     <view class="ex-more" v-if="isMore">
-      <view v-show="!paper[nowAnswerNum - 1].isInterView" @tap="paper[nowAnswerNum - 1].isInterView = true">
+      <view v-show="!nowAnswer[nowAnswerNum - 1].isInterView" @tap="past">
         <image src="../../../static/more-1.png" mode=""></image>
         <text>面过此题</text>
       </view>
-      <view v-show="paper[nowAnswerNum - 1].isInterView" @tap="paper[nowAnswerNum - 1].isInterView = false">
+      <view v-show="nowAnswer[nowAnswerNum - 1].isInterView" @tap="dePast">
         <image src="../../../static/yes-ct.png" mode=""></image>
         <text class="tgary">已面此题</text>
       </view>
-      <view v-show="!paper[nowAnswerNum - 1].isCollection" @tap="paper[nowAnswerNum - 1].isCollection = true">
+      <view v-show="!nowAnswer[nowAnswerNum - 1].isCollection" @tap="collection">
         <image src="../../../static/more-2.png" mode=""></image>
         <text>收藏题目</text>
       </view>
-      <view v-show="paper[nowAnswerNum - 1].isCollection" @tap="paper[nowAnswerNum - 1].isCollection = false">
+      <view v-show="nowAnswer[nowAnswerNum - 1].isCollection" @tap="deCollection">
         <image src="../../../static/yes-sc.png" mode=""></image>
         <text class="tgary">已收藏此题</text>
       </view>
@@ -113,13 +139,13 @@
     <view class="submission-tip" v-show="isSubmission">
       <view class="submission-tip-top">
         <text>离成功你只需要坚持一下</text>
-        <text>还剩10道题没做，确认提前交卷吗？</text>
+        <text>还剩{{ weizuoNum }}道题没做，确认提前交卷吗？</text>
       </view>
       <view class="submission-tip-bottom">
-        <text @tap="redirectTo('/pages/itembank/results/results')">确认提交</text>
-        <text class="tblue" @tap="isSubmission = false">取消</text>
+        <text @tap="yesSubmit">确认提交</text>
+        <text class="tblue" @tap="closeSub">取消</text>
       </view>
-      <view class="close-tip" @tap="this.isSubmission = false">╳</view>
+      <view class="close-tip" @tap="closeSub">╳</view>
     </view>
 
     <!-- 遮罩层 -->
@@ -129,6 +155,19 @@
 </template>
 
 <script>
+import { itembank } from '@api';
+const {
+  startSuitByUserId,
+  getListBySuitId,
+  getFactoryContentById,
+  putFactoryContent,
+  commitFactory,
+  getQuestionBankList,
+  startExerciseByUserId,
+  getQuestionContentById,
+  putQuestionContent,
+  commitQuestion
+} = itembank;
 export default {
   data() {
     return {
@@ -141,23 +180,11 @@ export default {
       danYesCheck: '/static/dx-yes.png', // 单选选中图标
       duoNoCheck: '/static/duo-no.png', // 多选未选中图标
       duoYesCheck: '/static/duo-yes.png', // 多选选中图标
-      // 单选选项
-      danList: [
-        { sNum: 'A', content: '嵌入式最小硬件系统包括嵌入式处理器1', checked: false },
-        { sNum: 'B', content: '嵌入式最小硬件系统包括嵌入式处理器2', checked: false },
-        { sNum: 'C', content: '嵌入式最小硬件系统包括嵌入式处理器3', checked: false },
-        { sNum: 'D', content: '嵌入式最小硬件系统包括嵌入式处理器4', checked: false }
-      ],
-      // 多选选项
-      duoList: [
-        { sNum: 'A', content: '嵌入式最小硬件系统包括嵌入式处理器1', checked: false },
-        { sNum: 'B', content: '嵌入式最小硬件系统包括嵌入式处理器2', checked: false },
-        { sNum: 'C', content: '嵌入式最小硬件系统包括嵌入式处理器3', checked: false },
-        { sNum: 'D', content: '嵌入式最小硬件系统包括嵌入式处理器4', checked: false }
-      ],
-      answerNum: 20, // 题目总数，
+      answerNum: 0, // 题目总数，
       nowAnswerNum: 1, // 当前题编号，
-      // 当前考试的所有题  （isSign:标记状态   isCollection:收藏状态   isInterView:是否面过此题）
+      weizuoNum: 0, // 交卷时未做的题
+      signboard: null, // 开始考试的标识
+      // 当前考试的所有题 - 模拟  （isSign:标记状态   isCollection:收藏状态   isInterView:是否面过此题）
       paper: [
         { id: 1, isSign: false, isCollection: false, isInterView: false },
         { id: 2, isSign: true, isCollection: false, isInterView: false },
@@ -167,25 +194,143 @@ export default {
       ],
       startData: {
         clientX: 0
-      }
+      },
+      everyList: [], //  当前考试所有题
+      //  当前考试所有题 - 详情
+      nowAnswer: [
+        {
+          score: '',
+          tiXin: '',
+          biaoTi: ''
+        }
+      ],
+      category: null, // 分类  0大厂面试   1专题练习,
+      thAnswer: {},
+      timer: 3600 // 答题时间（时间戳）
     };
   },
-  onLoad() {
+  async onLoad(e) {
+    console.info(e);
+    this.thAnswer = e;
+    uni.showLoading({ title: '正在加载题目', mask: true });
+    // 获取当前套题的所有题目
+    let everyList;
+    if (e.id) {
+      // 大厂面试 - 获取开始考试标识
+      this.category = 0;
+      const { signboard } = await startSuitByUserId({ userId: this.$store.state.userId });
+      this.signboard = signboard;
+      everyList = await getListBySuitId({ id: e.id, signboard: signboard, userId: this.$store.state.userId });
+    } else {
+      // 专题练习 - 获取开始考试标识
+      this.category = 1;
+      const { signboard } = await startExerciseByUserId({ userId: this.$store.state.userId });
+      this.signboard = signboard;
+      everyList = await getQuestionBankList({
+        biaoQianIdList: e.biaoQianIdList,
+        tiXin: e.tiXin,
+        num: e.num,
+        signboard: signboard,
+        userId: this.$store.state.userId
+      });
+    }
+
+    // 时间到后自动提交
+    let times = setInterval(() => {
+      this.timer--;
+      if (this.timer === 0) {
+        clearInterval(times);
+        this.yesSubmit();
+      }
+    }, 1000);
+
+    this.answerNum = everyList.length;
+    this.everyList = everyList;
+
+    this.nowAnswer = [];
+    everyList.forEach(async item => {
+      let data;
+      if (this.category === 0) {
+        data = await getFactoryContentById({ id: item.id });
+      } else if (this.category === 1) {
+        data = await getQuestionContentById({ id: item.id });
+      }
+      data.isSign = false; // 标记
+      data.isCollection = false; // 收藏
+      data.isInterView = false; // 是否面过
+      data.neiRong = ''; // 清空内容
+      this.nowAnswer.push(data);
+    });
+    uni.hideLoading();
+    // console.info(everyList)
+    console.info(this.nowAnswer);
+    // console.info(decodeURIComponent(nowAnswer.biaoTi));
+
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({
-      title: `${this.nowAnswerNum}/${this.paper.length}`
+      title: `${this.nowAnswerNum}/${everyList.length}`
     });
   },
   methods: {
+    // 收藏
+    collection() {
+      this.nowAnswer[this.nowAnswerNum - 1].isCollection = true;
+    },
+
+    // 取消收藏
+    deCollection() {
+      this.nowAnswer[this.nowAnswerNum - 1].isCollection = false;
+    },
+
+    // 面过此题
+    past() {
+      this.nowAnswer[this.nowAnswerNum - 1].isInterView = true;
+    },
+
+    // 取消面过此题
+    dePast() {
+      this.nowAnswer[this.nowAnswerNum - 1].isInterView = false;
+    },
+
     // 单选
-    danSelect(index) {
-      this.danList.forEach(item => (item.checked = false));
-      this.danList[index].checked = true;
+    danSelectA() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong = 'A';
+    },
+    danSelectB() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong = 'B';
+    },
+    danSelectC() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong = 'C';
+    },
+    danSelectD() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong = 'D';
     },
 
     // 多选
-    duoSelect(index) {
-      this.duoList[index].checked = !this.duoList[index].checked;
+    duoSelectA() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong.includes('A')
+        ? (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.replace(/A/gi, ''))
+        : (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.concat('A'));
+    },
+    duoSelectB() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong.includes('B')
+        ? (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.replace(/B/gi, ''))
+        : (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.concat('B'));
+    },
+    duoSelectC() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong.includes('C')
+        ? (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.replace(/C/gi, ''))
+        : (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.concat('C'));
+    },
+    duoSelectD() {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong.includes('D')
+        ? (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.replace(/D/gi, ''))
+        : (this.nowAnswer[this.nowAnswerNum - 1].neiRong = this.nowAnswer[this.nowAnswerNum - 1].neiRong.concat('D'));
+    },
+
+    // 简答题输入框内容变化
+    textInput({ detail }) {
+      this.nowAnswer[this.nowAnswerNum - 1].neiRong = detail.value;
     },
 
     // 打开答题卡
@@ -207,13 +352,82 @@ export default {
 
     // 标记/取消标记
     tabSign() {
-      this.paper[this.nowAnswerNum - 1].isSign = !this.paper[this.nowAnswerNum - 1].isSign;
+      this.nowAnswer[this.nowAnswerNum - 1].isSign = !this.nowAnswer[this.nowAnswerNum - 1].isSign;
     },
 
-    // 交卷
+    // 交卷按钮
     handInHand() {
       this.isAnCard = this.isMore = false;
       this.isSubmission = true;
+      // 检测未做的题
+      let count = 0;
+      this.nowAnswer.forEach(item => (item.neiRong == '' ? count++ : 0));
+      this.weizuoNum = count;
+    },
+
+    // 确认提交
+    async yesSubmit() {
+      console.info(this.nowAnswer);
+      // console.info(this.signboard);
+      // 1 - 将所有的题都进行提交
+      this.nowAnswer.forEach(async item => {
+        // 不提交空题
+        if (item.neiRong == '') return;
+        // 拼接不同题型的参数
+        let content;
+        if (item.tiXin == '单选题') {
+          content = '-' + item.neiRong + '-';
+        }
+        if (item.tiXin == '多选题') {
+          item.neiRong.split('').forEach(val => {
+            content = content + '-' + val;
+          });
+          content += '-';
+        }
+        if (item.tiXin == '简答题') {
+          content = item.neiRong;
+        }
+        if (this.category === 0) {
+          await putFactoryContent({
+            id: item.id,
+            signboard: this.signboard,
+            userId: this.$store.state.userId,
+            content: content
+          });
+        } else if (this.category === 1) {
+          await putQuestionContent({
+            id: item.id,
+            signboard: this.signboard,
+            userId: this.$store.state.userId,
+            content: content
+          });
+        }
+      });
+      // 2 - 提交整张试卷
+      if (this.category === 0) {
+        await commitFactory({
+          signboard: this.signboard,
+          userId: this.$store.state.userId
+        });
+      } else if (this.category === 1) {
+        await commitQuestion({
+          signboard: this.signboard,
+          userId: this.$store.state.userId
+        });
+      }
+
+      // 提交成功，关闭考试，跳转页面
+      this.redirectTo('/pages/itembank/results/results', { signboard: this.signboard, category: this.category, thAnswer: JSON.stringify(this.thAnswer) });
+    },
+
+    // 关闭简答题提示
+    noTip() {
+      this.isShortTip = false;
+    },
+
+    // 关闭交卷提示
+    closeSub() {
+      this.isSubmission = false;
     },
 
     // 滑动切换考题
@@ -226,13 +440,13 @@ export default {
         // 右滑
         this.nowAnswerNum--;
         uni.setNavigationBarTitle({
-          title: `${this.nowAnswerNum}/${this.paper.length}`
+          title: `${this.nowAnswerNum}/${this.everyList.length}`
         });
-      } else if (subX < -100 && this.nowAnswerNum < this.paper.length) {
+      } else if (subX < -100 && this.nowAnswerNum < this.nowAnswer.length) {
         // 左滑
         this.nowAnswerNum++;
         uni.setNavigationBarTitle({
-          title: `${this.nowAnswerNum}/${this.paper.length}`
+          title: `${this.nowAnswerNum}/${this.everyList.length}`
         });
       }
     }

@@ -1,12 +1,16 @@
 <template>
   <view class="select-tab">
     <view class="select-tab-con">
-      <view class="select-tab-title fw">请选择以下专题标签（{{ selectedNum }}/5）</view>
+      <!-- （{{ selectedNum }}/5） -->
+      <view class="select-tab-title fw">请选择以下专题标签</view>
 
-      <view class="select-tab-vfor clearfix" v-for="(item, index) in cardList" :key="index">
-        <view class="s-t-top fw">{{ item.name }}</view>
-        <view class="s-t-con" v-for="(tagItem, tagIndex) in item.card" :key="tagIndex">
-          <view :class="['con-tab-card', ' fl', tagItem.isChecked ? 'card-active' : '']" @tap="selectTag(index, tagIndex)">{{ tagItem.tag }}</view>
+      <!--  v-for="(item, index) in cardList" :key="index" -->
+      <view class="select-tab-vfor clearfix">
+        <!-- <view class="s-t-top fw">{{ item.name }}</view> -->
+        <view class="s-t-con" v-for="(tagItem, tagIndex) in labelList" :key="tagIndex">
+          <view :class="['con-tab-card', ' fl', tagItem.isChecked ? 'card-active' : '']" @tap="selectTag(tagItem.labelId, tagItem.labelName, tagIndex)">
+            {{ tagItem.labelName }}
+          </view>
         </view>
       </view>
     </view>
@@ -16,72 +20,41 @@
     <!-- 底部导航 -->
     <view class="bottom-nav">
       <view class="nav-prev" @tap="navigateBack()">上一步</view>
-      <view class="nav-next" @tap="jump('/pages/itembank/special/filtering')">下一步</view>
+      <view class="nav-next" @tap="nextBack">下一步</view>
     </view>
   </view>
 </template>
 
 <script>
+import { itembank } from '@api';
+const { getLabelListByClassifyId } = itembank;
 export default {
   data() {
     return {
-      cardList: [
-        {
-          // 专题名称
-          name: 'JAVA',
-          // 专题所有标签（isChecked：选中状态）
-          card: [
-            { tag: '标签11', isChecked: false },
-            { tag: '标签122', isChecked: false },
-            { tag: '标签421', isChecked: false },
-            { tag: '标签14', isChecked: false },
-            { tag: '标签1643', isChecked: false }
-          ]
-        },
-        {
-          name: 'python',
-          card: [
-            { tag: '标签标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false }
-          ]
-        },
-        {
-          name: '前端',
-          card: [
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false },
-            { tag: '标签11', isChecked: false }
-          ]
-        }
-      ],
-      selectedNum: 0 // 选中的标签数量
+      selectedNum: 0, // 选中的标签数量
+      labelList: [],
+      labelId: null,
+      labelName: null
     };
   },
-  onLoad(e) {
-    // 修改当前页面标题 NavigationBarTitle
-    uni.setNavigationBarTitle({
-      title: e.title
-    });
+  async onLoad(e) {
+    const labelList = await getLabelListByClassifyId({ classifyId: e.classifyId });
+    labelList.forEach(item => (item.isChecked = false));
+    this.labelList = labelList;
   },
   methods: {
-    selectTag(index, tagIndex) {
-      // 当前标签的状态
-      const nowCheck = this.cardList[index].card[tagIndex].isChecked;
+    // 选择标签
+    selectTag(labelId, labelName, index) {
+      this.labelId = labelId;
+      this.labelName = labelName;
+      this.labelList.forEach(item => (item.isChecked = false));
+      this.labelList[index].isChecked = true;
+    },
 
-      // 最多选择5个标签
-      if (!nowCheck && this.selectedNum >= 5) return;
-
-      // 切换选中/未选中
-      this.cardList[index].card[tagIndex].isChecked = !nowCheck;
-
-      // 控制选中数量
-      if (nowCheck) this.selectedNum--;
-      else this.selectedNum++;
+    // 下一步
+    nextBack() {
+      if (!this.labelId) this.showToast('请选择标签');
+      else this.jump('/pages/itembank/special/filtering', { labelId: this.labelId, labelName: this.labelName });
     }
   }
 };

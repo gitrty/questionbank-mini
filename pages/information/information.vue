@@ -80,14 +80,14 @@ export default {
     
   },
   async onLoad() {
-    const { list } = await selectArticlesByPage();
-    // console.info(list)
+    const data = await selectArticlesByPage({userId:277});
+    console.info(data)
     // 处理文章列表文字详情过长
-    list.forEach(item => (item.summary = item.summary.slice(0, 80) + '...'));
-    this.godNewsList = list || [];
+    // list.forEach(item => (item.summary = item.summary.slice(0, 80) + '...'));
+    // this.godNewsList = list || [];
     // 面试经验
-    this.interViewList = JSON.parse(JSON.stringify(this.godNewsList));
-    this.interViewList.forEach(item => (item.summary = item.summary.slice(0, 40) + '...'));
+    // this.interViewList = JSON.parse(JSON.stringify(this.godNewsList));
+    // this.interViewList.forEach(item => (item.summary = item.summary.slice(0, 40) + '...'));
   },
   methods: {
     // 技术类型切换

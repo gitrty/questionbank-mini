@@ -5,23 +5,24 @@
       <image :src="type ? '/static/fx-zt-bg.png' : '/static/bg1-1.png'" mode="" class="bg1"></image>
       <view class="down-info" id="faultTree">
         <image :src="type ? '/static/fx-zt-bg2.png' : '/static/bg2-1.png'" mode="" class="bg2"></image>
-        <view :class="[type ? 'defen2' : 'defen1']">99</view>
+        <view :class="[type ? 'defen2' : 'defen1']">{{ assessmentResult.myScore }}</view>
         <image src="../../static/logo.png" mode="" class="touxiang"></image>
         <view class="txt1">本次我{{ type ? '练习' : '面试' }}了</view>
-        <view :class="['txt2', type ? 'qgold' : '']">【咕泡第一届答题大赛答题大赛】</view>
+        <view :class="['txt2', type ? 'qgold' : '']" v-if="!type">【{{ viewTitle }}】</view>
+        <view :class="['txt2', type ? 'qgold' : '']" v-if="type">【{{ exTitle }}】</view>
         <view class="down-info-answer">
           <view class="d-i-answer-title">本次{{ type ? '练习' : '面试' }}情况</view>
           <view class="d-i-answer-con">
             <view>
-              <text>2</text>
+              <text>{{ assessmentResult.correctCount }}/{{ assessmentResult.allCount }}</text>
               <text>正确题数</text>
             </view>
             <view>
-              <text>12</text>
+              <text>{{ assessmentResult.score }}</text>
               <text>考卷分值</text>
             </view>
             <view>
-              <text>2</text>
+              <text>{{ assessmentResult.duration | sToMs }}</text>
               <text>{{ type ? '练习' : '考试' }}用时</text>
             </view>
           </view>
@@ -54,6 +55,26 @@ export default {
     type: {
       type: Number,
       default: 0
+    },
+    assessmentResult: {
+      type: Object,
+      default() {
+        return {
+          allCount: '', //总题数
+          correctCount: '', //正确题数
+          score: '', //试卷分值
+          myScore: '', //用户的考试得分
+          duration: '' //面试用时,单位是秒
+        };
+      }
+    },
+    viewTitle: {
+      type: String,
+      default: '123'
+    },
+    exTitle: {
+      type: String,
+      default: '456'
     }
   },
   data() {
@@ -64,13 +85,15 @@ export default {
       this.$emit('closePoster', false);
     },
     // 下载海报
-    downloadImage() {},
+    downloadImage() {
+      this.$emit('downloadImage', this.type);
+    },
 
     // 分享好友
     onShareAppMessage: function(options) {
       var that = this; // 设置菜单中的转发按钮触发转发事件时的转发内容
       var shareObj = {
-        title: 'asdasdasdasd', // 默认是小程序的名称(可以写slogan等)
+        title: 'GPer', // 默认是小程序的名称(可以写slogan等)
         // 　　　　path: '/pages/share/share',        // 默认是当前页面，必须是以‘/’开头的完整路径
         // 　　　　imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
         success: function(res) {
@@ -92,6 +115,7 @@ export default {
       }; // 来自页面内的按钮的转发
       if (options.from == 'button') {
         var eData = options.target.dataset;
+        shareObj.path = '/pages/information/information';
         console.log(eData.name); // shareBtn // 此处可以修改 shareObj 中的内容
         // 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
       } // 返回shareObj

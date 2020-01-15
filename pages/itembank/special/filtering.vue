@@ -6,7 +6,8 @@
         <view class="filtering-tit fw">已选标签</view>
         <view class="tab-details">
           <text>#</text>
-          <text v-for="index of 5" :key="index">标签1</text>
+          <!-- <text v-for="index of 5" :key="index">标签1</text> -->
+          <text>{{ labelName }}</text>
         </view>
       </view>
       <!-- 选择题型 -->
@@ -44,7 +45,7 @@
     <!-- 底部导航 -->
     <view class="bottom-nav">
       <view class="nav-prev" @tap="navigateBack()">上一步</view>
-      <view class="nav-next" @tap="jump('/pages/itembank/examination/examination')">确认练习</view>
+      <view class="nav-next" @tap="startEx">确认练习</view>
     </view>
   </view>
 </template>
@@ -55,32 +56,61 @@ export default {
     return {
       // 题型
       topicType: [
-        { name: '随机出题', isChecked: true },
+        { name: '全部', isChecked: true },
         { name: '单选题', isChecked: false },
         { name: '多选题', isChecked: false },
         { name: '判断题', isChecked: false },
         { name: '简答题', isChecked: false }
       ],
       // 出题来源
-      topicSource: [{ name: '随机出题', isChecked: true }, { name: '只出新题', isChecked: false }, { name: '只出错题', isChecked: false }, { name: '新题+错题', isChecked: false }],
+      topicSource: [{ name: '随机出题', isChecked: true }],
       // 出题数量
-      topicNum: [{ num: 5, isChecked: true }, { num: 10, isChecked: false }, { num: 15, isChecked: false }, { num: 20, isChecked: false }]
+      topicNum: [{ num: 5, isChecked: true }, { num: 10, isChecked: false }, { num: 15, isChecked: false }, { num: 20, isChecked: false }],
+      labelName: null,
+      labelId: null
     };
   },
+  onLoad(e) {
+    console.info(e);
+    this.labelName = e.labelName;
+    this.labelId = e.labelId;
+  },
   methods: {
+    // 题型切换
     topicTypeClick(index) {
       // 可多选但不包括第一项
-      this.topicType[index].isChecked = !this.topicType[index].isChecked;
-      if (!index && this.topicType[index].isChecked) this.topicType.forEach((item, i) => (i === 0 ? 0 : (item.isChecked = false)));
-      if (index && this.topicType[index].isChecked) this.topicType[0].isChecked = false;
+      // this.topicType[index].isChecked = !this.topicType[index].isChecked;
+      // if (!index && this.topicType[index].isChecked) this.topicType.forEach((item, i) => (i === 0 ? 0 : (item.isChecked = false)));
+      // if (index && this.topicType[index].isChecked) this.topicType[0].isChecked = false;
+      this.topicType.forEach(item => (item.isChecked = false));
+      this.topicType[index].isChecked = true;
     },
+
+    // 出题来源切换
     topicSourceClick(index) {
       this.topicSource.forEach(item => (item.isChecked = false));
       this.topicSource[index].isChecked = true;
     },
+
+    // 出题数量切换
     topicNumClick(index) {
       this.topicNum.forEach(item => (item.isChecked = false));
       this.topicNum[index].isChecked = true;
+    },
+
+    // 确认练习
+    startEx() {
+      let biaoQianIdList = '-' + this.labelId + '-';
+      let tiXin;
+      let num;
+      this.topicType.some(item => (item.isChecked ? (tiXin = item.name) : 0));
+      this.topicNum.some(item => (item.isChecked ? (num = item.num) : 0));
+
+      this.jump('/pages/itembank/examination/examination', {
+        biaoQianIdList: biaoQianIdList,
+        tiXin: tiXin,
+        num: num
+      });
     }
   }
 };

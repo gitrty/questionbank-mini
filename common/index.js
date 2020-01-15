@@ -77,7 +77,32 @@ export default {
         if (val === 7) return 'H'
       }),
       // 文字超出部分显示省略号
-      Vue.filter('ellipsis', (val, num) => val.length > num ? val.slice(0, num) + '...' : val)
+      Vue.filter('ellipsis', (val, num) => val.length > num ? val.slice(0, num) + '...' : val),
+      // 将秒化为 分+秒
+      Vue.filter('sToMs', s => {
+        //计算分钟
+        //算法：将秒数除以60，然后下舍入，既得到分钟数
+        let h;
+        h = Math.floor(s / 60);
+        //计算秒
+        //算法：取得秒%60的余数，既得到秒数
+        s = s % 60;
+        //将变量转换为字符串
+        h += '';
+        s += '';
+        //如果只有一位数，前面增加一个0
+        h = (h.length == 1) ? '0' + h : h;
+        s = (s.length == 1) ? '0' + s : s;
+        return h + '分' + s + '秒';
+      }),
+      // 将秒转换为分秒
+      Vue.filter('formatDuring', mss => {
+        let minutes = parseInt(mss / 60)
+        let seconds = mss % 60
+        minutes = minutes < 10 ? ('0' + minutes) : minutes;
+        seconds = seconds < 10 && seconds >= 1 ? ('0' + seconds) : seconds;
+        return minutes + ":" + seconds;
+      })
   }
 }
 const urlLoader = data => `?${Object.keys(data).map(item => `${item}=${data[item]}`).join('&')}`

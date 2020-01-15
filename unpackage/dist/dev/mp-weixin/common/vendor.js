@@ -8508,7 +8508,7 @@ module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/information/information": { "navigationBarTitleText": "资讯" }, "pages/itembank/itembank": { "navigationBarTitleText": "题库" }, "pages/user/user": { "navigationBarTitleText": "我的", "navigationStyle": "custom" }, "pages/information/article/article": { "navigationBarTitleText": "资讯详情" }, "pages/user/login/login": { "navigationBarTitleText": "用户登录" }, "pages/itembank/punchcard/punchcard": { "navigationBarTitleText": "打卡记录" }, "pages/user/collection/collection": { "navigationBarTitleText": "我的收藏" }, "pages/user/share/share": { "navigationBarTitleText": "我的分享" }, "pages/user/footprint/footprint": { "navigationBarTitleText": "我的足迹" }, "pages/itembank/answer/answer": { "navigationBarTitleText": "答题详情" }, "pages/itembank/interview/interview": { "navigationBarTitleText": "面试题" }, "pages/itembank/interview/selectedtab": { "navigationBarTitleText": "已选标签" }, "pages/itembank/interview/details": { "navigationBarTitleText": "面试题" }, "pages/itembank/examination/examination": { "navigationBarTitleText": "考试中" }, "pages/itembank/results/results": { "navigationBarTitleText": "考试结果" }, "pages/itembank/analysis/analysis": { "navigationBarTitleText": "答案解析" }, "pages/itembank/publishAnalysis/publishAnalysis": { "navigationBarTitleText": "发表解析" }, "pages/itembank/userAnalysis/userAnalysis": { "navigationBarTitleText": "解析详情" }, "pages/itembank/special/special": { "navigationBarTitleText": "专题练习" }, "pages/itembank/special/selectTab": { "navigationBarTitleText": "专题练习" }, "pages/itembank/special/filtering": { "navigationBarTitleText": "筛选条件" } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/information/information": { "navigationBarTitleText": "资讯", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/itembank": { "navigationBarTitleText": "题库", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/user": { "navigationBarTitleText": "我的", "navigationStyle": "custom", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/information/article/article": { "navigationBarTitleText": "资讯详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/login/login": { "navigationBarTitleText": "用户登录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/punchcard/punchcard": { "navigationBarTitleText": "打卡记录", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/collection/collection": { "navigationBarTitleText": "我的收藏", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/share/share": { "navigationBarTitleText": "我的分享", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/user/footprint/footprint": { "navigationBarTitleText": "我的足迹", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/answer/answer": { "navigationBarTitleText": "答题详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/interview/interview": { "navigationBarTitleText": "面试题", "usingComponents": { "wuc-tab": "/components/wuc-tab/wuc-tab" }, "usingAutoImportComponents": {} }, "pages/itembank/interview/selectedtab": { "navigationBarTitleText": "已选标签", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/interview/details": { "navigationBarTitleText": "面试题", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/examination/examination": { "navigationBarTitleText": "考试中", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/results/results": { "navigationBarTitleText": "考试结果", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/analysis/analysis": { "navigationBarTitleText": "答案解析", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/publishAnalysis/publishAnalysis": { "navigationBarTitleText": "发表解析", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/userAnalysis/userAnalysis": { "navigationBarTitleText": "解析详情", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/special": { "navigationBarTitleText": "专题练习", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/selectTab": { "navigationBarTitleText": "专题练习", "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/itembank/special/filtering": { "navigationBarTitleText": "筛选条件", "usingComponents": {}, "usingAutoImportComponents": {} } }, "globalStyle": { "navigationBarTextStyle": "black", "navigationBarTitleText": "uni-app", "navigationBarBackgroundColor": "#F8F8F8", "backgroundColor": "#F8F8F8" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
@@ -8675,22 +8675,31 @@ var store = new _vuex.default.Store({
     // 1 - 面试题选择公司模块
     companyList: [
     // 所有公司 name:公司名  cur:选中状态
-    { name: '全部', cur: false, all: 1 },
-    { name: '腾讯科技', cur: false },
-    { name: '阿里巴巴', cur: false },
-    { name: '阿里巴巴', cur: false },
-    { name: '腾讯科技', cur: false },
-    { name: '腾讯科技', cur: false },
-    { name: '阿里巴巴', cur: false },
-    { name: '阿里巴巴', cur: false },
-    { name: '腾讯科技', cur: false },
-    { name: '阿里巴巴', cur: false },
-    { name: '腾讯科技', cur: false }],
+    { name: '全部', cur: false, all: 1 }],
 
     selectNum: 0,
 
+    // 面试题列表
+    viewSuitList: [],
+
+    // 考试中的标识
+    signboard: '',
+
     // 2 - 用户登录状态
-    userStatus: false },
+    userStatus: false,
+
+    // userId
+    userId: '',
+
+    // 小程序授权code码
+    code: '',
+
+    // 用户绑定的邮箱
+    email: '',
+
+    exTitle: 'java',
+
+    viewTitle: 'GPer第一届答题大赛' },
 
   mutations: {},
   actions: {} });var _default =
@@ -9736,7 +9745,32 @@ var index_esm = {
       if (val === 7) return 'H';
     }),
     // 文字超出部分显示省略号
-    Vue.filter('ellipsis', function (val, num) {return val.length > num ? val.slice(0, num) + '...' : val;});
+    Vue.filter('ellipsis', function (val, num) {return val.length > num ? val.slice(0, num) + '...' : val;}),
+    // 将秒化为 分+秒
+    Vue.filter('sToMs', function (s) {
+      //计算分钟
+      //算法：将秒数除以60，然后下舍入，既得到分钟数
+      var h;
+      h = Math.floor(s / 60);
+      //计算秒
+      //算法：取得秒%60的余数，既得到秒数
+      s = s % 60;
+      //将变量转换为字符串
+      h += '';
+      s += '';
+      //如果只有一位数，前面增加一个0
+      h = h.length == 1 ? '0' + h : h;
+      s = s.length == 1 ? '0' + s : s;
+      return h + '分' + s + '秒';
+    }),
+    // 将秒转换为分秒
+    Vue.filter('formatDuring', function (mss) {
+      var minutes = parseInt(mss / 60);
+      var seconds = mss % 60;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 && seconds >= 1 ? '0' + seconds : seconds;
+      return minutes + ":" + seconds;
+    });
   } };exports.default = _default;
 
 var urlLoader = function urlLoader(data) {return "?".concat(Object.keys(data).map(function (item) {return "".concat(item, "=").concat(data[item]);}).join('&'));};
@@ -10553,7 +10587,10 @@ if (hadRuntime) {
 
 var _util = __webpack_require__(/*! ./util */ 24);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ajax = (0, _config.wxPromisify)(uni.request);var logins = (0, _config.wxPromisify)(uni.login);var showModals = (0, _config.wxPromisify)(uni.showModal);var authorizes = (0, _config.wxPromisify)(uni.authorize);var getImageInfos = (0, _config.wxPromisify)(uni.getImageInfo);var getUserInfos = (0, _config.wxPromisify)(uni.getUserInfo);var saveImageToPhotosAlbums = (0, _config.wxPromisify)(uni.saveImageToPhotosAlbum);var requestPayments = (0, _config.wxPromisify)(uni.requestPayment);
 
-var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
+// 测试环境
+var baseUrl = 'http://192.168.8.122:19001/';
+
+// const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 // let access_token = ''
 
 var request = /*#__PURE__*/function () {function request() {_classCallCheck(this, request);}_createClass(request, [{ key: "get",
@@ -10567,29 +10604,31 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
 
                 // 拼接 appKey 和 appSecret
                 Object.entries(params).forEach(function (_ref, index) {var _ref2 = _slicedToArray(_ref, 2),key = _ref2[0],value = _ref2[1];
-                  appKey += key.toString() + '-';
-                  appSecret += key.toString() + value.toString();
+                  appKey += key + '-';
+                  appSecret += key + value;
                 });_context.next = 9;return (
 
                   _util.Util._getToken());case 9:accessToken = _context.sent;
-                mds = appKey.slice(0, appKey.length - 1);
-                mds2 = timestamp + appSecret + accessToken;
+                mds = _util.Util.strToBinary(appKey.slice(0, appKey.length - 1));
+                mds2 = _util.Util.strToBinary(timestamp + appSecret + accessToken);
 
                 params.appKey = mds;
                 params.appSecret = mds2;
                 params.timestamp = timestamp;
+                params.rand = _util.Util.uuid();
                 // console.info(params)
 
-                url += urlLoader(params);_context.next = 18;return (
-
-                  _util.Util.getCustomHeader());case 18:header = _context.sent;_context.next = 21;return (
+                url += urlLoader(params);
+                // console.info(url)
+                _context.next = 19;return (
+                  _util.Util.getCustomHeader());case 19:header = _context.sent;_context.next = 22;return (
 
                   ajax({
                     method: 'GET',
                     url: "".concat(baseUrl).concat(url),
-                    header: header }));case 21:_ref3 = _context.sent;data = _ref3.data;return _context.abrupt("return",
+                    header: header }));case 22:_ref3 = _context.sent;data = _ref3.data;return _context.abrupt("return",
 
-                data.data);case 24:case "end":return _context.stop();}}}, _callee, this);}));function get(_x) {return _get.apply(this, arguments);}return get;}()
+                data.data);case 25:case "end":return _context.stop();}}}, _callee, this);}));function get(_x) {return _get.apply(this, arguments);}return get;}()
 
 
 
@@ -10608,23 +10647,24 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 });_context2.next = 9;return (
 
                   _util.Util._getToken());case 9:accessToken = _context2.sent;
-                mds = appKey.slice(0, appKey.length - 1);
-                mds2 = timestamp + appSecret + accessToken;
+                mds = _util.Util.strToBinary(appKey.slice(0, appKey.length - 1));
+                mds2 = _util.Util.strToBinary(timestamp + appSecret + accessToken);
 
                 params.appKey = mds;
                 params.appSecret = mds2;
                 params.timestamp = timestamp;
+                params.rand = _util.Util.uuid();
                 // console.info(params)
-                _context2.next = 17;return (
-                  _util.Util.getCustomHeader());case 17:header = _context2.sent;_context2.next = 20;return (
+                _context2.next = 18;return (
+                  _util.Util.getCustomHeader());case 18:header = _context2.sent;_context2.next = 21;return (
 
                   ajax({
                     method: 'POST',
                     url: "".concat(baseUrl).concat(url),
                     data: params,
-                    header: header }));case 20:_ref6 = _context2.sent;data = _ref6.data;return _context2.abrupt("return",
+                    header: header }));case 21:_ref6 = _context2.sent;data = _ref6.data;return _context2.abrupt("return",
 
-                data.data);case 23:case "end":return _context2.stop();}}}, _callee2, this);}));function post(_x2) {return _post.apply(this, arguments);}return post;}()
+                data.data);case 24:case "end":return _context2.stop();}}}, _callee2, this);}));function post(_x2) {return _post.apply(this, arguments);}return post;}()
 
 
     // 3 - post请求 传参序列化 : 使用application / x-www-form-urlencoded格式
@@ -10642,25 +10682,34 @@ var request = /*#__PURE__*/function () {function request() {_classCallCheck(this
                 });_context3.next = 9;return (
 
                   _util.Util._getToken());case 9:accessToken = _context3.sent;
-                mds = appKey.slice(0, appKey.length - 1);
-                mds2 = timestamp + appSecret + accessToken;
+                mds = _util.Util.strToBinary(appKey.slice(0, appKey.length - 1));
+                mds2 = _util.Util.strToBinary(timestamp + appSecret + accessToken);
 
                 params.appKey = mds;
                 params.appSecret = mds2;
                 params.timestamp = timestamp;
+                params.rand = _util.Util.uuid();
 
-                header = {
-                  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                  'accessToken': accessToken };_context3.next = 18;return (
+                header = null;
+                if (uni.getStorageSync('accessToken')) {
+                  header = {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'accessToken': accessToken };
 
+                } else {
+                  header = {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'visitorToken': accessToken };
+
+                }_context3.next = 20;return (
 
                   ajax({
                     method: 'POST',
                     url: "".concat(baseUrl).concat(url),
                     data: params,
-                    header: header }));case 18:_ref9 = _context3.sent;data = _ref9.data;return _context3.abrupt("return",
+                    header: header }));case 20:_ref9 = _context3.sent;data = _ref9.data;return _context3.abrupt("return",
 
-                data.data);case 21:case "end":return _context3.stop();}}}, _callee3, this);}));function postAplt(_x3) {return _postAplt.apply(this, arguments);}return postAplt;}() }]);return request;}();
+                data.data);case 23:case "end":return _context3.stop();}}}, _callee3, this);}));function postAplt(_x3) {return _postAplt.apply(this, arguments);}return postAplt;}() }]);return request;}();
 
 
 
@@ -10728,7 +10777,10 @@ var wxPromisify = function wxPromisify(fn) {return function () {var obj = argume
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.Util = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@babel/runtime/regenerator */ 19));var _config = __webpack_require__(/*! ../config */ 23);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}
 var ajax = (0, _config.wxPromisify)(uni.request);
 
-var baseUrl = 'http://rap2api.taobao.org/app/mock/26810/';
+// 测试环境
+var baseUrl = 'http://192.168.8.122:19001/';
+// const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
+
 
 var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, utils);}_createClass(utils, [{ key: "_getToken",
 
@@ -10771,7 +10823,7 @@ var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, ut
 
                   // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
                 };
-                userId = uni.setStorageSync('userId'); // 获取用户登录状态
+                userId = uni.getStorageSync('userId'); // 获取用户登录状态
 
                 userId ? header.accessToken = token || '' : header.visitorToken = token || '';return _context2.abrupt("return",
 
@@ -10795,10 +10847,43 @@ var utils = /*#__PURE__*/function () {function utils() {_classCallCheck(this, ut
                 uni.setStorageSync('timestamp', new Date().getTime());
                 uni.setStorageSync('aptimestamp', response.data.data.timestamp);return _context3.abrupt("return",
 
-                response.data.data.timestamp);case 10:case "end":return _context3.stop();}}}, _callee3, this);}));function getTimestamp() {return _getTimestamp.apply(this, arguments);}return getTimestamp;}() }]);return utils;}();
+                response.data.data.timestamp);case 10:case "end":return _context3.stop();}}}, _callee3, this);}));function getTimestamp() {return _getTimestamp.apply(this, arguments);}return getTimestamp;}()
 
 
 
+    /**
+                                                                                                                                                                                                                 * 字符串转二进制
+                                                                                                                                                                                                                 * @param {*} str 字符串
+                                                                                                                                                                                                                 */ }, { key: "strToBinary", value: function strToBinary(
+    str) {
+      var result = [];
+      var list = str.split('');
+      var key = 0x7C;
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var binaryByte = item.charCodeAt();
+        binaryByte ^= key;
+        var binaryStr = binaryByte.toString(16);
+        result.push(binaryStr);
+      }
+      return result.join('g');
+    }
+
+    /**
+       * 计算请求参数中的uuid
+       */ }, { key: "uuid", value: function uuid()
+    {
+      var s = [];
+      var hexDigits = '0123456789abcdef';
+      for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+      }
+      s[14] = '4';
+      s[19] = hexDigits.substr(s[19] & 0x3 | 0x8, 1);
+      s[8] = s[13] = s[18] = s[23] = '-';
+
+      return s.join('');
+    } }]);return utils;}();
 
 
 var Util = new utils();exports.Util = Util;
@@ -10819,7 +10904,9 @@ var Util = new utils();exports.Util = Util;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "home", { enumerable: true, get: function get() {return _home.default;} });var _home = _interopRequireDefault(__webpack_require__(/*! ./modules/home */ 32));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+Object.defineProperty(exports, "__esModule", { value: true });Object.defineProperty(exports, "home", { enumerable: true, get: function get() {return _home.default;} });Object.defineProperty(exports, "itembank", { enumerable: true, get: function get() {return _itembank.default;} });Object.defineProperty(exports, "user", { enumerable: true, get: function get() {return _user.default;} });var _home = _interopRequireDefault(__webpack_require__(/*! ./modules/home */ 32));
+var _itembank = _interopRequireDefault(__webpack_require__(/*! ./modules/itembank */ 33));
+var _user = _interopRequireDefault(__webpack_require__(/*! ./modules/user */ 34));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
 
 /***/ }),
 /* 32 */
@@ -10837,6 +10924,123 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   selectArticlesByPage: function selectArticlesByPage(data) {return _http.http.post("article/selectArticlesByPage", data);},
   // 文章详情查询接口
   selectArticlesById: function selectArticlesById(data) {return _http.http.get("article/selectArticlesById", data);} };exports.default = _default;
+
+/***/ }),
+/* 33 */
+/*!********************************************!*\
+  !*** E:/GPer/GPer/api/modules/itembank.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _http = __webpack_require__(/*! ../http */ 22);var _default =
+
+{
+  // GET:根据userId获得今日答题情况
+  getTodayByUserId: function getTodayByUserId(data) {return _http.http.get('exercise/getTodayByUserId', data);},
+
+  // GET:根据userId获取今日是否打卡
+  todayIsCard: function todayIsCard(data) {return _http.http.get('exercise/todayIsCard', data);},
+
+  // GET:立即打卡，根据userId进行立即打卡
+  immediatelyPunchUserId: function immediatelyPunchUserId(data) {return _http.http.get('exercise/immediatelyPunchUserId', data);},
+
+  // GET:查看打卡天数，根据userId查看连续打卡天数
+  getDaysCount: function getDaysCount(data) {return _http.http.get('exercise/getDaysCount', data);},
+
+  // GET:查看用户某天的答题情况，根据userId和日期查看某天的答题情况
+  getAnswerSituation: function getAnswerSituation(data) {return _http.http.get('exercise/getAnswerSituation', data);},
+
+  // GET:大厂面试，根据userId获取我的面试情况
+  getInterviewSituation: function getInterviewSituation(data) {return _http.http.get('exercise/getInterviewSituation', data);},
+
+  // GET:专题练习，根据userId获取我的练习情况
+  getExerciseSituation: function getExerciseSituation(data) {return _http.http.get('exercise/getExerciseSituation', data);},
+
+  // GET:获得大厂公司列表，适用于原型页面"题库-->面试题"
+  getCompanyList: function getCompanyList() {return _http.http.get('exercise/getCompanyList');},
+
+  // GET:大厂面试，获得面试套题列表
+  viewSuitList: function viewSuitList(data) {return _http.http.get('exercise/viewSuitList', data);},
+
+  // GET:根据面试套题ID获取套题详情，对应原型页面：考试详情--咕泡第1界答题大赛
+  viewSuitById: function viewSuitById(data) {return _http.http.get('exercise/viewSuitById', data);},
+
+  // GET:根据试卷ID,试卷signboard,试卷类型（“专题”或“大厂题”）获取该答题
+  getAnswerBySignboard: function getAnswerBySignboard(data) {return _http.http.get('exercise/getAnswerBySignboard', data);},
+
+  // GET:大厂面试套题，开始考试
+  startSuitByUserId: function startSuitByUserId(data) {return _http.http.get('exercise/startSuitByUserId', data);},
+
+  // GET:根据套题ID获取套题的所有题目
+  getListBySuitId: function getListBySuitId(data) {return _http.http.get('exercise/getListBySuitId', data);},
+
+  // GET:根据试卷里的ID获取本道题目的内容（大厂面试考试专用）
+  getFactoryContentById: function getFactoryContentById(data) {return _http.http.get('exercise/getFactoryContentById', data);},
+
+  // POST:根据试卷里的ID提交面试题答案(答题时新增回答或修改回答)
+  putFactoryContent: function putFactoryContent(data) {return _http.http.postAplt('exercise/putFactoryContent', data);},
+
+  // POST:面试做完，提交整张试卷的接口
+  commitFactory: function commitFactory(data) {return _http.http.postAplt('exercise/commitFactory', data);},
+
+  // GET:获得所有的专题分类
+  viewClassifyList: function viewClassifyList(data) {return _http.http.get('exercise/viewClassifyList', data);},
+
+  // GET:根据专题分类ID获取该分类所有的标签
+  getLabelListByClassifyId: function getLabelListByClassifyId(data) {return _http.http.get('exercise/getLabelListByClassifyId', data);},
+
+  // GET:专题练习--确认练习(非常重要，是本次练习开始的标识，会返回signboard作为本次练习的唯一标识)
+  startExerciseByUserId: function startExerciseByUserId(data) {return _http.http.get('exercise/startExerciseByUserId', data);},
+
+  // GET:专题练习--根据标签和题型筛选专题题库的题目列表
+  getQuestionBankList: function getQuestionBankList(data) {return _http.http.get('exercise/getQuestionBankList', data);},
+
+  // GET:专题练习--根据试卷里的ID获取本道题目的内容（专题练习专用）
+  getQuestionContentById: function getQuestionContentById(data) {return _http.http.get('exercise/getQuestionContentById', data);},
+
+  // POST:专题练习--根据试卷里的ID提交答案(答题时新增回答或修改回答)
+  putQuestionContent: function putQuestionContent(data) {return _http.http.postAplt('exercise/putQuestionContent', data);},
+
+  // POST:专题练习--练习做完，提交整张试卷的接口
+  commitQuestion: function commitQuestion(data) {return _http.http.postAplt('exercise/commitQuestion', data);},
+
+  // GET:大厂面试考试评估--根据userId获取该用户的全部已提交考卷
+  getCommitFactoryList: function getCommitFactoryList(data) {return _http.http.get('exercise/getCommitFactoryList', data);},
+
+  // GET:专题练习考试评估--根据userId获取该用户的全部已提交考卷
+  getCommitQuestionList: function getCommitQuestionList(data) {return _http.http.get('exercise/getCommitQuestionList', data);},
+
+  // GET:考试评估--大厂面试和专题练习通用--根据signboard获取一场考试的结果评估情况
+  getAssessmentResult: function getAssessmentResult(data) {return _http.http.get('exercise/getAssessmentResult', data);},
+
+  // GET:考试评估--大厂面试和专题练习通用--根据signboard获取一场考试的全部答题ID列表
+  getAnswerList: function getAnswerList(data) {return _http.http.get('exercise/getAnswerList', data);},
+
+  // GET:答案解析--大厂面试和专题练习通用--根据答题ID获取该答题的解析情况
+  getAnswerById: function getAnswerById(data) {return _http.http.get('exercise/getAnswerById', data);} };exports.default = _default;
+
+/***/ }),
+/* 34 */
+/*!****************************************!*\
+  !*** E:/GPer/GPer/api/modules/user.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _http = __webpack_require__(/*! ../http */ 22);var _default =
+
+{
+  // 调用接口通过登录凭证（code）换取用户登录态信息
+  wxLogin: function wxLogin(data) {return _http.http.get("wechat/wxLogin", data);},
+
+  // 微信小程序绑定
+  wxBinding: function wxBinding(data) {return _http.http.get("wechat/wxBinding", data);},
+
+  // 注册
+  register: function register(data) {return _http.http.postAplt("auth/register", data);} };exports.default = _default;
 
 /***/ })
 ]]);

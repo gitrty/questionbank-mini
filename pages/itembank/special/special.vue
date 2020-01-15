@@ -1,32 +1,38 @@
 <template>
   <view class="special">
-    <view
-      :class="['special-card', 'fl', index === 0 ? 'custom' : '']"
-      v-for="(item, index) in specialList"
-      :key="index"
-      @tap="jump('/pages/itembank/special/selectTab', { title: item.title })"
-    >
-      <image :src="item.imgSrc" mode=""></image>
-      <text>{{ item.title }}</text>
-      <text>题库量 {{ item.num }}</text>
+    <!-- , index === 0 ? 'custom' : '' -->
+    <view :class="['special-card', 'fl']" v-for="(item, index) in viewClassify" :key="index" @tap="jumpSelect(index)">
+      <image src="/static/diy-b.png" mode="" v-if="item.classifyName.includes('自定义')"></image>
+      <image src="/static/zt-java.png" mode="" v-if="item.classifyName.includes('JAVA')"></image>
+      <image src="/static/zt-jg.png" mode="" v-if="item.classifyName.includes('架构')"></image>
+      <image src="/static/zt-py.png" mode="" v-if="item.classifyName.includes('人工智能')"></image>
+      <image src="/static/zt-dsj.png" mode="" v-if="item.classifyName.includes('大数据')"></image>
+      <image src="/static/zj-qd.png" mode="" v-if="item.classifyName.includes('前端')"></image>
+      <image src="/static/zt-qt.png" mode="" v-if="item.classifyName.includes('其')"></image>
+      <text>{{ item.classifyName }}</text>
+      <text>题库量 {{ item.questionCountClassify }}</text>
     </view>
   </view>
 </template>
 
 <script>
+import { itembank } from '@api';
+const { viewClassifyList } = itembank;
 export default {
   data() {
     return {
-      specialList: [
-        { imgSrc: '/static/diy-b.png', title: '自定义练习', num: 999 },
-        { imgSrc: '/static/zt-java.png', title: 'JAVA', num: 999 },
-        { imgSrc: '/static/zt-jg.png', title: '架构', num: 999 },
-        { imgSrc: '/static/zt-py.png', title: '人工智能', num: 999 },
-        { imgSrc: '/static/zt-dsj.png', title: '大数据', num: 999 },
-        { imgSrc: '/static/zj-qd.png', title: '前端', num: 999 },
-        { imgSrc: '/static/zt-qt.png', title: '其他', num: 999 }
-      ]
+      viewClassify: []
     };
+  },
+  async onLoad() {
+    const viewClassify = await viewClassifyList({ userId: this.$store.state.userId });
+    this.viewClassify = viewClassify;
+  },
+  methods: {
+    jumpSelect(index) {
+      this.$store.state.exTitle = this.viewClassify[index].classifyName;
+      this.jump('/pages/itembank/special/selectTab', { classifyId: this.viewClassify[index].classifyId });
+    }
   }
 };
 </script>

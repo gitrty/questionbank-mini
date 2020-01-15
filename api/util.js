@@ -1,10 +1,13 @@
 import { wxPromisify } from '../config'
 const ajax = wxPromisify(uni.request)
 
-const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
+// 测试环境
+const baseUrl = 'http://192.168.8.122:19001/'
+// const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 
-const utils =  class {
-  
+
+const utils = class {
+
   /**
    * 获取token
    */
@@ -30,7 +33,7 @@ const utils =  class {
       return visitorToken
     }
   }
-  
+
   /**
    *  处理head中的token传参格式
    * @returns {string}
@@ -44,7 +47,7 @@ const utils =  class {
 
     // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
 
-    const userId = uni.setStorageSync('userId') // 获取用户登录状态
+    const userId = uni.getStorageSync('userId') // 获取用户登录状态
 
     userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
 
@@ -72,6 +75,39 @@ const utils =  class {
     }
   }
 
+  /**
+   * 字符串转二进制
+   * @param {*} str 字符串
+   */
+  strToBinary(str) {
+    const result = []
+    const list = str.split('')
+    const key = 0x7C
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i]
+      let binaryByte = item.charCodeAt()
+      binaryByte ^= key
+      const binaryStr = binaryByte.toString(16)
+      result.push(binaryStr)
+    }
+    return result.join('g')
+  }
+
+  /**
+   * 计算请求参数中的uuid
+   */
+  uuid() {
+    const s = []
+    const hexDigits = '0123456789abcdef'
+    for (let i = 0; i < 36; i++) {
+      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+    }
+    s[14] = '4'
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
+    s[8] = s[13] = s[18] = s[23] = '-'
+
+    return s.join('')
+  }
 }
 
 export const Util = new utils()

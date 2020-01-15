@@ -8,22 +8,31 @@ const store = new Vuex.Store({
     // 1 - 面试题选择公司模块
     companyList: [
       // 所有公司 name:公司名  cur:选中状态
-      { name: '全部', cur: false, all: 1 },
-      { name: '腾讯科技', cur: false },
-      { name: '阿里巴巴', cur: false },
-      { name: '阿里巴巴', cur: false },
-      { name: '腾讯科技', cur: false },
-      { name: '腾讯科技', cur: false },
-      { name: '阿里巴巴', cur: false },
-      { name: '阿里巴巴', cur: false },
-      { name: '腾讯科技', cur: false },
-      { name: '阿里巴巴', cur: false },
-      { name: '腾讯科技', cur: false }
+      { name: '全部', cur: false, all: 1 }
     ],
     selectNum: 0,
-    
+
+    // 面试题列表
+    viewSuitList: [],
+
+    // 考试中的标识
+    signboard: '',
+
     // 2 - 用户登录状态
-    userStatus:false
+    userStatus: false,
+
+    // userId
+    userId: '',
+
+    // 小程序授权code码
+    code: '',
+
+    // 用户绑定的邮箱
+    email: '',
+    
+    exTitle:'java',
+    
+    viewTitle:'GPer第一届答题大赛'
   },
   mutations: {},
   actions: {}
