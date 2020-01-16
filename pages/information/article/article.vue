@@ -3,14 +3,16 @@
     <view class="title">{{ articleInfo.title }}</view>
 
     <view class="analysis-user">
-      <image src="../../../static/logo.png" mode=""></image>
+      <image :src="articleInfo.avatarUrl" mode=""></image>
       <view class="user-info">
-        <view class="user-name">用户名用户名</view>
-        <view class="user-time">1小时前发布</view>
+        <view class="user-name">{{ articleInfo.userName }}</view>
+        <view class="user-time">发布时间：{{ articleInfo.createdAt }}</view>
       </view>
     </view>
 
-    <view class="content">{{ articleInfo.summary }}</view>
+    <!-- articleInfo.content -->
+    <rich-text class="content" :nodes="articleInfo.content"></rich-text>
+    <!-- <view>{{ articleInfo.content }}</view> -->
   </view>
 </template>
 
@@ -24,15 +26,15 @@ export default {
       articleInfo: {
         title: '',
         userName: '',
-        summary: ''
+        createdAt: '',
+        avatarUrl: '',
+        content: ''
       }
     };
   },
   async onLoad(e) {
-    // console.info(e)
     const { articleInfo } = await selectArticlesById({ id: e.id });
     this.articleInfo = articleInfo || {};
-    // console.info(articleInfo)
   }
 };
 </script>

@@ -13,7 +13,6 @@ import { Util } from './util'
 // 测试环境
 const baseUrl = 'http://192.168.8.122:19001/'
 
-// const baseUrl = 'http://rap2api.taobao.org/app/mock/26810/'
 // let access_token = ''
 
 const request = class {

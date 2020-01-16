@@ -248,7 +248,7 @@ export default {
     this.everyList = everyList;
 
     this.nowAnswer = [];
-    everyList.forEach(async item => {
+    everyList.forEach(async (item, index) => {
       let data;
       if (this.category === 0) {
         data = await getFactoryContentById({ id: item.id });
@@ -260,11 +260,10 @@ export default {
       data.isInterView = false; // 是否面过
       data.neiRong = ''; // 清空内容
       this.nowAnswer.push(data);
+      if (index == everyList.length - 1) uni.hideLoading();
     });
-    uni.hideLoading();
-    // console.info(everyList)
+
     console.info(this.nowAnswer);
-    // console.info(decodeURIComponent(nowAnswer.biaoTi));
 
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({

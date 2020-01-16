@@ -5,9 +5,9 @@
         {{item.title}}
       </view>
       <view class="active-content fl">
-        {{item.summary}}
+        {{ item.content | ellipsis(40) }}
       </view>
-      <image src="../../static/img1.png" class="fl" mode=""></image>
+      <image :src="item.logo" class="fl" mode=""></image>
     </view>
   </view>
 </template>

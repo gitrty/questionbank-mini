@@ -190,7 +190,7 @@ export default {
         this.jump('/pages/user/user');
         return;
       }
-      uni.setStorageSync('userId',this.$store.state.userId )
+      uni.setStorageSync('userId', this.$store.state.userId);
       this.$store.state.userInfo = userInfo;
       this.$store.state.userId = userInfo.userId;
     }
@@ -238,6 +238,10 @@ export default {
       this.createImage(0);
 
       const data = await immediatelyPunchUserId({ userId: this.$store.state.userId });
+
+      const { daysCount } = await getDaysCount({ userId: this.$store.state.userId });
+      this.todayCount.daysCount = daysCount;
+
       this.isPunch = true;
       // console.info(data);
     },

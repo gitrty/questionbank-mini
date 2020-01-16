@@ -6,8 +6,6 @@
       <view class="information-top-right" @tap="tabBar = false"><text :class="{ active: !tabBar }">面试经验</text></view>
     </view>
 
-    
-
     <!-- container -->
     <view class="information-container">
       <!-- 圈内好文container区域 -->
@@ -37,7 +35,7 @@ const { selectArticlesByPage } = home;
 export default {
   data() {
     return {
-      tabBar: false,
+      tabBar: true,
       godNewsArr: [
         {
           name: '全部',
@@ -73,21 +71,39 @@ export default {
         }
       ],
       godNewsList: [],
-      interViewList: []
+      interViewList: [],
+      pageNum1: 1, // 圈内好文当前页数
+      pageSize1: 10,
+      pageNum2: 1, // 面试经验当前页数
+      pageSize2: 10
     };
   },
-  mounted() {
-    
-  },
+  mounted() {},
   async onLoad() {
-    const data = await selectArticlesByPage({userId:277});
-    console.info(data)
-    // 处理文章列表文字详情过长
-    // list.forEach(item => (item.summary = item.summary.slice(0, 80) + '...'));
-    // this.godNewsList = list || [];
+    // 圈内好文
+    const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
+    // console.info(list);
+    this.godNewsList = list || [];
+
     // 面试经验
-    // this.interViewList = JSON.parse(JSON.stringify(this.godNewsList));
-    // this.interViewList.forEach(item => (item.summary = item.summary.slice(0, 40) + '...'));
+    const data = await selectArticlesByPage({ pageNum: this.pageNum2, pageSize: this.pageSize2, title: '面试经验' });
+    this.interViewList = data.list || [];
+  },
+
+  // 触底事件
+  async onReachBottom() {
+    if (this.tabBar) {
+      // 圈内好文
+      this.pageNum1 += 1;
+      const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
+
+      this.godNewsList = [...this.godNewsList, ...list];
+    } else {
+      // 面试经验
+      this.pageNum2 += 1;
+      const { list } = await selectArticlesByPage({ pageNum: this.pageNum2, pageSize: this.pageSize2, title: '面试经验' });
+      this.interViewList = [...this.interViewList, ...list];
+    }
   },
   methods: {
     // 技术类型切换

@@ -210,6 +210,7 @@ export default {
       // 获取点击日的数据详情
       let oDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
       console.info(oDate);
+      console.info(this.$store.state.userId)
       const data = await getAnswerSituation({ userId: this.$store.state.userId, date: oDate });
       console.info(data);
     },
