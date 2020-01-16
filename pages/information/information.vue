@@ -80,7 +80,10 @@ export default {
     
   },
   async onLoad() {
-    const data = await selectArticlesByPage({userId:277});
+    const data = await selectArticlesByPage({
+		pageNum:1,
+		pageSize: 15
+	});
     console.info(data)
     // 处理文章列表文字详情过长
     // list.forEach(item => (item.summary = item.summary.slice(0, 80) + '...'));

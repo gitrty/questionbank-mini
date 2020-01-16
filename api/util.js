@@ -8,106 +8,132 @@ const baseUrl = 'http://192.168.8.122:19001/'
 
 const utils = class {
 
-  /**
-   * 获取token
-   */
-  async _getToken() {
-    const accessToken = uni.getStorageSync('accessToken')
-    const visitorToken = uni.getStorageSync('visitorToken')
+	/**
+	 * 获取token
+	 */
+	async _getToken() {
+		const accessToken = uni.getStorageSync('accessToken')
+		const visitorToken = uni.getStorageSync('visitorToken')
 
-    if (accessToken) {
-      return accessToken
-    }
-    if (visitorToken) {
-      return visitorToken
-    }
+		if (accessToken) {
+			return accessToken
+		}
+		if (visitorToken) {
+			return visitorToken
+		}
 
-    const response = await ajax({
-      method: 'GET',
-      url: `${baseUrl}genera/init`
-    })
+		const response = await ajax({
+			method: 'GET',
+			url: `${baseUrl}genera/init`
+		})
 
-    if (response.data.success) {
-      const visitorToken = response.data.data.visitorToken
-      uni.setStorageSync('visitorToken', visitorToken)
-      return visitorToken
-    }
-  }
+		if (response.data.success) {
+			const visitorToken = response.data.data.visitorToken
+			uni.setStorageSync('visitorToken', visitorToken)
+			return visitorToken
+		}
+	}
 
-  /**
-   *  处理head中的token传参格式
-   * @returns {string}
-   */
-  async getCustomHeader() {
-    const token = await this._getToken()
+	/**
+	 * 判断对象是否空
+	 * @param {object} obj
+	 */
+	isNotEmptyObject(obj) {
+		if (typeof obj === 'string') {
+			if (obj.length > 0) {
+				return true
+			} else {
+				return false
+			}
+		} else if (typeof obj === 'number') {
+			return true
+		} else if (typeof obj === 'Object') {
+			if (obj.length > 0) {
+				return true
+			} else {
+				return false
+			}
+		} else if (typeof obj === 'null') {
+			return false
+		} else if (typeof obj === 'undefined') {
+			return false
+		}
+	}
 
-    const header = {
-      'Content-Type': 'application/json;charset=UTF-8',
-    }
+	/**
+	 *  处理head中的token传参格式
+	 * @returns {string}
+	 */
+	async getCustomHeader() {
+		const token = await this._getToken()
 
-    // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
+		const header = {
+			'Content-Type': 'application/json;charset=UTF-8',
+		}
 
-    const userId = uni.getStorageSync('userId') // 获取用户登录状态
+		// accessToken -> 登录接口使用     visitorToken -> 其他接口使用
 
-    userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
+		const userId = uni.getStorageSync('userId') // 获取用户登录状态
 
-    return header
-  }
+		userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
 
-  /**
-   * 获取timestamp
-   */
-  async getTimestamp() {
+		return header
+	}
 
-    const header = await this.getCustomHeader()
+	/**
+	 * 获取timestamp
+	 */
+	async getTimestamp() {
 
-    const response = await ajax({
-      method: 'GET',
-      url: `${baseUrl}genera/times`,
-      header,
-    })
+		const header = await this.getCustomHeader()
 
-    if (response.data.success) {
-      uni.setStorageSync('timestamp', new Date().getTime());
-      uni.setStorageSync('aptimestamp', response.data.data.timestamp);
+		const response = await ajax({
+			method: 'GET',
+			url: `${baseUrl}genera/times`,
+			header,
+		})
 
-      return response.data.data.timestamp
-    }
-  }
+		if (response.data.success) {
+			uni.setStorageSync('timestamp', new Date().getTime());
+			uni.setStorageSync('aptimestamp', response.data.data.timestamp);
 
-  /**
-   * 字符串转二进制
-   * @param {*} str 字符串
-   */
-  strToBinary(str) {
-    const result = []
-    const list = str.split('')
-    const key = 0x7C
-    for (let i = 0; i < list.length; i++) {
-      const item = list[i]
-      let binaryByte = item.charCodeAt()
-      binaryByte ^= key
-      const binaryStr = binaryByte.toString(16)
-      result.push(binaryStr)
-    }
-    return result.join('g')
-  }
+			return response.data.data.timestamp
+		}
+	}
 
-  /**
-   * 计算请求参数中的uuid
-   */
-  uuid() {
-    const s = []
-    const hexDigits = '0123456789abcdef'
-    for (let i = 0; i < 36; i++) {
-      s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
-    }
-    s[14] = '4'
-    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
-    s[8] = s[13] = s[18] = s[23] = '-'
+	/**
+	 * 字符串转二进制
+	 * @param {*} str 字符串
+	 */
+	strToBinary(str) {
+		const result = []
+		const list = str.split('')
+		const key = 0x7C
+		for (let i = 0; i < list.length; i++) {
+			const item = list[i]
+			let binaryByte = item.charCodeAt()
+			binaryByte ^= key
+			const binaryStr = binaryByte.toString(16)
+			result.push(binaryStr)
+		}
+		return result.join('g')
+	}
 
-    return s.join('')
-  }
+	/**
+	 * 计算请求参数中的uuid
+	 */
+	uuid() {
+		const s = []
+		const hexDigits = '0123456789abcdef'
+		for (let i = 0; i < 36; i++) {
+			s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+		}
+		s[14] = '4'
+		s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1)
+		s[8] = s[13] = s[18] = s[23] = '-'
+
+		return s.join('')
+	}
 }
 
 export const Util = new utils()
