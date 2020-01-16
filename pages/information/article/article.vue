@@ -10,9 +10,7 @@
       </view>
     </view>
 
-    <!-- articleInfo.content -->
     <rich-text class="content" :nodes="articleInfo.content"></rich-text>
-    <!-- <view>{{ articleInfo.content }}</view> -->
   </view>
 </template>
 
@@ -41,6 +39,7 @@ export default {
 
 <style lang="less" scoped>
 .article-info {
+  width: 100%;
   padding: 0 32rpx;
 
   .title {
@@ -69,6 +68,11 @@ export default {
         font-size: 26rpx;
         color: #999;
       }
+    }
+  }
+  .content{
+    >image{
+      width: 100%;;
     }
   }
 }

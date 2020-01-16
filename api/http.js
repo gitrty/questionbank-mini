@@ -7,6 +7,7 @@ const getImageInfos = wxPromisify(uni.getImageInfo)
 const getUserInfos = wxPromisify(uni.getUserInfo)
 const saveImageToPhotosAlbums = wxPromisify(uni.saveImageToPhotosAlbum)
 const requestPayments = wxPromisify(uni.requestPayment)
+import lodash from 'lodash'
 
 import { Util } from './util'
 
@@ -17,149 +18,125 @@ const baseUrl = 'http://192.168.8.122:19001/'
 
 const request = class {
 
-  // 1 - get 请求
-  async get(url, params = {}) {
-    let appKey = ''
-    let appSecret = ''
-    // 获取时间戳
-    const timestamp = await Util.getTimestamp()
+	/**
+	 * 序列化参数
+	 * @param {object} params 参数对象
+	 * @rerturn {object} 序列化后的新参数对象
+	 */
+	async serializeParams(params = {}) {
+		const deepedParams = lodash.cloneDeep(params)
 
-    // 拼接 appKey 和 appSecret
-    Object.entries(params).forEach(([key, value], index) => {
-      appKey += key + '-'
-      appSecret += key + value
-    });
+		deepedParams.rand = Util.uuid()
 
-    const accessToken = await Util._getToken()
-    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
-    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
+		const timestamp = await Util.getTimestamp() // 获取时间戳
+		let appKey = ''
+		let appSecret = ''
 
-    params.appKey = mds
-    params.appSecret = mds2
-    params.timestamp = timestamp
-    params.rand = Util.uuid()
-    // console.info(params)
+		// 解析要加密的参数
+		for (const key in deepedParams) {
+			if (Util.isNotEmptyObject(deepedParams[key])) {
+				if (key !== 'appKey' && key !== 'appSecret' && key !== 'timestamp') {
+					appKey += key + '-'
+					appSecret += key + deepedParams[key]
+				}
+			} else {
+				delete deepedParams[key]
+			}
+		}
 
-    url += urlLoader(params)
-    // console.info(url)
+		// 加密参数
+		const accessToken = await Util._getToken()
 
-    const header = await Util.getCustomHeader()
+		const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
+		const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
 
-    const { data } = await ajax({
-      method: 'GET',
-      url: `${baseUrl}${url}`,
-      header
-    })
-    return data.data
-  }
+		// 设置参数
+		deepedParams.appKey = mds
+		deepedParams.appSecret = mds2
+		deepedParams.timestamp = timestamp
 
+		return deepedParams
+	}
 
-  // 2 - post 请求
-  async post(url, params = {}) {
-    let appKey = ''
-    let appSecret = ''
+	// 1 - get 请求
+	async get(url, params = {}) {
+		const newParams = await this.serializeParams(params)
 
-    // 获取时间戳
-    const timestamp = await Util.getTimestamp()
+		const header = await Util.getCustomHeader()
+		url += urlLoader(newParams)
 
-    // 拼接 appKey 和 appSecret
-    Object.entries(params).forEach(([key, value], index) => {
-      appKey += key.toString() + '-'
-      appSecret += key.toString() + value.toString()
-    });
+		const { data } = await ajax({
+			method: 'GET',
+			url: `${baseUrl}${url}`,
+			header
+		})
+		return data.data
+	}
+	
+	// 2 - post 请求
+	async post(url, params = {}) {
+		const newParams = await this.serializeParams(params)
 
-    const accessToken = await Util._getToken()
-    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
-    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
+		const header = await Util.getCustomHeader()
+		url += urlLoader(newParams)
 
-    params.appKey = mds
-    params.appSecret = mds2
-    params.timestamp = timestamp
-    params.rand = Util.uuid()
-    // console.info(params)
+		const { data } = await ajax({
+			method: 'POST',
+			url: `${baseUrl}${url}`,
+			header
+		})
+		return data.data
+	}
 
-    const header = await Util.getCustomHeader()
+	// 3 - post请求 传参序列化 : 使用application / x-www-form-urlencoded格式
+	async postAplt(url, params = {}) {
+		const newParams = await this.serializeParams(params)
 
-    const { data } = await ajax({
-      method: 'POST',
-      url: `${baseUrl}${url}`,
-      data: params,
-      header
-    })
-    return data.data
-  }
+		let header = null
+		if (uni.getStorageSync('accessToken')) {
+			header = {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+				'accessToken': accessToken
+			}
+		} else {
+			header = {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+				'visitorToken': accessToken
+			}
+		}
 
-  // 3 - post请求 传参序列化 : 使用application / x-www-form-urlencoded格式
-  async postAplt(url, params = {}) {
-    let appKey = ''
-    let appSecret = ''
-
-    // 获取时间戳
-    const timestamp = await Util.getTimestamp()
-
-    // 拼接 appKey 和 appSecret
-    Object.entries(params).forEach(([key, value], index) => {
-      appKey += key.toString() + '-'
-      appSecret += key.toString() + value.toString()
-    });
-
-    const accessToken = await Util._getToken()
-    const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
-    const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
-
-    params.appKey = mds
-    params.appSecret = mds2
-    params.timestamp = timestamp
-    params.rand = Util.uuid()
-
-    let header = null
-    if (uni.getStorageSync('accessToken')) {
-      header = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'accessToken': accessToken
-      }
-    } else {
-      header = {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'visitorToken': accessToken
-      }
-    }
-
-    const { data } = await ajax({
-      method: 'POST',
-      url: `${baseUrl}${url}`,
-      data: params,
-      header
-    })
-    return data.data
-  }
-
+		const { data } = await ajax({
+			method: 'POST',
+			url: `${baseUrl}${url}`,
+			data: newParams,
+			header
+		})
+		return data.data
+	}
 }
 
-
-
 const utils = class {
-  login() {
-    return logins({ provider: 'weixin' })
-  }
-  showModal(object) {
-    return showModals(object)
-  }
-  authorize(scope) {
-    return authorizes({ scope })
-  }
-  getImageInfo(src) {
-    return getImageInfos({ src })
-  }
-  saveImageToPhotosAlbum(filePath) {
-    return saveImageToPhotosAlbums({ filePath })
-  }
-  getUserInfo() {
-    return getUserInfos()
-  }
-  requestPayment(data) {
-    return requestPayments(data)
-  }
+	login() {
+		return logins({ provider: 'weixin' })
+	}
+	showModal(object) {
+		return showModals(object)
+	}
+	authorize(scope) {
+		return authorizes({ scope })
+	}
+	getImageInfo(src) {
+		return getImageInfos({ src })
+	}
+	saveImageToPhotosAlbum(filePath) {
+		return saveImageToPhotosAlbums({ filePath })
+	}
+	getUserInfo() {
+		return getUserInfos()
+	}
+	requestPayment(data) {
+		return requestPayments(data)
+	}
 }
 
 

@@ -79,7 +79,7 @@ export default {
     };
   },
   mounted() {},
-  async onLoad() {
+  async onShow() {
     // 圈内好文
     const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
     // console.info(list);
@@ -93,12 +93,13 @@ export default {
   // 触底事件
   async onReachBottom() {
     if (this.tabBar) {
+      
       // 圈内好文
       this.pageNum1 += 1;
       const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
-
       this.godNewsList = [...this.godNewsList, ...list];
     } else {
+      
       // 面试经验
       this.pageNum2 += 1;
       const { list } = await selectArticlesByPage({ pageNum: this.pageNum2, pageSize: this.pageSize2, title: '面试经验' });
