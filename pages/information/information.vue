@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view class="home">
     <!-- top -->
     <view class="information-top">
       <view class="information-top-left" @tap="tabBar = true"><text :class="{ active: tabBar }">圈内好文</text></view>
@@ -23,7 +23,10 @@
         <toyoGoodnews :godNewsList="godNewsList"></toyoGoodnews>
       </view>
       <!-- 面试经验container区域 -->
-      <view class="information-container-right" v-show="!tabBar"><toyoInterview :interViewList="interViewList"></toyoInterview></view>
+      <view class="information-container-right" v-show="!tabBar">
+        <!-- <toyoInterview :interViewList="interViewList"></toyoInterview> -->
+        <toyoGoodnews :godNewsList="interViewList"></toyoGoodnews>
+      </view>
     </view>
   </view>
 </template>
@@ -79,27 +82,46 @@ export default {
     };
   },
   mounted() {},
-  async onShow() {
+  async onLoad() {
+    uni.showLoading({
+      title: '文章加载中...',
+      mask: true
+    });
     // 圈内好文
     const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
-    // console.info(list);
     this.godNewsList = list || [];
 
     // 面试经验
     const data = await selectArticlesByPage({ pageNum: this.pageNum2, pageSize: this.pageSize2, title: '面试经验' });
     this.interViewList = data.list || [];
+    uni.hideLoading();
+  },
+
+  // 下拉刷新
+  async onPullDownRefresh() {
+    uni.showLoading({
+      title: '文章刷新中...',
+      mask: true
+    });
+    // 圈内好文
+    const { list } = await selectArticlesByPage({ pageNum: 1, pageSize: this.pageSize1 });
+    this.godNewsList = list || [];
+
+    // 面试经验
+    const data = await selectArticlesByPage({ pageNum: 1, pageSize: this.pageSize2, title: '面试经验' });
+    this.interViewList = data.list || [];
+    uni.hideLoading();
+    wx.stopPullDownRefresh();
   },
 
   // 触底事件
   async onReachBottom() {
     if (this.tabBar) {
-      
       // 圈内好文
       this.pageNum1 += 1;
       const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
       this.godNewsList = [...this.godNewsList, ...list];
     } else {
-      
       // 面试经验
       this.pageNum2 += 1;
       const { list } = await selectArticlesByPage({ pageNum: this.pageNum2, pageSize: this.pageSize2, title: '面试经验' });
@@ -117,7 +139,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.home {
+  width: 100%;
+  overflow: hidden;
+}
 .information-top {
+  position: fixed;
+  top: 0;
+  background-color: #fff;
+  z-index: 999;
   width: 100%;
   height: 88rpx;
   border-bottom: 1px solid #ccc;
@@ -160,6 +190,10 @@ movable-view {
     text-align: center;
     font-size: 24rpx;
   }
+}
+
+.information-container {
+  margin-top: 88rpx;
 }
 
 .information-container-left {

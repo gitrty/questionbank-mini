@@ -186,7 +186,7 @@
     </view>
 
     <!-- 遮罩层 -->
-    <view class="ex-mask" v-show="isAnCard || isMore"></view>
+    <view class="ex-mask" v-show="isAnCard || isMore" @tap="closeCard"></view>
     <!-- 无解析 -->
     <view class="no-info" v-if="!isInfo">
       <image src="/static/no-jx.png" mode=""></image>
@@ -207,7 +207,7 @@ export default {
       isMore: false, // 更多显示状态
       nowAnswerNum: 1, // 当前题号,
       isNew: false, // 默认/最新解析
-      isInfo: true, // 有无解析
+      isInfo: false, // 有无解析
       // 所有题
       paper: [],
       // 滑动距离
@@ -281,6 +281,12 @@ export default {
     // 标记/取消标记
     tabSign() {
       this.paper[this.nowAnswerNum - 1].isSign = !this.paper[this.nowAnswerNum - 1].isSign;
+    },
+
+    // 点击遮罩层关闭答题卡和更多
+    closeCard() {
+      this.isAnCard = false;
+      this.isMore = false;
     }
   }
 };

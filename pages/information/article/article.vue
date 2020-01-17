@@ -32,6 +32,9 @@ export default {
   },
   async onLoad(e) {
     const { articleInfo } = await selectArticlesById({ id: e.id });
+    // 处理图片过大的问题
+    articleInfo.content = articleInfo.content.replace(/\<img/gi, '<img style="display:-webkit-box;width:100% !important;margin:10px auto !important;" ');
+
     this.articleInfo = articleInfo || {};
   }
 };
@@ -70,10 +73,13 @@ export default {
       }
     }
   }
-  .content{
-    >image{
-      width: 100%;;
-    }
-  }
+}
+
+rich-text {
+  // width: 670rpx;
+  // display: block;
+  // font-size: 28rpx;
+  // color: #353535;
+  // letter-spacing: 1rpx;
 }
 </style>

@@ -38,7 +38,7 @@
           <!-- 小圆点 -->
           <view class="details-introduce-col-li"></view>
           <view class="details-introduce-col-l">分值</view>
-          <view class="details-introduce-col-r">{{ interInfo.score ||''}}分</view>
+          <view class="details-introduce-col-r">{{ interInfo.score || '' }}分</view>
         </view>
       </view>
     </view>
@@ -50,7 +50,15 @@
         </view>
         <view class="details-bottom-tip">答前须知</view>
       </view>
-      <view class="details-bottom-con"></view>
+      <view class="details-bottom-con">
+        <view class="">1、本套试卷来源于各网络渠道，仅限GPer注册用户使用，除非经特别声明，GPer不拥有该资料版权，亦不承担任何法律责任。</view>
+        <view class="">2、未经GPer或作者的同意不得随意转载，否则构成侵权，本网站或作者保留诉诸法律的权利。</view>
+        <view class="">
+          3、如发现本网站载有侵犯您著作权的侵权信息，请
+          <button class="feedback" open-type="contact">点击发送</button>
+          相关信息至GPer。
+        </view>
+      </view>
     </view>
     <view class="details-fixed">
       <view class="details-fixed-fx">
@@ -61,7 +69,7 @@
         <image src="../../../static/sc.png" mode=""></image>
         <view class="">收藏</view>
       </view>
-      <view class="details-start" @tap="redirectTo('/pages/itembank/examination/examination',{id:interInfo.id})">开始考试</view>
+      <view class="details-start" @tap="redirectTo('/pages/itembank/examination/examination', { id: interInfo.id })">开始考试</view>
     </view>
   </view>
 </template>
@@ -77,15 +85,20 @@ export default {
   },
   methods: {},
   async onLoad(e) {
-    const data = await viewSuitById({ id: e.id});
+    const data = await viewSuitById({ id: e.id });
     this.interInfo = data;
-    this.$store.state.viewTitle = data.title
-    console.info(data);
+    this.$store.state.viewTitle = data.title;
   }
 };
 </script>
 
 <style lang="less" scoped>
+.feedback {
+  color: #2d98f2;
+}
+button::after{
+  content: none;
+}
 .details {
   .details-logo {
     width: 100%;
@@ -182,6 +195,22 @@ export default {
       margin-top: 12rpx;
       font-size: 28rpx;
       color: #999;
+      > view {
+        margin-bottom: 10rpx;
+        > text {
+          color: #2d98f2;
+        }
+        > button {
+          position: static;
+          display: inline-block;
+          padding: 0;
+          overflow:visible ;
+          line-height: 28rpx;
+          font-size: 28rpx;
+          border: none;
+          color: #2d98f2;
+        }
+      }
     }
   }
   .details-fixed {

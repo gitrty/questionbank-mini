@@ -2,7 +2,7 @@
   <view>
     <!-- 选择公司 -->
     <view class="interv-top">
-      <view class="interv-top-gs"><wuc-tab :tab-list="companyList"></wuc-tab></view>
+      <view class="interv-top-gs"><wuc-tab :tab-list="companyList" @change="tabChange"></wuc-tab></view>
       <view class="interv-top-hr"></view>
       <view class="interv-top-select" @tap="jump('/pages/itembank/interview/selectedtab')">
         <image src="../../../static/select.png" mode=""></image>
@@ -12,7 +12,7 @@
     <!-- 面试题 -->
     <view class="interv-con">
       <!-- 数据区域 -->
-      <view class="interv-con-card fl" v-for="(item, index) in viewSuitList" :key="index" @tap="jump('/pages/itembank/interview/details',{id:item.id})">
+      <view class="interv-con-card fl" v-for="(item, index) in viewSuitList" :key="index" @tap="jump('/pages/itembank/interview/details', { id: item.id })">
         <view class="inter-img">
           <image :src="item.cover" mode=""></image>
           <view class="inter-mask">
@@ -56,6 +56,42 @@ export default {
       this.companyList = this.$store.state.companyList;
       this.selectNum = this.$store.state.selectNum;
       this.viewSuitList = this.$store.state.viewSuitList;
+    },
+
+    async tabChange(index) {
+      if (index === 0 && this.companyList[0].cur) {
+        this.companyList.forEach(item => (item.cur = false));
+        this.$store.state.companyList.forEach(item => (item.cur = false));
+        this.selectNum = this.$store.state.selectNum = 0;
+        // 获得所有面试套题列表
+        const data2 = await viewSuitList();
+        this.viewSuitList = this.$store.state.viewSuitList = data2;
+        return;
+      }
+      if (index === 0 && !this.companyList[0].cur) {
+        this.companyList.forEach(item => (item.cur = true));
+        this.$store.state.companyList.forEach(item => (item.cur = true));
+        this.selectNum = this.$store.state.selectNum = this.companyList.length - 1;
+        // 获得所有面试套题列表
+        const data2 = await viewSuitList();
+        this.viewSuitList = this.$store.state.viewSuitList = data2;
+        return;
+      }
+
+      let count = 0;
+      this.companyList[index].cur = this.$store.state.companyList[index].cur = !this.$store.state.companyList[index].cur;
+      this.companyList.forEach(item => (item.cur ? count++ : ''));
+      this.selectNum = this.$store.state.selectNum = count;
+
+      let ids = '';
+      this.$store.state.companyList.forEach((item, index) => {
+        if (index === 0) return;
+        if (item.cur) ids = ids + item.id + '-';
+      });
+      ids = ids.slice(0, ids.length - 1);
+      // 获取选中公司的面试题列表
+      const data = await viewSuitList({ companyId: ids });
+      this.viewSuitList = this.$store.state.viewSuitList = data;
     }
   },
   onShow() {

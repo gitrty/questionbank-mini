@@ -4,7 +4,7 @@
     <view class="ex-tip" v-if="isTip">
       <image src="../../../static/stip.png" mode="" class="img-tip"></image>
       <view class="tip-txt">左右滑动即可切换题目</view>
-      <view class="tip-btn" @tap="isTip = false">我知道了</view>
+      <view class="tip-btn" @tap="closeTip">我知道了</view>
     </view>
 
     <!-- 答题区域 -->
@@ -149,7 +149,7 @@
     </view>
 
     <!-- 遮罩层 -->
-    <view class="ex-mask" v-show="isAnCard || isMore"></view>
+    <view class="ex-mask" v-show="isAnCard || isMore" @tap="closeCard"></view>
     <view class="ex-mask2" v-show="isSubmission"></view>
   </view>
 </template>
@@ -171,7 +171,7 @@ const {
 export default {
   data() {
     return {
-      isTip: false, // 左右滑动提示
+      isTip: true, // 左右滑动提示
       isShortTip: true, // 简单题阅卷提示
       isAnCard: false, // 答题卡显示状态
       isMore: false, // 更多显示状态
@@ -210,7 +210,7 @@ export default {
     };
   },
   async onLoad(e) {
-    console.info(e);
+    // console.info(e);
     this.thAnswer = e;
     uni.showLoading({ title: '正在加载题目', mask: true });
     // 获取当前套题的所有题目
@@ -221,11 +221,13 @@ export default {
       const { signboard } = await startSuitByUserId({ userId: this.$store.state.userId });
       this.signboard = signboard;
       everyList = await getListBySuitId({ id: e.id, signboard: signboard, userId: this.$store.state.userId });
+      console.info(everyList);
     } else {
       // 专题练习 - 获取开始考试标识
       this.category = 1;
       const { signboard } = await startExerciseByUserId({ userId: this.$store.state.userId });
       this.signboard = signboard;
+      if (e.tiXin == '全部') e.tiXin = '';
       everyList = await getQuestionBankList({
         biaoQianIdList: e.biaoQianIdList,
         tiXin: e.tiXin,
@@ -233,6 +235,7 @@ export default {
         signboard: signboard,
         userId: this.$store.state.userId
       });
+      console.info(everyList);
     }
 
     // 时间到后自动提交
@@ -263,7 +266,10 @@ export default {
       if (index == everyList.length - 1) uni.hideLoading();
     });
 
-    console.info(this.nowAnswer);
+    setTimeout(() => {
+      uni.hideLoading();
+    }, 6000);
+    // console.info(this.nowAnswer);
 
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({
@@ -271,6 +277,11 @@ export default {
     });
   },
   methods: {
+    // 关闭滑动提示
+    closeTip() {
+      this.isTip = false;
+    },
+
     // 收藏
     collection() {
       this.nowAnswer[this.nowAnswerNum - 1].isCollection = true;
@@ -289,6 +300,12 @@ export default {
     // 取消面过此题
     dePast() {
       this.nowAnswer[this.nowAnswerNum - 1].isInterView = false;
+    },
+
+    // 点击遮罩层关闭答题卡和更多
+    closeCard() {
+      this.isAnCard = false;
+      this.isMore = false;
     },
 
     // 单选

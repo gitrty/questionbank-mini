@@ -59,7 +59,7 @@ export default {
         { name: '全部', isChecked: true },
         { name: '单选题', isChecked: false },
         { name: '多选题', isChecked: false },
-        { name: '判断题', isChecked: false },
+        // { name: '判断题', isChecked: false },
         { name: '简答题', isChecked: false }
       ],
       // 出题来源
@@ -71,7 +71,7 @@ export default {
     };
   },
   onLoad(e) {
-    console.info(e);
+    // console.info(e);
     this.labelName = e.labelName;
     this.labelId = e.labelId;
   },

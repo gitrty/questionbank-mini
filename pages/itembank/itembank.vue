@@ -180,7 +180,7 @@ export default {
     };
   },
   async onShow() {
-    // uni.showLoading({ title: '正在加载中', mask: true });
+    uni.showLoading({ title: '正在加载中', mask: true });
     if (!this.$store.state.userId) {
       const { code } = await util.login();
       const userInfo = await wxLogin({ code: code });
@@ -194,6 +194,7 @@ export default {
       this.$store.state.userInfo = userInfo;
       this.$store.state.userId = userInfo.userId;
     }
+    uni.hideLoading();
 
     this.getDate();
     // 获取今日答题情况
@@ -217,7 +218,7 @@ export default {
     // 获取专题练习数据
     const exerciseSituation = await getExerciseSituation({ userId: this.$store.state.userId });
     this.exerciseSituation = exerciseSituation;
-    // uni.hideLoading();
+    //
   },
   methods: {
     // 获取今日日期

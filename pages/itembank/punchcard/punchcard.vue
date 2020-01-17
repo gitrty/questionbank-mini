@@ -96,7 +96,7 @@
         <!-- 状态3 - 已过打卡时间 -->
         <view class="punch-fun3" v-if="punchStatus === 2">打卡时间已过时，请等待补卡功能上线</view>
         <!-- 已打卡状态 - 分割线 -->
-        <view class="punch-hr" v-if="!punchStatus"></view>
+        <!-- <view class="punch-hr" v-if="!punchStatus"></view> -->
         <view class="close-punch-info" @tap="punchInfoCard = false">╳</view>
       </view>
     </view>

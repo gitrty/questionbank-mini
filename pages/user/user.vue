@@ -33,7 +33,7 @@
       </view>
       <!-- 答题详情、在线反馈 -->
       <view class="answer">
-        <view class="answer-detaile">
+        <view class="answer-detaile" @tap="jump('/pages/itembank/answer/answer')">
           <image src="../../static/tabbar/information.png" class="fl" mode=""></image>
           <text class="fl">答题详情</text>
           <image src="../../static/right.png" mode="" class="fr"></image>

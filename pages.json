@@ -3,7 +3,8 @@
     {
       "path": "pages/information/information",
       "style": {
-        "navigationBarTitleText": "资讯"
+        "navigationBarTitleText": "资讯",
+        "enablePullDownRefresh": true
       }
     },
     {
@@ -208,7 +209,8 @@
       "query": "labelId=27309&labelName=阿里巴巴" //启动参数，在页面的onLoad函数里面得到。
     }, {
       "name": "article", //模式名称
-      "path": "pages/information/article/article" //启动页面，必选
+      "path": "pages/information/article/article", //启动页面，必选
+      "query": "id=1350" //启动参数，在页面的onLoad函数里面得到。
     }]
   }
 }

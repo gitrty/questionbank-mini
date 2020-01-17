@@ -25,7 +25,9 @@ export default {
     };
   },
   async onLoad() {
-    const viewClassify = await viewClassifyList({ userId: this.$store.state.userId });
+    // const viewClassify = await viewClassifyList({ userId: this.$store.state.userId });
+    const viewClassify = await viewClassifyList({ userId: 5250 });
+    console.info(viewClassify);
     this.viewClassify = viewClassify;
   },
   methods: {
