@@ -190,6 +190,7 @@ export default {
         this.jump('/pages/user/user');
         return;
       }
+      uni.setStorageSync('accessToken', userInfo.accessToken)
       uni.setStorageSync('userId', this.$store.state.userId);
       this.$store.state.userInfo = userInfo;
       this.$store.state.userId = userInfo.userId;
@@ -351,7 +352,7 @@ export default {
       }
 
       // 6 - 小程序码
-      context.drawImage('/static/logo.png', 110, 460, 155, 152); // 推进去图片
+      context.drawImage('/static/ewm.png', 110, 460, 155, 152); // 推进去图片
 
       // 7 - 扫描小程序码立即刷题学习
       context.textAlign = 'left';

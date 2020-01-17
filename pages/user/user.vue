@@ -178,7 +178,7 @@ export default {
         uPwd: '',
         uRepeat: ''
       },
-      userInfo: null
+      userInfo: ''
     };
   },
   onTabItemTap() {
@@ -193,7 +193,8 @@ export default {
       const { code } = await util.login();
       const userInfo = await wxLogin({ code: code });
       this.userInfo = userInfo;
-      this.$store.state.userInfo = userInfo
+      this.$store.state.userInfo = userInfo;
+      // console.info(userInfo);
       // 用户没有绑定邮箱
       if (!userInfo.userId) {
         // 测试使用
@@ -202,13 +203,19 @@ export default {
         if (!this.userStatus) {
           uni.hideTabBar({ animation: true });
         }
-        return
+        return;
       }
-      uni.setStorageSync('userId',this.$store.state.userId )
+      uni.removeStorageSync('visitorToken')
+      uni.setStorageSync('accessToken', userInfo.accessToken);
+      uni.setStorageSync('userId', this.$store.state.userId);
       this.$store.state.userId = userInfo.userId;
     } else {
-      this.userInfo = this.$store.state.userInfo;
-      uni.setStorageSync('userId',this.$store.state.userId )
+      const { code } = await util.login();
+      const userInfo = await wxLogin({ code: code });
+      uni.removeStorageSync('visitorToken')
+      uni.setStorageSync('accessToken', userInfo.accessToken);
+      this.userInfo = this.$store.state.userInfo = userInfo;
+      uni.setStorageSync('userId', this.$store.state.userId);
     }
   },
   methods: {
@@ -233,7 +240,7 @@ export default {
         } else {
           // 绑定成功
           this.$store.state.userId = data.userId;
-          uni.setStorageSync('userId',this.$store.state.userId )
+          uni.setStorageSync('userId', this.$store.state.userId);
           this.userInfo = data;
           this.successLogin();
         }
@@ -268,7 +275,7 @@ export default {
       }
       // 注册成功后自动绑定邮箱
       const data2 = await wxBinding({ email: this.regForm.uEmail, openId: this.userInfo.openId });
-      uni.setStorageSync('userId',this.$store.state.userId )
+      uni.setStorageSync('userId', this.$store.state.userId);
       this.$store.state.userId = data2.userId;
       this.userInfo = data2;
       // 注册并登录成功

@@ -84,4 +84,10 @@ export default {
 
   // GET:答案解析--大厂面试和专题练习通用--根据答题ID获取该答题的解析情况
   getAnswerById: data => http.get('exercise/getAnswerById', data),
+
+  // 评论查询列表接口
+  selectCommentsByPage: data => http.postAplt('comment/selectCommentsByPage', data),
+  
+  // 评论新增修改接口
+  addUpdateComments: data => http.postAplt('comment/addUpdateComments', data),
 }

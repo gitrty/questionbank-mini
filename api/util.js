@@ -2,9 +2,9 @@ import { wxPromisify } from '../config'
 const ajax = wxPromisify(uni.request)
 
 // 测试环境
-// const baseUrl = 'http://192.168.8.122:19001/'
+const baseUrl = 'http://192.168.8.122:19001/'
 // 正式环境
-const baseUrl = 'https://gper.club/server-api/'
+// const baseUrl = 'https://gper.club/server-api/'
 
 
 const utils = class {
@@ -70,14 +70,15 @@ const utils = class {
 
     const header = {
       'Content-Type': 'application/json;charset=UTF-8',
+      'terminal': 'mobileweixinmini'
     }
 
-    // accessToken -> 登录接口使用     visitorToken -> 其他接口使用
+    // accessToken -> 登录后使用     visitorToken -> 未登录用户接口使用
 
-    const userId = uni.getStorageSync('userId') // 获取用户登录状态
+    const userId = uni.getStorageSync('accessToken') // 获取用户登录状态
 
-    // userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
-    header.visitorToken = token || ''
+    userId ? (header.accessToken = token || '') : (header.visitorToken = token || '')
+    // header.visitorToken = token || ''
     return header
   }
 

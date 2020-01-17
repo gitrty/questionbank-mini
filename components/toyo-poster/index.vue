@@ -51,7 +51,7 @@
             </view>
           </view>
         </view>
-        <image src="../../static/logo.png" mode="" class="ewm"></image>
+        <image src="/static/ewm.png" mode="" class="ewm"></image>
         <view class="ewm-txt">扫描小程序码立即刷题学习</view>
       </view>
       <view class="down-share">

@@ -82,11 +82,11 @@ export default {
     };
   },
   mounted() {},
-  async onLoad() {
-    uni.showLoading({
-      title: '文章加载中...',
-      mask: true
-    });
+  async onShow() {
+    // uni.showLoading({
+    //   title: '文章加载中...',
+    //   mask: true
+    // });
     // 圈内好文
     const { list } = await selectArticlesByPage({ pageNum: this.pageNum1, pageSize: this.pageSize1 });
     this.godNewsList = list || [];

@@ -82,8 +82,8 @@
     <view class="analysis-con" v-if="isInfo">
       <view class="analysis-con-title">
         <text class="fl">12条解析</text>
-        <text :class="['fr moren', isNew ? '' : 'tgary']" @tap="isNew = true">最新</text>
-        <text :class="['fr', isNew ? 'tgary' : '']" @tap="isNew = false">默认</text>
+        <text :class="['fr moren', isNew ? '' : 'tgary']" @tap="newCont">最新</text>
+        <text :class="['fr', isNew ? 'tgary' : '']" @tap="oldCont">默认</text>
       </view>
       <!-- v-for - start -->
       <view class="analysis-container" v-for="index of 4" :key="index">
@@ -199,7 +199,7 @@
 
 <script>
 import { itembank } from '@api';
-const { getAnswerList, getAnswerById } = itembank;
+const { getAnswerList, getAnswerById, selectCommentsByPage, addUpdateComments } = itembank;
 export default {
   data() {
     return {
@@ -207,7 +207,7 @@ export default {
       isMore: false, // 更多显示状态
       nowAnswerNum: 1, // 当前题号,
       isNew: false, // 默认/最新解析
-      isInfo: false, // 有无解析
+      isInfo: true, // 有无解析
       // 所有题
       paper: [],
       // 滑动距离
@@ -219,7 +219,7 @@ export default {
     // 获取当前试卷所有题的id
     uni.showLoading({ title: '正在加载解析...', mask: true });
     const everyList = await getAnswerList({ signboard: e.signboard });
-    console.info(everyList);
+    // console.info(everyList);
 
     this.paper = [];
     everyList.forEach(async (item, index) => {
@@ -230,14 +230,33 @@ export default {
       data2.biaoTi = decodeURIComponent(data2.biaoTi);
       data2.neiRong = decodeURIComponent(data2.neiRong);
       data2.content = decodeURIComponent(data2.content);
+      // everyList[index].fId = data2.factoryId
+      if (data2.tiXin == '单选题' || data2.tiXin == '多选题') {
+        data2.content = data2.content.split('-').join('');
+        data2.daAn = data2.daAn.split('-').join('');
+      }
       this.paper.push(data2);
       if (index == everyList.length - 1) uni.hideLoading();
     });
-    console.info(this.paper);
+    // console.info(this.paper);
+    // console.info(everyList)
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({
       title: `${this.nowAnswerNum}/${everyList.length}`
     });
+
+    const addPl = await addUpdateComments({
+      userId: this.$store.state.userId,
+      content: '评论内容评论内容评论内容',
+      sourceId: everyList[this.nowAnswerNum - 1].id,
+      sourceType: 'App\\Models\\exercise',
+      type: 'add'
+    });
+    
+    console.info(addPl);
+
+    // const pl = await selectCommentsByPage({ sourceType: 'App\Models\exercise' });
+    // console.info(pl);
   },
   methods: {
     // 滑动切换考题
@@ -287,6 +306,16 @@ export default {
     closeCard() {
       this.isAnCard = false;
       this.isMore = false;
+    },
+
+    // 评论最新排序
+    newCont() {
+      this.isNew = true;
+    },
+
+    // 评论默认排序
+    oldCont() {
+      this.isNew = false;
     }
   }
 };
@@ -422,7 +451,7 @@ export default {
     }
     .you-an {
       color: #666;
-      margin-left: 96rpx;
+      margin-left: 50rpx;
     }
   }
   .an-option {

@@ -1,6 +1,4 @@
-import {
-  util
-} from "@api/http";
+import { util } from "@api/http";
 
 export default {
   install(Vue) {

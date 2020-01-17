@@ -29,10 +29,10 @@ const store = new Vuex.Store({
 
     // 用户绑定的邮箱
     email: '',
-    
-    exTitle:'java',
-    
-    viewTitle:'GPer第一届答题大赛'
+
+    exTitle: 'java',
+
+    viewTitle: 'GPer第一届答题大赛'
   },
   mutations: {},
   actions: {}
