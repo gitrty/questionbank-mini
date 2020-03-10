@@ -194,7 +194,7 @@ export default {
       const userInfo = await wxLogin({ code: code });
       this.userInfo = userInfo;
       this.$store.state.userInfo = userInfo;
-      // console.info(userInfo);
+      console.info(userInfo);
       // 用户没有绑定邮箱
       if (!userInfo.userId) {
         // 测试使用

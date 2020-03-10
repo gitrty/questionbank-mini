@@ -2,9 +2,9 @@ import { wxPromisify } from '../config'
 const ajax = wxPromisify(uni.request)
 
 // 测试环境
-const baseUrl = 'http://192.168.8.122:19001/'
+// const baseUrl = 'http://192.168.8.122:19001/'
 // 正式环境
-// const baseUrl = 'https://gper.club/server-api/'
+const baseUrl = 'https://gper.club/server-api/'
 
 
 const utils = class {
@@ -17,6 +17,7 @@ const utils = class {
     const visitorToken = uni.getStorageSync('visitorToken')
 
     if (accessToken) {
+      // return '9048_5a3d8f76-c35a-46d5-82cc-a1c677b27894'
       return accessToken
     }
     if (visitorToken) {

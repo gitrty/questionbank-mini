@@ -6,11 +6,11 @@
     </view>
     <view class="publish-title">{{ title }}</view>
     <!-- 输入框 -->
-    <view class="ex-container-short"><textarea value="" maxlength="-1" placeholder="请输入解析内容" /></view>
+    <view class="ex-container-short"><textarea v-model="value" @input="onInput" maxlength="-1" placeholder="请输入解析内容" /></view>
     <!-- 添加图片 -->
     <view class="add-photo">
-      <image src="../../../static/addphoto.png" mode=""></image>
-      <text @tap="addImage">添加图片</text>
+      <!--  <image src="../../../static/addphoto.png" mode=""></image>
+      <text @tap="addImage">添加图片</text> -->
     </view>
     <!-- 添加后预览图片 -->
     <view class="bottom-image fl" v-for="(item, index) in photoList" :key="index">
@@ -21,14 +21,30 @@
 </template>
 
 <script>
+import { itembank } from '@api';
+const { getAnswerList, getAnswerById, selectCommentsByPage, addUpdateComments, pageQueryByCommentsReply, replyComment } = itembank;
+
 export default {
   data() {
     return {
-      title: '题目：如果一个头条的客户端程序，冷启动时间为冷启动时间为冷启动时间为',
-      photoList: [] // 添加的所有图片地址
+      value: '',
+      title: '',
+      photoList: [], // 添加的所有图片地址
+      sourceId: ''
     };
   },
+
+  onLoad(e) {
+    console.info(e);
+    this.title = e.bt;
+    this.sourceId = e.sourceId;
+  },
+
   methods: {
+    onInput() {
+      console.info();
+    },
+
     // 添加图片
     addImage() {
       let _this = this;
@@ -60,7 +76,29 @@ export default {
     },
 
     // 发表
-    publish() {}
+    async publish() {
+      const addPl = await addUpdateComments({
+        userId: this.$store.state.userId,
+        content: this.value,
+        sourceId: this.sourceId,
+        sourceType: 'App\\Models\\exercise',
+        type: 'add'
+      });
+      this.showToast('发表成功');
+      
+      
+      // await addUpdateComments({
+      //   userId: this.$store.state.userId,
+      //   content: '哈哈哈哈哈',
+      //   sourceId: this.sourceId,
+      //   sourceType: 'App\\Models\\Comment',
+      //   type: 'add'
+      // });
+      
+      
+      
+      uni.navigateBack()
+    }
   }
 };
 </script>

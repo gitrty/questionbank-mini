@@ -79,28 +79,28 @@
     </view>
 
     <!-- 2 - 解析区域 -->
-    <view class="analysis-con" v-if="isInfo">
+    <view class="analysis-con" v-if="nowPlContent.length !== 0">
       <view class="analysis-con-title">
-        <text class="fl">12条解析</text>
+        <text class="fl">{{ plNum }}条解析</text>
         <text :class="['fr moren', isNew ? '' : 'tgary']" @tap="newCont">最新</text>
         <text :class="['fr', isNew ? 'tgary' : '']" @tap="oldCont">默认</text>
       </view>
       <!-- v-for - start -->
-      <view class="analysis-container" v-for="index of 4" :key="index">
+      <view class="analysis-container" v-for="(item, index) in nowPlContent" :key="index">
         <!-- 用户信息 -->
         <view class="analysis-user">
-          <image src="../../../static/logo.png" mode=""></image>
+          <image :src="item.avatarUrl" mode=""></image>
           <view class="user-info">
-            <view class="user-name">用户名用户名</view>
-            <view class="user-time">1小时前回答</view>
+            <view class="user-name">{{ item.userName }}</view>
+            <view class="user-time">{{ item.createdAt }}回答</view>
           </view>
         </view>
         <!-- 解析内容 -->
         <view class="user-answer">
-          {{ analysisContent | ellipsis(65) }}{{ ' ' }}
+          {{ item.content }}{{ ' ' }}
           <text v-if="analysisContent.length >= 65" @tap="jump('/pages/itembank/userAnalysis/userAnalysis')">查看全文</text>
         </view>
-        <view class="analysis-data">
+        <!--     <view class="analysis-data">
           <view class="">
             <image src="../../../static/dz1.png" mode=""></image>
             <text>67点赞</text>
@@ -109,18 +109,18 @@
             <image src="../../../static/pl1.png" mode=""></image>
             <text>11评论</text>
           </view>
-        </view>
+        </view> -->
         <!-- 评论 -->
-        <view class="analysis-comment">
-          <view class="user-comment">
-            <text>用户名用户名 ：</text>
-            <text>{{ '那也就是说 这种写法是根据jdk的建议来写的，还有就是super.clone()方法是na哈哈哈哈哈' | ellipsis(45) }}</text>
+        <view class="analysis-comment" v-if="false">
+          <view class="user-comment" v-for="(val, key) in item.plList" :key="key" v-if="key < 2">
+            <text>{{ val.userName }}：</text>
+            <text>{{ val.content }}</text>
           </view>
-          <view class="user-comment">
+          <!--    <view class="user-comment">
             <text>用户2 ：</text>
             <text>{{ '说得很不错，点赞！' | ellipsis(50) }}</text>
-          </view>
-          <view class="every-comment" v-if="true" @tap="jump('/pages/itembank/userAnalysis/userAnalysis')">查看全部11条评论</view>
+          </view> -->
+          <view class="every-comment" v-if="item.plList.length >= 2" @tap="jump('/pages/itembank/userAnalysis/userAnalysis')">查看全部{{ item.plList.length }}条评论</view>
         </view>
       </view>
       <!-- v-for - end -->
@@ -135,8 +135,10 @@
         <view class="ex-nav-txt" v-show="isMore">关闭</view>
       </view>
       <view class="ex-nav-con">
-        <image src="../../../static/ex-2.png" mode=""></image>
-        <view class="ex-nav-txt">分享</view>
+        <button data-name="shareBtn" open-type="share">
+          <image src="../../../static/ex-2.png" mode=""></image>
+          <view class="ex-nav-txt">分享</view>
+        </button>
       </view>
       <view class="ex-nav-con" @tap="openAnCard">
         <image src="../../../static/ex-3.png" mode="" v-show="!isAnCard"></image>
@@ -148,7 +150,7 @@
         <image :src="paper[nowAnswerNum - 1].isSign ? '/static/sign-1.png' : '/static/ex-4.png'" mode=""></image>
         <view class="ex-nav-txt">标记</view>
       </view>
-      <view class="ex-nav-con" @tap="jump('/pages/itembank/publishAnalysis/publishAnalysis')">
+      <view class="ex-nav-con" @tap="jump('/pages/itembank/publishAnalysis/publishAnalysis', { sourceId: everyList[nowAnswerNum - 1].id, bt: paper[nowAnswerNum - 1].biaoTi })">
         <image src="../../../static/dp.png" mode=""></image>
         <view class="ex-nav-txt tblue">发表解析</view>
       </view>
@@ -188,7 +190,7 @@
     <!-- 遮罩层 -->
     <view class="ex-mask" v-show="isAnCard || isMore" @tap="closeCard"></view>
     <!-- 无解析 -->
-    <view class="no-info" v-if="!isInfo">
+    <view class="no-info" v-if="nowPlContent.length === 0">
       <image src="/static/no-jx.png" mode=""></image>
       <view class="no-txt">暂时没有相关解析</view>
     </view>
@@ -199,7 +201,7 @@
 
 <script>
 import { itembank } from '@api';
-const { getAnswerList, getAnswerById, selectCommentsByPage, addUpdateComments } = itembank;
+const { getAnswerList, getAnswerById, selectCommentsByPage, addUpdateComments, pageQueryByCommentsReply, replyComment } = itembank;
 export default {
   data() {
     return {
@@ -212,14 +214,20 @@ export default {
       paper: [],
       // 滑动距离
       startData: { clientX: 0 },
-      analysisContent: 'HGHHH'
+      analysisContent: 'HGHHH',
+      nowPlContent: [], // 所有评论
+      plNum: '', // 评论总数
+      everyList: [],
+      flag: 0
     };
   },
   async onLoad(e) {
+    this.flag = 0;
     // 获取当前试卷所有题的id
     uni.showLoading({ title: '正在加载解析...', mask: true });
     const everyList = await getAnswerList({ signboard: e.signboard });
-    // console.info(everyList);
+    this.everyList = everyList;
+    console.info(everyList);
 
     this.paper = [];
     everyList.forEach(async (item, index) => {
@@ -238,27 +246,81 @@ export default {
       this.paper.push(data2);
       if (index == everyList.length - 1) uni.hideLoading();
     });
-    // console.info(this.paper);
+    console.info(this.paper);
     // console.info(everyList)
     // 修改当前页面标题 NavigationBarTitle
     uni.setNavigationBarTitle({
       title: `${this.nowAnswerNum}/${everyList.length}`
     });
 
-    const addPl = await addUpdateComments({
-      userId: this.$store.state.userId,
-      content: '评论内容评论内容评论内容',
+    // 获取当前题的评论内容
+    const { list } = await pageQueryByCommentsReply({
       sourceId: everyList[this.nowAnswerNum - 1].id,
       sourceType: 'App\\Models\\exercise',
-      type: 'add'
+      orderType: 'default',
+      pageSize: '999'
     });
-    
-    console.info(addPl);
 
-    // const pl = await selectCommentsByPage({ sourceType: 'App\Models\exercise' });
-    // console.info(pl);
+    // list.forEach(async item => {
+    //   item.content = this.ellipsis(item.content, 65);
+
+    //   // 添加评论的评论
+    //   // const addPl = await addUpdateComments({
+    //   //   userId: this.$store.state.userId,
+    //   //   content: '评论内容评论内容评论内容',
+    //   //   sourceId: item.sourceId,
+    //   //   sourceType: 'App\\Models\\Comment',
+    //   //   type: 'add'
+    //   // });
+
+    //   const pl_pl = await pageQueryByCommentsReply({
+    //     sourceId: item.sourceId,
+    //     sourceType: 'App\\Models\\Comment',
+    //     orderType: 'default',
+    //     pageSize: '999'
+    //   });
+    //   item.plList = pl_pl.list;
+    //   console.info(pl_pl);
+    // });
+
+    console.info(list);
+
+    this.nowPlContent = list;
+    this.plNum = list.length;
+
+    console.info(addPl);
+    this.$forceUpdate();
+  },
+  async onShow() {
+    if (this.flag) {
+      this.huoqu();
+    }
+    this.flag = 1;
   },
   methods: {
+    async huoqu() {
+      // 获取当前题的评论内容
+      const { list } = await pageQueryByCommentsReply({
+        sourceId: this.everyList[this.nowAnswerNum - 1].id,
+        sourceType: 'App\\Models\\exercise',
+        orderType: 'default',
+        pageSize: '999'
+      });
+
+      // list.forEach(async item => {
+      //   item.content = this.ellipsis(item.content, 65);
+      //   const pl_pl = await pageQueryByCommentsReply({
+      //     sourceId: item.sourceId,
+      //     sourceType: 'App\\Models\\Comment',
+      //     orderType: 'default',
+      //     pageSize: '999'
+      //   });
+      //   item.plList = pl_pl.list;
+      // });
+      this.nowPlContent = list;
+      this.plNum = list.length;
+    },
+
     // 滑动切换考题
     start(e) {
       this.startData.clientX = e.changedTouches[0].clientX;
@@ -268,12 +330,14 @@ export default {
       if (subX > 100 && this.nowAnswerNum > 1) {
         // 右滑
         this.nowAnswerNum--;
+        this.huoqu();
         uni.setNavigationBarTitle({
           title: `${this.nowAnswerNum}/${this.paper.length}`
         });
       } else if (subX < -100 && this.nowAnswerNum < this.paper.length) {
         // 左滑
         this.nowAnswerNum++;
+        this.huoqu();
         uni.setNavigationBarTitle({
           title: `${this.nowAnswerNum}/${this.paper.length}`
         });
@@ -295,6 +359,7 @@ export default {
     // 答题卡：点击切换题目
     tabExamination(index) {
       this.nowAnswerNum = index + 1;
+      this.huoqu();
     },
 
     // 标记/取消标记
@@ -309,19 +374,82 @@ export default {
     },
 
     // 评论最新排序
-    newCont() {
+    async newCont() {
       this.isNew = true;
+      // 获取当前题的评论内容
+      const { list } = await pageQueryByCommentsReply({
+        sourceId: this.everyList[this.nowAnswerNum - 1].id,
+        sourceType: 'App\\Models\\exercise',
+        orderType: 'new',
+        pageSize: '999'
+      });
+
+      // list.forEach(async item => {
+      //   item.content = this.ellipsis(item.content, 65);
+      //   const pl_pl = await pageQueryByCommentsReply({
+      //     sourceId: item.sourceId,
+      //     sourceType: 'App\\Models\\Comment',
+      //     orderType: 'default',
+      //     pageSize: '999'
+      //   });
+      //   item.plList = pl_pl.list;
+      // });
+      this.nowPlContent = list;
+      this.plNum = list.length;
     },
 
     // 评论默认排序
-    oldCont() {
+    async oldCont() {
       this.isNew = false;
+      // 获取当前题的评论内容
+      const { list } = await pageQueryByCommentsReply({
+        sourceId: this.everyList[this.nowAnswerNum - 1].id,
+        sourceType: 'App\\Models\\exercise',
+        orderType: 'default',
+        pageSize: '999'
+      });
+
+      // list.forEach(async item => {
+      //   item.content = this.ellipsis(item.content, 65);
+      //   const pl_pl = await pageQueryByCommentsReply({
+      //     sourceId: item.sourceId,
+      //     sourceType: 'App\\Models\\Comment',
+      //     orderType: 'default',
+      //     pageSize: '999'
+      //   });
+      //   item.plList = pl_pl.list;
+      // });
+      this.nowPlContent = list;
+      this.plNum = list.length;
+    },
+
+    //
+    ellipsis(val, num) {
+      return val.length > num ? val.slice(0, num) + '...' : val;
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+button {
+  box-sizing: border-box;
+  font-size: 30rpx;
+  text-align: center;
+  text-decoration: none;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  background-color: #fff;
+  font-size: 20rpx;
+  line-height: none;
+  line-height: 28rpx;
+}
+button::after {
+  content: none;
+}
 .analysis {
   background-color: #f4f4f4;
 }
@@ -553,7 +681,7 @@ export default {
     font-size: 20rpx;
     text-align: center;
     color: #333;
-    > image {
+    image {
       width: 40rpx;
       height: 40rpx;
     }

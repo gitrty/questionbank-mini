@@ -22,7 +22,7 @@ const store = new Vuex.Store({
     userStatus: false,
 
     // userId
-    userId: 9048,
+    userId:'' ,
 
     // 小程序授权code码
     code: '',

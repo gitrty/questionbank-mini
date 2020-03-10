@@ -85,8 +85,10 @@
         <view class="ex-nav-txt" v-show="isMore">关闭</view>
       </view>
       <view class="ex-nav-con">
-        <image src="../../../static/ex-2.png" mode=""></image>
-        <view class="ex-nav-txt">分享</view>
+        <button data-name="shareBtn" open-type="share">
+          <image src="../../../static/ex-2.png" mode=""></image>
+          <view class="ex-nav-txt">分享</view>
+        </button>
       </view>
       <view class="ex-nav-con" @tap="openAnCard">
         <image src="../../../static/ex-3.png" mode="" v-show="!isAnCard"></image>
@@ -471,6 +473,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  button {
+    box-sizing: border-box;
+    font-size: 30rpx;
+    text-align: center;
+    text-decoration: none;
+    overflow: hidden;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: #fff;
+    font-size: 20rpx;
+    line-height: none;
+    line-height: 28rpx;
+  }
+  button::after {
+    content: none;
+  }
 .examination {
   position: fixed;
   width: 100%;
@@ -734,7 +754,7 @@ export default {
     font-size: 20rpx;
     text-align: center;
     color: #333;
-    > image {
+     image {
       width: 40rpx;
       height: 40rpx;
     }

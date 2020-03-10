@@ -12,9 +12,9 @@ import lodash from 'lodash'
 import { Util } from './util'
 
 // 测试环境
-const baseUrl = 'http://192.168.8.122:19001/'
-// 正式环境
-// const baseUrl = 'https://gper.club/server-api/'
+// const baseUrl = 'http://192.168.8.122:19001/'
+// 正式环境+
+const baseUrl = 'https://gper.club/server-api/'
 
 const request = class {
 
@@ -46,7 +46,7 @@ const request = class {
 
     // 加密参数
     const accessToken = await Util._getToken()
-    console.log(accessToken, timestamp)
+    // console.log(accessToken, timestamp)
 
     const mds = Util.strToBinary(appKey.slice(0, appKey.length - 1))
     const mds2 = Util.strToBinary(timestamp + appSecret + accessToken)
@@ -98,12 +98,15 @@ const request = class {
     if (uni.getStorageSync('accessToken')) {
       header = {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'accessToken': accessToken
+        // 'accessToken': '9048_5a3d8f76-c35a-46d5-82cc-a1c677b27894',
+        'accessToken': accessToken,
+        'terminal': 'mobileweixinmini'
       }
     } else {
       header = {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'visitorToken': accessToken
+        'visitorToken': accessToken,
+        'terminal': 'mobileweixinmini'
       }
     }
     // console.info(header)

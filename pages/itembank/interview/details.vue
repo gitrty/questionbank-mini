@@ -61,14 +61,18 @@
       </view>
     </view>
     <view class="details-fixed">
-      <view class="details-fixed-fx">
-        <image src="../../../static/fx.png" mode=""></image>
-        <view class="">分享</view>
-      </view>
-      <view class="details-fixed-sc">
-        <image src="../../../static/sc.png" mode=""></image>
-        <view class="">收藏</view>
-      </view>
+      <button data-name="shareBtn" open-type="share">
+        <view class="details-fixed-fx">
+          <image src="../../../static/fx.png" mode=""></image>
+          <view class="">分享</view>
+        </view>
+      </button>
+      <button>
+        <view class="details-fixed-sc">
+          <image src="../../../static/sc.png" mode=""></image>
+          <view class="">收藏</view>
+        </view>
+      </button>
       <view class="details-start" @tap="redirectTo('/pages/itembank/examination/examination', { id: interInfo.id })">开始考试</view>
     </view>
   </view>
@@ -88,15 +92,67 @@ export default {
     const data = await viewSuitById({ id: e.id });
     this.interInfo = data;
     this.$store.state.viewTitle = data.title;
+  },
+  methods: {
+    // 分享好友
+    onShareAppMessage: function(options) {
+      var that = this; // 设置菜单中的转发按钮触发转发事件时的转发内容
+      var shareObj = {
+        title: 'GPer', // 默认是小程序的名称(可以写slogan等)
+        // 　　　　path: '/pages/share/share',        // 默认是当前页面，必须是以‘/’开头的完整路径
+        // 　　　　imgUrl: '',     //自定义图片路径，可以是本地文件路径、代码包文件路径或者网络图片路径，支持PNG及JPG，不传入 imageUrl 则使用默认截图。显示图片长宽比是 5:4
+        success: function(res) {
+          // 转发成功之后的回调
+          if (res.errMsg == 'shareAppMessage:ok') {
+          }
+        },
+        fail: function() {
+          // 转发失败之后的回调
+          if (res.errMsg == 'shareAppMessage:fail cancel') {
+            // 用户取消转发
+          } else if (res.errMsg == 'shareAppMessage:fail') {
+            // 转发失败，其中 detail message 为详细失败信息
+          }
+        },
+        complete: function() {
+          // 转发结束之后的回调（转发成不成功都会执行）
+        }
+      }; // 来自页面内的按钮的转发
+      if (options.from == 'button') {
+        var eData = options.target.dataset;
+        shareObj.path = '/pages/information/information';
+        console.log(eData.name); // shareBtn // 此处可以修改 shareObj 中的内容
+        // 　　　　shareObj.path = '/pages/btnname/btnname?btn_name='+eData.name;
+      } // 返回shareObj
+      return shareObj;
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
+button {
+  box-sizing: border-box;
+  font-size: 30rpx;
+  text-align: center;
+  text-decoration: none;
+  overflow: hidden;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+  background-color: #fff;
+  font-size: 20rpx;
+  line-height: none;
+  line-height: 18rpx;
+}
+button::after {
+  content: none;
+}
 .feedback {
   color: #2d98f2;
 }
-button::after{
+button::after {
   content: none;
 }
 .details {
@@ -204,7 +260,7 @@ button::after{
           position: static;
           display: inline-block;
           padding: 0;
-          overflow:visible ;
+          overflow: visible;
           line-height: 28rpx;
           font-size: 28rpx;
           border: none;
@@ -227,13 +283,13 @@ button::after{
     .details-fixed-sc {
       margin-left: 103rpx;
     }
-    > view {
+    view {
       margin-top: 14rpx;
-      > image {
+      image {
         width: 40rpx;
         height: 40rpx;
       }
-      > view {
+      view {
         font-size: 20rpx;
         color: #333;
       }
